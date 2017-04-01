@@ -1,0 +1,3 @@
+useDynLib(RcppQuantuccia)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)
