@@ -1,0 +1,7 @@
+2017-04-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* .travis.yml: Adding Travis CI
+
+2017-04-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Initial minimal version 0.0.1
