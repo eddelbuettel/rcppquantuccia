@@ -5,6 +5,10 @@ advanceDemo <- function(rd) {
     invisible(.Call('RcppQuantuccia_advanceDemo', PACKAGE = 'RcppQuantuccia', rd))
 }
 
+advanceDate <- function(rd, days = 0L) {
+    .Call('RcppQuantuccia_advanceDate', PACKAGE = 'RcppQuantuccia', rd, days)
+}
+
 # Register entry points for exported C++ functions
 methods::setLoadAction(function(ns) {
     .Call('RcppQuantuccia_RcppExport_registerCCallable', PACKAGE = 'RcppQuantuccia')

@@ -43,6 +43,25 @@ namespace RcppQuantuccia {
             throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
     }
 
+    inline Rcpp::Date advanceDate(Rcpp::Date rd, int days = 0) {
+        typedef SEXP(*Ptr_advanceDate)(SEXP,SEXP);
+        static Ptr_advanceDate p_advanceDate = NULL;
+        if (p_advanceDate == NULL) {
+            validateSignature("Rcpp::Date(*advanceDate)(Rcpp::Date,int)");
+            p_advanceDate = (Ptr_advanceDate)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_advanceDate");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_advanceDate(Rcpp::wrap(rd), Rcpp::wrap(days));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<Rcpp::Date >(rcpp_result_gen);
+    }
+
 }
 
 #endif // RCPP_RcppQuantuccia_RCPPEXPORTS_H_GEN_

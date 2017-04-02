@@ -1,4 +1,7 @@
 
+#ifndef rcpp_quantuccia_types_h
+#define rcpp_quantuccia_types_h
+
 #include <ql/quantlib.hpp>
 
 //#include <boost/algorithm/string.hpp>
@@ -37,4 +40,4 @@ namespace Rcpp {
         
 }
 
-
+#endif

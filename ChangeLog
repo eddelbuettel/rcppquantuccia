@@ -1,5 +1,11 @@
 2017-04-02  Dirk Eddelbuettel  <edd@debian.org>
 
+	* src/dates.cpp (advanceDate): Added first useful function
+
+	* src/RcppQuantuccia_as_wrap.h: Date as<> and wrap helpers
+
+	* inst/include/ql: Synchronised with Quantuccia
+
 	* .travis.yml: Adding Travis CI
 
 2017-04-01  Dirk Eddelbuettel  <edd@debian.org>

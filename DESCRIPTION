@@ -5,7 +5,8 @@ Version: 0.0.1
 Date: 2017-04-01
 Author: Dirk Eddelbuettel
 Maintainer: Dirk Eddelbuettel <edd@debian.org>
-Description: QuantLib bindings for R using Rcpp and the header-only Quantuccia variant
+Description: QuantLib bindings are provided for R using Rcpp and the
+ header-only Quantuccia variant offering an essential subset of QuantLib.
 License: GPL (>= 2)
 Imports: Rcpp
 LinkingTo: Rcpp, BH

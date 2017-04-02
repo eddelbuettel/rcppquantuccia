@@ -1,23 +1,27 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
 //
-//  RQuantLib -- R interface to the QuantLib libraries
+//  RcppQuantuccia -- R interface to QuantLib via Quantuccia
 //
-//  Copyright (C) 2002 - 2014  Dirk Eddelbuettel <edd@debian.org>
+//  Copyright (C) 2002 - 2017  Dirk Eddelbuettel <edd@debian.org>
 //
-//  This file is part of RQuantLib.
+//  This file is part of RcppQuantuccia
 //
-//  RQuantLib is free software: you can redistribute it and/or modify
+//  RcppQuantuccia is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 2 of the License, or
 //  (at your option) any later version.
 //
-//  RQuantLib is distributed in the hope that it will be useful,
+//  RcppQuantuccia is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with RQuantLib.  If not, see <http://www.gnu.org/licenses/>.
+//  along with RcppQuantuccia.  If not, see <http://www.gnu.org/licenses/>.
+
+
+// Taken from RQuantLib and adapted
+
 
 // #include <rquantlib.h>
 
@@ -28,18 +32,24 @@
 // [[Rcpp::interfaces(r, cpp)]]
 
 #include "RcppQuantuccia_types.h"
+#include "RcppQuantuccia_as_wrap.h"
 
-// using namespace QuantLib;
 namespace ql = QuantLib;
-
-static const unsigned int QLtoJan1970Offset = 25569;
 
 // [[Rcpp::export]]
 void advanceDemo(Rcpp::Date rd) {
     ql::TARGET cal1;
     ql::UnitedStates cal2;    
-    ql::Date d(static_cast<int>(rd.getDate() + QLtoJan1970Offset));
+    ql::Date d(static_cast<int>(rd.getDate() + Rcpp::getQLtoJan1970offset()));
     Rcpp::Rcout << d << " " << cal1.adjust(d) << " " << cal2.adjust(d) << std::endl;
+}
+
+// [[Rcpp::export]]
+Rcpp::Date advanceDate(Rcpp::Date rd, int days=0) {
+    ql::UnitedStates cal;      // FIXME: generalize
+    ql::Date d(static_cast<int>(rd.getDate() + Rcpp::getQLtoJan1970offset()));
+    ql::Date newdate = cal.adjust(d) + days;
+    return Rcpp::wrap(newdate);
 }
 
 
