@@ -1,3 +1,9 @@
+2017-04-04  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/dates.cpp (isBusinessDay,isHoliday): Added functions
+	* src/src/RcppQuantuccia_types.h: Added simple container class for
+	global calendar instance
+
 2017-04-02  Dirk Eddelbuettel  <edd@debian.org>
 
 	* src/dates.cpp (advanceDate): Added first useful function

@@ -5,8 +5,20 @@ advanceDemo <- function(rd) {
     invisible(.Call('RcppQuantuccia_advanceDemo', PACKAGE = 'RcppQuantuccia', rd))
 }
 
+setCalendar <- function(calstr) {
+    invisible(.Call('RcppQuantuccia_setCalendar', PACKAGE = 'RcppQuantuccia', calstr))
+}
+
 advanceDate <- function(rd, days = 0L) {
     .Call('RcppQuantuccia_advanceDate', PACKAGE = 'RcppQuantuccia', rd, days)
+}
+
+isBusinessDay <- function(dates) {
+    .Call('RcppQuantuccia_isBusinessDay', PACKAGE = 'RcppQuantuccia', dates)
+}
+
+isHoliday <- function(dates) {
+    .Call('RcppQuantuccia_isHoliday', PACKAGE = 'RcppQuantuccia', dates)
 }
 
 # Register entry points for exported C++ functions

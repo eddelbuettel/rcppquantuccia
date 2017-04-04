@@ -43,6 +43,24 @@ namespace RcppQuantuccia {
             throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
     }
 
+    inline void setCalendar(std::string calstr) {
+        typedef SEXP(*Ptr_setCalendar)(SEXP);
+        static Ptr_setCalendar p_setCalendar = NULL;
+        if (p_setCalendar == NULL) {
+            validateSignature("void(*setCalendar)(std::string)");
+            p_setCalendar = (Ptr_setCalendar)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_setCalendar");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_setCalendar(Rcpp::wrap(calstr));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+    }
+
     inline Rcpp::Date advanceDate(Rcpp::Date rd, int days = 0) {
         typedef SEXP(*Ptr_advanceDate)(SEXP,SEXP);
         static Ptr_advanceDate p_advanceDate = NULL;
@@ -60,6 +78,44 @@ namespace RcppQuantuccia {
         if (rcpp_result_gen.inherits("try-error"))
             throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
         return Rcpp::as<Rcpp::Date >(rcpp_result_gen);
+    }
+
+    inline Rcpp::LogicalVector isBusinessDay(Rcpp::DateVector dates) {
+        typedef SEXP(*Ptr_isBusinessDay)(SEXP);
+        static Ptr_isBusinessDay p_isBusinessDay = NULL;
+        if (p_isBusinessDay == NULL) {
+            validateSignature("Rcpp::LogicalVector(*isBusinessDay)(Rcpp::DateVector)");
+            p_isBusinessDay = (Ptr_isBusinessDay)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_isBusinessDay");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_isBusinessDay(Rcpp::wrap(dates));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<Rcpp::LogicalVector >(rcpp_result_gen);
+    }
+
+    inline Rcpp::LogicalVector isHoliday(Rcpp::DateVector dates) {
+        typedef SEXP(*Ptr_isHoliday)(SEXP);
+        static Ptr_isHoliday p_isHoliday = NULL;
+        if (p_isHoliday == NULL) {
+            validateSignature("Rcpp::LogicalVector(*isHoliday)(Rcpp::DateVector)");
+            p_isHoliday = (Ptr_isHoliday)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_isHoliday");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_isHoliday(Rcpp::wrap(dates));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<Rcpp::LogicalVector >(rcpp_result_gen);
     }
 
 }

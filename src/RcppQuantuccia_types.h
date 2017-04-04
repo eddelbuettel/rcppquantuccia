@@ -4,9 +4,6 @@
 
 #include <ql/quantlib.hpp>
 
-//#include <boost/algorithm/string.hpp>
-//#include <boost/lexical_cast.hpp>
-
 //using namespace QuantLib;
 
 #include <RcppCommon.h>
@@ -33,11 +30,41 @@ namespace Rcpp {
 
     //template <> QuantLib::Date as(SEXP dtsexp);
     template <typename T> T as(SEXP dtsexp);
+    template <typename T> T as(Rcpp::Date);
     template <typename T> SEXP wrap(const T& d);
 
     template <> std::vector<QuantLib::Date> as(SEXP dtvecsexp);
     template <> SEXP wrap(const std::vector<QuantLib::Date> &dvec);
-        
+
+}
+
+namespace RcppQuantuccia {
+
+    namespace ql = QuantLib;
+
+    class CalendarContainer {
+    private:
+        ql::Calendar *m_cal;
+        std::string m_id;
+    public:
+    	CalendarContainer() : m_cal(new ql::TARGET), m_id("TARGET") {}
+        ~CalendarContainer() {
+            free(m_cal);
+        }
+        ql::Calendar getCalendar() { return *m_cal; }
+        void setCalendar(std::string txt = "TARGET") {
+            if (txt != m_id) {
+                m_id = txt;
+                if (txt == "UnitedStates") {
+                    free(m_cal);
+                    m_cal = new ql::UnitedStates;
+                } else {
+                    free(m_cal);
+                    m_cal = new ql::UnitedStates;
+                }
+            }
+        }
+    };
 }
 
 #endif

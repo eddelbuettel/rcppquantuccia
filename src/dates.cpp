@@ -36,22 +36,51 @@
 
 namespace ql = QuantLib;
 
+RcppQuantuccia::CalendarContainer gblcal;
+//ql::Calendar getDefaultCalendar();
+//ql::Calendar getCalendar(const std::string &txt);
+
 // [[Rcpp::export]]
 void advanceDemo(Rcpp::Date rd) {
     ql::TARGET cal1;
-    ql::UnitedStates cal2;    
+    ql::UnitedStates cal2;
     ql::Date d(static_cast<int>(rd.getDate() + Rcpp::getQLtoJan1970offset()));
     Rcpp::Rcout << d << " " << cal1.adjust(d) << " " << cal2.adjust(d) << std::endl;
 }
 
 // [[Rcpp::export]]
-Rcpp::Date advanceDate(Rcpp::Date rd, int days=0) {
-    ql::UnitedStates cal;      // FIXME: generalize
+void setCalendar(std::string calstr) {
+    gblcal.setCalendar(calstr);
+}
+
+// [[Rcpp::export]]
+Rcpp::Date advanceDate(Rcpp::Date rd, int days=0) { //, std::string calstr="TARGET"
+    ql::Calendar cal = gblcal.getCalendar();
     ql::Date d(static_cast<int>(rd.getDate() + Rcpp::getQLtoJan1970offset()));
     ql::Date newdate = cal.adjust(d) + days;
     return Rcpp::wrap(newdate);
 }
 
+// [[Rcpp::export]]
+Rcpp::LogicalVector isBusinessDay(Rcpp::DateVector dates) {
+    ql::Calendar cal = gblcal.getCalendar();
+    int n = dates.size();
+    Rcpp::LogicalVector bizdays(n);
+    for (auto i=0; i<n; i++) {
+        ql::Date d = Rcpp::as<ql::Date>(dates[i]);
+        bizdays[i] = cal.isBusinessDay(d);
+    }
+    return bizdays;
+}
 
-
-
+// [[Rcpp::export]]
+Rcpp::LogicalVector isHoliday(Rcpp::DateVector dates) {
+    ql::Calendar cal = gblcal.getCalendar();
+    int n = dates.size();
+    Rcpp::LogicalVector holdays(n);
+    for (auto i=0; i<n; i++) {
+        ql::Date d = Rcpp::as<ql::Date>(dates[i]);
+        holdays[i] = cal.isBusinessDay(d);
+    }
+    return holdays;
+}
