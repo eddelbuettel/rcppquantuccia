@@ -25,24 +25,6 @@ namespace RcppQuantuccia {
         }
     }
 
-    inline void advanceDemo(Rcpp::Date rd) {
-        typedef SEXP(*Ptr_advanceDemo)(SEXP);
-        static Ptr_advanceDemo p_advanceDemo = NULL;
-        if (p_advanceDemo == NULL) {
-            validateSignature("void(*advanceDemo)(Rcpp::Date)");
-            p_advanceDemo = (Ptr_advanceDemo)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_advanceDemo");
-        }
-        RObject rcpp_result_gen;
-        {
-            RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_advanceDemo(Rcpp::wrap(rd));
-        }
-        if (rcpp_result_gen.inherits("interrupted-error"))
-            throw Rcpp::internal::InterruptedException();
-        if (rcpp_result_gen.inherits("try-error"))
-            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
-    }
-
     inline void setCalendar(std::string calstr) {
         typedef SEXP(*Ptr_setCalendar)(SEXP);
         static Ptr_setCalendar p_setCalendar = NULL;

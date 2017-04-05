@@ -44,23 +44,19 @@ namespace RcppQuantuccia {
 
     class CalendarContainer {
     private:
-        ql::Calendar *m_cal;
+        std::unique_ptr<ql::Calendar> p_cal;
         std::string m_id;
     public:
-    	CalendarContainer() : m_cal(new ql::TARGET), m_id("TARGET") {}
-        ~CalendarContainer() {
-            free(m_cal);
-        }
-        ql::Calendar getCalendar() { return *m_cal; }
+        CalendarContainer() : p_cal(new ql::TARGET), m_id("TARGET") {}
+        ~CalendarContainer() = default;
+        ql::Calendar getCalendar() { return *p_cal; }
         void setCalendar(std::string txt = "TARGET") {
             if (txt != m_id) {
                 m_id = txt;
                 if (txt == "UnitedStates") {
-                    free(m_cal);
-                    m_cal = new ql::UnitedStates;
-                } else {
-                    free(m_cal);
-                    m_cal = new ql::UnitedStates;
+                    p_cal.reset(new ql::UnitedStates);
+                } else {        // fallback
+                    p_cal.reset(new ql::TARGET);
                 }
             }
         }

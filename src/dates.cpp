@@ -23,12 +23,6 @@
 // Taken from RQuantLib and adapted
 
 
-// #include <rquantlib.h>
-
-// the actual implementation is now in this header which is also pulled into
-// compilation units when using 'plugin' mode via Rcpp Attributes
-// #include <rquantlib_impl.h>
-
 // [[Rcpp::interfaces(r, cpp)]]
 
 #include "RcppQuantuccia_types.h"
@@ -37,30 +31,64 @@
 namespace ql = QuantLib;
 
 RcppQuantuccia::CalendarContainer gblcal;
-//ql::Calendar getDefaultCalendar();
-//ql::Calendar getCalendar(const std::string &txt);
 
-// [[Rcpp::export]]
-void advanceDemo(Rcpp::Date rd) {
-    ql::TARGET cal1;
-    ql::UnitedStates cal2;
-    ql::Date d(static_cast<int>(rd.getDate() + Rcpp::getQLtoJan1970offset()));
-    Rcpp::Rcout << d << " " << cal1.adjust(d) << " " << cal2.adjust(d) << std::endl;
-}
+// / /  [ [Rcpp::export]]
+// void advanceDemo(Rcpp::Date rd) {
+//     ql::TARGET cal1;
+//     ql::UnitedStates cal2;
+//     ql::Date d(static_cast<int>(rd.getDate() + Rcpp::getQLtoJan1970offset()));
+//     Rcpp::Rcout << d << " " << cal1.adjust(d) << " " << cal2.adjust(d) << std::endl;
+// }
 
+//' Set a calendar
+//'
+//' This function sets a calendar to the given market or country convention.
+//' Note that at present only the default \sQuote{TARGET} and \sQuote{UnitedStates}
+//' are supported.
+//'
+//' @title Set a calendar
+//' @param calstr A character variable containing the market for which a calendar
+//' is to be set
+//' @return Nothing is returned but the global state is changed
+//' @examples
+//' setCalendar("UnitedStates")
 // [[Rcpp::export]]
 void setCalendar(std::string calstr) {
     gblcal.setCalendar(calstr);
 }
 
+//' Advance a date to the next business day plus an optional shift
+//'
+//' This function takes a given date and advances it to the next business day
+//' under the current (global) calendar setting. If an optional offset value is
+//' given it is applied as well.
+//'
+//' @title Advance a date
+//' @param rd A Date object describing the date to be advanced to the
+//' next business day.
+//' @param days An optional integer offset applied to the date
+//' @return The advanced date is returned
+//' @examples
+//' advanceDate(Sys.Date(), 2)  # today to the next biz day, plus 2 days
 // [[Rcpp::export]]
-Rcpp::Date advanceDate(Rcpp::Date rd, int days=0) { //, std::string calstr="TARGET"
+Rcpp::Date advanceDate(Rcpp::Date rd, int days=0) {
     ql::Calendar cal = gblcal.getCalendar();
-    ql::Date d(static_cast<int>(rd.getDate() + Rcpp::getQLtoJan1970offset()));
+    ql::Date d = Rcpp::as<ql::Date>(rd);
     ql::Date newdate = cal.adjust(d) + days;
     return Rcpp::wrap(newdate);
 }
 
+//' Test a vector of dates for business day
+//'
+//' This function takes a vector of dates and returns a logical vector
+//' of the same length indicating at each position whether the corresponding
+//' date is a business day in the currently active (global) calendar.
+//'
+//' @title Test for business days
+//' @param dates A Date vector with dates to be examined
+//' @return A logical vector indicating which dates are business days
+//' @examples
+//' isBusinessDay(Sys.Date()+0:6)
 // [[Rcpp::export]]
 Rcpp::LogicalVector isBusinessDay(Rcpp::DateVector dates) {
     ql::Calendar cal = gblcal.getCalendar();
@@ -73,6 +101,17 @@ Rcpp::LogicalVector isBusinessDay(Rcpp::DateVector dates) {
     return bizdays;
 }
 
+//' Test a vector of dates for holiday
+//'
+//' This function takes a vector of dates and returns a logical vector
+//' of the same length indicating at each position whether the corresponding
+//' date is a holiday in the currently active (global) calendar.
+//'
+//' @title Test for holidays
+//' @param dates A Date vector with dates to be examined
+//' @return A logical vector indicating which dates are holidays
+//' @examples
+//' isHoliday(Sys.Date()+0:6)
 // [[Rcpp::export]]
 Rcpp::LogicalVector isHoliday(Rcpp::DateVector dates) {
     ql::Calendar cal = gblcal.getCalendar();

@@ -1,3 +1,17 @@
+2017-04-05  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/RcppQuantuccia_types.h: Moved header file
+	* inst/include/RcppQuantuccia_as_wrap.h: Ditto
+
+	* inst/include/RcppQuantuccia_types.h: Use unique_ptr for calendar
+
+	* src/dates.cpp (isBusinessDay,isHoliday,advanceDate,setCalendar):
+	Added roxygen documentation
+	* man/advanceDate.Rd: Added
+	* man/isBusinessDay.Rd: Added
+	* man/isHoliday.Rd: Added
+	* man/setCalendar.Rd: Added
+
 2017-04-04  Dirk Eddelbuettel  <edd@debian.org>
 
 	* src/dates.cpp (isBusinessDay,isHoliday): Added functions
