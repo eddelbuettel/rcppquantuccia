@@ -100,6 +100,63 @@ namespace RcppQuantuccia {
         return Rcpp::as<Rcpp::LogicalVector >(rcpp_result_gen);
     }
 
+    inline Rcpp::LogicalVector isWeekend(Rcpp::DateVector dates) {
+        typedef SEXP(*Ptr_isWeekend)(SEXP);
+        static Ptr_isWeekend p_isWeekend = NULL;
+        if (p_isWeekend == NULL) {
+            validateSignature("Rcpp::LogicalVector(*isWeekend)(Rcpp::DateVector)");
+            p_isWeekend = (Ptr_isWeekend)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_isWeekend");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_isWeekend(Rcpp::wrap(dates));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<Rcpp::LogicalVector >(rcpp_result_gen);
+    }
+
+    inline Rcpp::LogicalVector isEndOfMonth(Rcpp::DateVector dates) {
+        typedef SEXP(*Ptr_isEndOfMonth)(SEXP);
+        static Ptr_isEndOfMonth p_isEndOfMonth = NULL;
+        if (p_isEndOfMonth == NULL) {
+            validateSignature("Rcpp::LogicalVector(*isEndOfMonth)(Rcpp::DateVector)");
+            p_isEndOfMonth = (Ptr_isEndOfMonth)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_isEndOfMonth");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_isEndOfMonth(Rcpp::wrap(dates));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<Rcpp::LogicalVector >(rcpp_result_gen);
+    }
+
+    inline Rcpp::DateVector getEndOfMonth(Rcpp::DateVector dates) {
+        typedef SEXP(*Ptr_getEndOfMonth)(SEXP);
+        static Ptr_getEndOfMonth p_getEndOfMonth = NULL;
+        if (p_getEndOfMonth == NULL) {
+            validateSignature("Rcpp::DateVector(*getEndOfMonth)(Rcpp::DateVector)");
+            p_getEndOfMonth = (Ptr_getEndOfMonth)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_getEndOfMonth");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_getEndOfMonth(Rcpp::wrap(dates));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<Rcpp::DateVector >(rcpp_result_gen);
+    }
+
 }
 
 #endif // RCPP_RcppQuantuccia_RCPPEXPORTS_H_GEN_

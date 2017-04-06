@@ -129,6 +129,96 @@ RcppExport SEXP RcppQuantuccia_isHoliday(SEXP datesSEXP) {
     UNPROTECT(1);
     return rcpp_result_gen;
 }
+// isWeekend
+Rcpp::LogicalVector isWeekend(Rcpp::DateVector dates);
+static SEXP RcppQuantuccia_isWeekend_try(SEXP datesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< Rcpp::DateVector >::type dates(datesSEXP);
+    rcpp_result_gen = Rcpp::wrap(isWeekend(dates));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP RcppQuantuccia_isWeekend(SEXP datesSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(RcppQuantuccia_isWeekend_try(datesSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// isEndOfMonth
+Rcpp::LogicalVector isEndOfMonth(Rcpp::DateVector dates);
+static SEXP RcppQuantuccia_isEndOfMonth_try(SEXP datesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< Rcpp::DateVector >::type dates(datesSEXP);
+    rcpp_result_gen = Rcpp::wrap(isEndOfMonth(dates));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP RcppQuantuccia_isEndOfMonth(SEXP datesSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(RcppQuantuccia_isEndOfMonth_try(datesSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// getEndOfMonth
+Rcpp::DateVector getEndOfMonth(Rcpp::DateVector dates);
+static SEXP RcppQuantuccia_getEndOfMonth_try(SEXP datesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< Rcpp::DateVector >::type dates(datesSEXP);
+    rcpp_result_gen = Rcpp::wrap(getEndOfMonth(dates));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP RcppQuantuccia_getEndOfMonth(SEXP datesSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(RcppQuantuccia_getEndOfMonth_try(datesSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
 
 // validate (ensure exported C++ functions exist before calling them)
 static int RcppQuantuccia_RcppExport_validate(const char* sig) { 
@@ -138,6 +228,9 @@ static int RcppQuantuccia_RcppExport_validate(const char* sig) {
         signatures.insert("Rcpp::Date(*advanceDate)(Rcpp::Date,int)");
         signatures.insert("Rcpp::LogicalVector(*isBusinessDay)(Rcpp::DateVector)");
         signatures.insert("Rcpp::LogicalVector(*isHoliday)(Rcpp::DateVector)");
+        signatures.insert("Rcpp::LogicalVector(*isWeekend)(Rcpp::DateVector)");
+        signatures.insert("Rcpp::LogicalVector(*isEndOfMonth)(Rcpp::DateVector)");
+        signatures.insert("Rcpp::DateVector(*getEndOfMonth)(Rcpp::DateVector)");
     }
     return signatures.find(sig) != signatures.end();
 }
@@ -148,6 +241,9 @@ RcppExport SEXP RcppQuantuccia_RcppExport_registerCCallable() {
     R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_advanceDate", (DL_FUNC)RcppQuantuccia_advanceDate_try);
     R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_isBusinessDay", (DL_FUNC)RcppQuantuccia_isBusinessDay_try);
     R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_isHoliday", (DL_FUNC)RcppQuantuccia_isHoliday_try);
+    R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_isWeekend", (DL_FUNC)RcppQuantuccia_isWeekend_try);
+    R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_isEndOfMonth", (DL_FUNC)RcppQuantuccia_isEndOfMonth_try);
+    R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_getEndOfMonth", (DL_FUNC)RcppQuantuccia_getEndOfMonth_try);
     R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_RcppExport_validate", (DL_FUNC)RcppQuantuccia_RcppExport_validate);
     return R_NilValue;
 }

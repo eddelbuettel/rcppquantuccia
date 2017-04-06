@@ -64,6 +64,51 @@ isHoliday <- function(dates) {
     .Call('RcppQuantuccia_isHoliday', PACKAGE = 'RcppQuantuccia', dates)
 }
 
+#' Test a vector of dates for weekends
+#'
+#' This function takes a vector of dates and returns a logical vector
+#' of the same length indicating at each position whether the corresponding
+#' date is a weekend in the currently active (global) calendar.
+#'
+#' @title Test for weekends
+#' @param dates A Date vector with dates to be examined
+#' @return A logical vector indicating which dates are weekends
+#' @examples
+#' isWeekend(Sys.Date()+0:6)
+isWeekend <- function(dates) {
+    .Call('RcppQuantuccia_isWeekend', PACKAGE = 'RcppQuantuccia', dates)
+}
+
+#' Test a vector of dates for end-of-month
+#'
+#' This function takes a vector of dates and returns a logical vector
+#' of the same length indicating at each position whether the corresponding
+#' date is at the end of a month in the currently active (global) calendar.
+#'
+#' @title Test for end-of-month
+#' @param dates A Date vector with dates to be examined
+#' @return A logical vector indicating which dates are end-of-month
+#' @examples
+#' isEndOfMonth(Sys.Date()+0:6)
+isEndOfMonth <- function(dates) {
+    .Call('RcppQuantuccia_isEndOfMonth', PACKAGE = 'RcppQuantuccia', dates)
+}
+
+#' Compute a vector of dates with end-of-month
+#'
+#' This function takes a vector of dates and returns another vector of dates
+#' of the same length returning at each position whether the corresponding
+#' end-of-month date in the currently active (global) calendar.
+#'
+#' @title Compute end-of-month
+#' @param dates A Date vector with dates
+#' @return A Date vector with dates which are end-of-month
+#' @examples
+#' getEndOfMonth(Sys.Date()+0:6)
+getEndOfMonth <- function(dates) {
+    .Call('RcppQuantuccia_getEndOfMonth', PACKAGE = 'RcppQuantuccia', dates)
+}
+
 # Register entry points for exported C++ functions
 methods::setLoadAction(function(ns) {
     .Call('RcppQuantuccia_RcppExport_registerCCallable', PACKAGE = 'RcppQuantuccia')

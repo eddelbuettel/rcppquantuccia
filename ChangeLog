@@ -1,3 +1,10 @@
+2017-04-06  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/dates.cpp: Added more documentation
+	* man/getEndOfMonth.Rd: Added
+	* man/isEndOfMonth.Rd
+	* man/isWeekend.Rd
+
 2017-04-05  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/RcppQuantuccia_types.h: Moved header file
