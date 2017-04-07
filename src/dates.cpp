@@ -188,7 +188,7 @@ Rcpp::DateVector getEndOfMonth(Rcpp::DateVector dates) {
     Rcpp::DateVector ndates(n);
     for (auto i=0; i<n; i++) {
         ql::Date d = Rcpp::as<ql::Date>(dates[i]);
-        ndates[i] = cal.endOfMonth(d);
+        ndates[i] = Rcpp::Date(Rcpp::wrap(cal.endOfMonth(d)));
     }
     return ndates;
 }
