@@ -109,6 +109,26 @@ getEndOfMonth <- function(dates) {
     .Call('RcppQuantuccia_getEndOfMonth', PACKAGE = 'RcppQuantuccia', dates)
 }
 
+#' Adjust a vector of following a business-day convention
+#'
+#' This function takes a vector of dates and returns another vector of dates
+#' of the same length returning at each position the adjusted date according
+#' to the selected business-day convention matching the existing QuantLib
+#' enumeration type. Currently supported values are (starting from zero):
+#' \sQuote{Following}, \sQuote{ModifiedFollowing}, \sQuote{Preceding},
+#' \sQuote{ModifiedPreceding}, \sQuote{Unadjusted}, \sQuote{HalfModifiedFollowing}
+#' \sQuote{Nearest} and a fallback of \sQuote{Unadjusted} for all other value.
+#'
+#' @title Compute adjusted dates
+#' @param dates A Date vector with dates
+#' @param bdc An integer corresponding to the business-day convetion
+#' @return A Date vector with dates adjust according to business-day convention
+#' @examples
+#' getEndOfMonth(Sys.Date()+0:6)
+adjust <- function(dates, bdc = 0L) {
+    .Call('RcppQuantuccia_adjust', PACKAGE = 'RcppQuantuccia', dates, bdc)
+}
+
 # Register entry points for exported C++ functions
 methods::setLoadAction(function(ns) {
     .Call('RcppQuantuccia_RcppExport_registerCCallable', PACKAGE = 'RcppQuantuccia')

@@ -157,6 +157,25 @@ namespace RcppQuantuccia {
         return Rcpp::as<Rcpp::DateVector >(rcpp_result_gen);
     }
 
+    inline Rcpp::DateVector adjust(Rcpp::DateVector dates, int bdc = 0) {
+        typedef SEXP(*Ptr_adjust)(SEXP,SEXP);
+        static Ptr_adjust p_adjust = NULL;
+        if (p_adjust == NULL) {
+            validateSignature("Rcpp::DateVector(*adjust)(Rcpp::DateVector,int)");
+            p_adjust = (Ptr_adjust)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_adjust");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_adjust(Rcpp::wrap(dates), Rcpp::wrap(bdc));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<Rcpp::DateVector >(rcpp_result_gen);
+    }
+
 }
 
 #endif // RCPP_RcppQuantuccia_RCPPEXPORTS_H_GEN_

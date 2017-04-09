@@ -26,6 +26,7 @@ namespace Rcpp {
         return Rcpp::wrap(Rcpp::Date(dt - QLtoJan1970Offset));
     }
 
+
     // non-intrusive extension via template specialisation
     template <> std::vector<QuantLib::Date> as(SEXP dtvecsexp) {
         Rcpp::DateVector dtvec(dtvecsexp);
@@ -42,14 +43,18 @@ namespace Rcpp {
         return dates;
     }
 
+    // QL to Rcpp without SEXP in the middle -- outside of as<> and wrap
+    inline Rcpp::Date qlDate2Rcpp(QuantLib::Date d) {
+        // QL::BigInteger can cast to double, safer from overflow than R's integer
+        return Rcpp::Date(static_cast<double>(d.serialNumber()) - QLtoJan1970Offset);
+    }
+
     // non-intrusive extension via template specialisation
     template <> SEXP wrap(const std::vector<QuantLib::Date> &dvec) {
         int n = dvec.size();
         Rcpp::DateVector dtvec(n);
         for (int i = 0; i<n; i++) {
-            // QL::BigInteger can cast to double
-            double dt = static_cast<double>(dvec[i].serialNumber());
-            dtvec[i] = Rcpp::Date(dt - QLtoJan1970Offset);
+            dtvec[i] = qlDate2Rcpp(dvec[i]);
         }
         return Rcpp::wrap(dtvec);
     }

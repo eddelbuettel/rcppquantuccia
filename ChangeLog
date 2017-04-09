@@ -1,3 +1,11 @@
+2017-04-09  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/dates.cpp (adjust): New function
+	* man/adjust.Rd: New file
+
+	* src/utils.cpp (getBusinessDayConvention): New helper function
+	* inst/include/RcppQuantuccia_as_wrap.h (qlDate2Rcpp): Idem
+
 2017-04-06  Dirk Eddelbuettel  <edd@debian.org>
 
 	* src/dates.cpp: Added more documentation

@@ -26,6 +26,7 @@
 // [[Rcpp::interfaces(r, cpp)]]
 
 #include "RcppQuantuccia_types.h"
+#include "RcppQuantuccia_declarations.h"
 #include "RcppQuantuccia_as_wrap.h"
 
 namespace ql = QuantLib;
@@ -170,6 +171,7 @@ Rcpp::LogicalVector isEndOfMonth(Rcpp::DateVector dates) {
     return eom;
 }
 
+
 //' Compute a vector of dates with end-of-month
 //'
 //' This function takes a vector of dates and returns another vector of dates
@@ -188,7 +190,37 @@ Rcpp::DateVector getEndOfMonth(Rcpp::DateVector dates) {
     Rcpp::DateVector ndates(n);
     for (auto i=0; i<n; i++) {
         ql::Date d = Rcpp::as<ql::Date>(dates[i]);
-        ndates[i] = Rcpp::Date(Rcpp::wrap(cal.endOfMonth(d)));
+        ndates[i] = Rcpp::qlDate2Rcpp(cal.endOfMonth(d));
     }
     return ndates;
+}
+
+
+//' Adjust a vector of following a business-day convention
+//'
+//' This function takes a vector of dates and returns another vector of dates
+//' of the same length returning at each position the adjusted date according
+//' to the selected business-day convention matching the existing QuantLib
+//' enumeration type. Currently supported values are (starting from zero):
+//' \sQuote{Following}, \sQuote{ModifiedFollowing}, \sQuote{Preceding},
+//' \sQuote{ModifiedPreceding}, \sQuote{Unadjusted}, \sQuote{HalfModifiedFollowing}
+//' \sQuote{Nearest} and a fallback of \sQuote{Unadjusted} for all other value.
+//'
+//' @title Compute adjusted dates
+//' @param dates A Date vector with dates
+//' @param bdc An integer corresponding to the business-day convetion
+//' @return A Date vector with dates adjust according to business-day convention
+//' @examples
+//' getEndOfMonth(Sys.Date()+0:6)
+// [[Rcpp::export]]
+Rcpp::DateVector adjust(Rcpp::DateVector dates, int bdc=0) {
+    ql::Calendar cal = gblcal.getCalendar();
+    QuantLib::BusinessDayConvention bdcval = getBusinessDayConvention(bdc);
+    int n = dates.size();
+    Rcpp::DateVector adjusted(n);
+    for (auto i=0; i<n; i++) {
+        ql::Date d = Rcpp::as<ql::Date>(dates[i]);
+        adjusted[i] = Rcpp::qlDate2Rcpp(cal.adjust(d, bdcval));
+    }
+    return adjusted;
 }
