@@ -196,7 +196,7 @@ Rcpp::DateVector getEndOfMonth(Rcpp::DateVector dates) {
 }
 
 
-//' Adjust a vector of following a business-day convention
+//' Adjust a vector of dates following a business-day convention
 //'
 //' This function takes a vector of dates and returns another vector of dates
 //' of the same length returning at each position the adjusted date according
@@ -215,7 +215,7 @@ Rcpp::DateVector getEndOfMonth(Rcpp::DateVector dates) {
 // [[Rcpp::export]]
 Rcpp::DateVector adjust(Rcpp::DateVector dates, int bdc=0) {
     ql::Calendar cal = gblcal.getCalendar();
-    QuantLib::BusinessDayConvention bdcval = getBusinessDayConvention(bdc);
+    ql::BusinessDayConvention bdcval = getBusinessDayConvention(bdc);
     int n = dates.size();
     Rcpp::DateVector adjusted(n);
     for (auto i=0; i<n; i++) {
@@ -223,4 +223,42 @@ Rcpp::DateVector adjust(Rcpp::DateVector dates, int bdc=0) {
         adjusted[i] = Rcpp::qlDate2Rcpp(cal.adjust(d, bdcval));
     }
     return adjusted;
+}
+
+// / / [ [ Rcpp::export]]
+// std::vector<QuantLib::Date> advance1(std::string calendar,
+//                                      double amount,
+//                                      ddouble unit,
+//                                      int bdcVal,
+//                                      double emr,
+//                                      std::vector<QuantLib::Date> dates) {
+
+//     boost::shared_ptr<QuantLib::Calendar> pcal(getCalendar(calendar));
+//     QuantLib::BusinessDayConvention bdc = getBusinessDayConvention(bdcVal);
+//     int n = dates.size();
+//     std::vector<QuantLib::Date> advance(n);
+
+//     for (int i=0; i<n; i++) {
+//         advance[i] = pcal->advance(dates[i], amount, getTimeUnit(unit),
+//                                    bdc, (emr == 1) ? true : false);
+//     }
+//     return advance;
+// }
+
+//' @rdname advanceUnits
+// [[Rcpp::export]]
+Rcpp::DateVector advanceUnits_cpp(Rcpp::DateVector dates, int n, int unit,
+                                  int bdc, bool emr) {
+
+    ql::Calendar cal = gblcal.getCalendar();
+    ql::BusinessDayConvention bdc_ = getBusinessDayConvention(bdc);
+    ql::TimeUnit tu = getTimeUnit(unit);
+    int ndays = dates.size();
+    Rcpp::DateVector adv(ndays);
+    for (auto i=0; i<ndays; i++) {
+        ql::Date od = Rcpp::as<ql::Date>(dates[i]);
+        ql::Date nd = cal.advance(od, n, tu, bdc_, (emr == 1) ? true : false);
+        adv[i] = Rcpp::qlDate2Rcpp(nd);
+    }
+    return adv;
 }

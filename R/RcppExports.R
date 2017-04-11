@@ -109,7 +109,7 @@ getEndOfMonth <- function(dates) {
     .Call('RcppQuantuccia_getEndOfMonth', PACKAGE = 'RcppQuantuccia', dates)
 }
 
-#' Adjust a vector of following a business-day convention
+#' Adjust a vector of dates following a business-day convention
 #'
 #' This function takes a vector of dates and returns another vector of dates
 #' of the same length returning at each position the adjusted date according
@@ -127,6 +127,11 @@ getEndOfMonth <- function(dates) {
 #' getEndOfMonth(Sys.Date()+0:6)
 adjust <- function(dates, bdc = 0L) {
     .Call('RcppQuantuccia_adjust', PACKAGE = 'RcppQuantuccia', dates, bdc)
+}
+
+#' @rdname advanceUnits
+advanceUnits_cpp <- function(dates, n, unit, bdc, emr) {
+    .Call('RcppQuantuccia_advanceUnits_cpp', PACKAGE = 'RcppQuantuccia', dates, n, unit, bdc, emr)
 }
 
 # Register entry points for exported C++ functions

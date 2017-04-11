@@ -1,3 +1,10 @@
+2017-04-11  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/dates.R (advanceUnits): R frontend with higher-level argument
+	parsing to be more user-friendly
+	* src/dates.cpp (advanceUnits_cpp): C++ implementation
+	* man/advanceUnits.Rd: Added documentation
+
 2017-04-09  Dirk Eddelbuettel  <edd@debian.org>
 
 	* src/dates.cpp (adjust): New function

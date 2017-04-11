@@ -176,6 +176,25 @@ namespace RcppQuantuccia {
         return Rcpp::as<Rcpp::DateVector >(rcpp_result_gen);
     }
 
+    inline Rcpp::DateVector advanceUnits_cpp(Rcpp::DateVector dates, int n, int unit, int bdc, bool emr) {
+        typedef SEXP(*Ptr_advanceUnits_cpp)(SEXP,SEXP,SEXP,SEXP,SEXP);
+        static Ptr_advanceUnits_cpp p_advanceUnits_cpp = NULL;
+        if (p_advanceUnits_cpp == NULL) {
+            validateSignature("Rcpp::DateVector(*advanceUnits_cpp)(Rcpp::DateVector,int,int,int,bool)");
+            p_advanceUnits_cpp = (Ptr_advanceUnits_cpp)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_advanceUnits_cpp");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_advanceUnits_cpp(Rcpp::wrap(dates), Rcpp::wrap(n), Rcpp::wrap(unit), Rcpp::wrap(bdc), Rcpp::wrap(emr));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<Rcpp::DateVector >(rcpp_result_gen);
+    }
+
 }
 
 #endif // RCPP_RcppQuantuccia_RCPPEXPORTS_H_GEN_

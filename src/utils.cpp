@@ -29,21 +29,105 @@
 
 namespace ql = QuantLib;
 
-ql::BusinessDayConvention getBusinessDayConvention(const double n){
-    if (n==0)
+ql::BusinessDayConvention getBusinessDayConvention(const int n) {
+    switch (n) {
+    case 0:
         return ql::Following;
-    else if (n==1)
+        break;
+    case 1:
         return ql::ModifiedFollowing;
-    else if (n==2)
+        break;
+    case 2:
         return ql::Preceding;
-    else if (n==3)
+        break;
+    case 3:
         return ql::ModifiedPreceding;
-    else if (n==4)
+        break;
+    case 4:
         return ql::Unadjusted;
-    else if (n==5)
+        break;
+    case 5:
         return ql::HalfMonthModifiedFollowing;
-    else if (n==6)
+        break;
+    case 6:
         return ql::Nearest;
-    else
+        break;
+    default:
         return ql::Unadjusted;
+    }
+}
+
+ql::Frequency getFrequency(const int n) {
+    switch (n) {
+    case -1:
+        return ql::NoFrequency;
+        break;
+    case 0:
+        return ql::Once;
+        break;
+    case 1:
+        return ql::Annual;
+        break;
+    case 2:
+        return ql::Semiannual;
+        break;
+    case 3:
+        return ql::EveryFourthMonth;
+        break;
+    case 4:
+        return ql::Quarterly;
+        break;
+    case 6:
+        return ql::Bimonthly;
+        break;
+    case 12:
+        return ql::Monthly;
+        break;
+    case 13:
+        return ql::EveryFourthWeek;
+        break;
+    case 26:
+        return ql::Biweekly;
+        break;
+    case 52:
+        return ql::Weekly;
+        break;
+    case 365:
+        return ql::Daily;
+        break;
+    default:
+        return ql::OtherFrequency;
+    }
+}
+
+ql::TimeUnit getTimeUnit(const int n) {
+    switch (n) {
+    case 0:
+        return ql::Days;
+        break;
+    case 1:
+        return ql::Weeks;
+        break;
+    case 2:
+        return ql::Months;
+        break;
+    case 3:
+        return ql::Years;
+        break;
+    case 4:
+        return ql::Hours;
+        break;
+    case 5:
+        return ql::Seconds;
+        break;
+    case 6:
+        return ql::Milliseconds;
+        break;
+    case 7:
+        return ql::Microseconds;
+        break;
+    default:
+        Rcpp::stop("Wrong TimeUnit value\n");
+        break;
+    }
 }

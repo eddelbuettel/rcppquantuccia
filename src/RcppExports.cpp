@@ -250,6 +250,40 @@ RcppExport SEXP RcppQuantuccia_adjust(SEXP datesSEXP, SEXP bdcSEXP) {
     UNPROTECT(1);
     return rcpp_result_gen;
 }
+// advanceUnits_cpp
+Rcpp::DateVector advanceUnits_cpp(Rcpp::DateVector dates, int n, int unit, int bdc, bool emr);
+static SEXP RcppQuantuccia_advanceUnits_cpp_try(SEXP datesSEXP, SEXP nSEXP, SEXP unitSEXP, SEXP bdcSEXP, SEXP emrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< Rcpp::DateVector >::type dates(datesSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type unit(unitSEXP);
+    Rcpp::traits::input_parameter< int >::type bdc(bdcSEXP);
+    Rcpp::traits::input_parameter< bool >::type emr(emrSEXP);
+    rcpp_result_gen = Rcpp::wrap(advanceUnits_cpp(dates, n, unit, bdc, emr));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP RcppQuantuccia_advanceUnits_cpp(SEXP datesSEXP, SEXP nSEXP, SEXP unitSEXP, SEXP bdcSEXP, SEXP emrSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(RcppQuantuccia_advanceUnits_cpp_try(datesSEXP, nSEXP, unitSEXP, bdcSEXP, emrSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
 
 // validate (ensure exported C++ functions exist before calling them)
 static int RcppQuantuccia_RcppExport_validate(const char* sig) { 
@@ -263,6 +297,7 @@ static int RcppQuantuccia_RcppExport_validate(const char* sig) {
         signatures.insert("Rcpp::LogicalVector(*isEndOfMonth)(Rcpp::DateVector)");
         signatures.insert("Rcpp::DateVector(*getEndOfMonth)(Rcpp::DateVector)");
         signatures.insert("Rcpp::DateVector(*adjust)(Rcpp::DateVector,int)");
+        signatures.insert("Rcpp::DateVector(*advanceUnits_cpp)(Rcpp::DateVector,int,int,int,bool)");
     }
     return signatures.find(sig) != signatures.end();
 }
@@ -277,6 +312,7 @@ RcppExport SEXP RcppQuantuccia_RcppExport_registerCCallable() {
     R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_isEndOfMonth", (DL_FUNC)RcppQuantuccia_isEndOfMonth_try);
     R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_getEndOfMonth", (DL_FUNC)RcppQuantuccia_getEndOfMonth_try);
     R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_adjust", (DL_FUNC)RcppQuantuccia_adjust_try);
+    R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_advanceUnits_cpp", (DL_FUNC)RcppQuantuccia_advanceUnits_cpp_try);
     R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_RcppExport_validate", (DL_FUNC)RcppQuantuccia_RcppExport_validate);
     return R_NilValue;
 }

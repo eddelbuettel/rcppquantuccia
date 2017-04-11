@@ -4,6 +4,8 @@
 
 #include <ql/quantlib.hpp>
 
-QuantLib::BusinessDayConvention getBusinessDayConvention(const double n);
+QuantLib::BusinessDayConvention getBusinessDayConvention(const int n);
+QuantLib::Frequency getFrequency(const int n);
+QuantLib::TimeUnit getTimeUnit(const int n);
 
 #endif

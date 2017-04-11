@@ -15,7 +15,7 @@ adjust(dates, bdc = 0L)
 A Date vector with dates adjust according to business-day convention
 }
 \description{
-Adjust a vector of following a business-day convention
+Adjust a vector of dates following a business-day convention
 }
 \details{
 This function takes a vector of dates and returns another vector of dates
