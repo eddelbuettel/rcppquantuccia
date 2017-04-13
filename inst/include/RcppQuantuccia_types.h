@@ -53,9 +53,21 @@ namespace RcppQuantuccia {
         void setCalendar(std::string txt = "TARGET") {
             if (txt != m_id) {
                 m_id = txt;
-                if (txt == "UnitedStates") {
-                    p_cal.reset(new ql::UnitedStates);
+                if (txt == "TARGET") {
+                    p_cal.reset(new ql::TARGET);
+                } else if (txt == "UnitedStates" ||
+                           txt == "UnitedStates/Settlement" ||
+                           txt == "UnitedStates::Settlement") {
+                    p_cal.reset(new ql::UnitedStates(ql::UnitedStates::Settlement));
+                } else if (txt == "UnitedStates/NYSE" || "UnitedStates::NYSE") {
+                    p_cal.reset(new ql::UnitedStates(QuantLib::UnitedStates::NYSE));
+                } else if (txt == "UnitedStates/GovernmentBond" ||
+                           txt == "UnitedStates::GovernmentBond") {
+                    pcal.reset(new ql::UnitedStates(ql::UnitedStates::GovernmentBond));
+                } else if (txt == "UnitedStates/NERC" || txt == "UnitedStates::NERC") {
+                    pcal.reset(new ql::UnitedStates(ql::UnitedStates::NERC));
                 } else {        // fallback
+                    Rcpp::warning("Unrecognised calendar '%s' using fallback 'TARGET'", txt);
                     p_cal.reset(new ql::TARGET);
                 }
             }

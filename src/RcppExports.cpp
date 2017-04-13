@@ -219,22 +219,22 @@ RcppExport SEXP RcppQuantuccia_getEndOfMonth(SEXP datesSEXP) {
     UNPROTECT(1);
     return rcpp_result_gen;
 }
-// adjust
-Rcpp::DateVector adjust(Rcpp::DateVector dates, int bdc);
-static SEXP RcppQuantuccia_adjust_try(SEXP datesSEXP, SEXP bdcSEXP) {
+// adjust_cpp
+Rcpp::DateVector adjust_cpp(Rcpp::DateVector dates, int bdc);
+static SEXP RcppQuantuccia_adjust_cpp_try(SEXP datesSEXP, SEXP bdcSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Rcpp::DateVector >::type dates(datesSEXP);
     Rcpp::traits::input_parameter< int >::type bdc(bdcSEXP);
-    rcpp_result_gen = Rcpp::wrap(adjust(dates, bdc));
+    rcpp_result_gen = Rcpp::wrap(adjust_cpp(dates, bdc));
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP RcppQuantuccia_adjust(SEXP datesSEXP, SEXP bdcSEXP) {
+RcppExport SEXP RcppQuantuccia_adjust_cpp(SEXP datesSEXP, SEXP bdcSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(RcppQuantuccia_adjust_try(datesSEXP, bdcSEXP));
+        rcpp_result_gen = PROTECT(RcppQuantuccia_adjust_cpp_try(datesSEXP, bdcSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -284,6 +284,71 @@ RcppExport SEXP RcppQuantuccia_advanceUnits_cpp(SEXP datesSEXP, SEXP nSEXP, SEXP
     UNPROTECT(1);
     return rcpp_result_gen;
 }
+// businessDaysBetween
+Rcpp::NumericVector businessDaysBetween(Rcpp::DateVector from, Rcpp::DateVector to, bool includeFirst, bool includeLast);
+static SEXP RcppQuantuccia_businessDaysBetween_try(SEXP fromSEXP, SEXP toSEXP, SEXP includeFirstSEXP, SEXP includeLastSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< Rcpp::DateVector >::type from(fromSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DateVector >::type to(toSEXP);
+    Rcpp::traits::input_parameter< bool >::type includeFirst(includeFirstSEXP);
+    Rcpp::traits::input_parameter< bool >::type includeLast(includeLastSEXP);
+    rcpp_result_gen = Rcpp::wrap(businessDaysBetween(from, to, includeFirst, includeLast));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP RcppQuantuccia_businessDaysBetween(SEXP fromSEXP, SEXP toSEXP, SEXP includeFirstSEXP, SEXP includeLastSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(RcppQuantuccia_businessDaysBetween_try(fromSEXP, toSEXP, includeFirstSEXP, includeLastSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// getHolidays
+Rcpp::DateVector getHolidays(Rcpp::Date from, Rcpp::Date to, bool includeWeekends);
+static SEXP RcppQuantuccia_getHolidays_try(SEXP fromSEXP, SEXP toSEXP, SEXP includeWeekendsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< Rcpp::Date >::type from(fromSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Date >::type to(toSEXP);
+    Rcpp::traits::input_parameter< bool >::type includeWeekends(includeWeekendsSEXP);
+    rcpp_result_gen = Rcpp::wrap(getHolidays(from, to, includeWeekends));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP RcppQuantuccia_getHolidays(SEXP fromSEXP, SEXP toSEXP, SEXP includeWeekendsSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(RcppQuantuccia_getHolidays_try(fromSEXP, toSEXP, includeWeekendsSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
 
 // validate (ensure exported C++ functions exist before calling them)
 static int RcppQuantuccia_RcppExport_validate(const char* sig) { 
@@ -296,8 +361,10 @@ static int RcppQuantuccia_RcppExport_validate(const char* sig) {
         signatures.insert("Rcpp::LogicalVector(*isWeekend)(Rcpp::DateVector)");
         signatures.insert("Rcpp::LogicalVector(*isEndOfMonth)(Rcpp::DateVector)");
         signatures.insert("Rcpp::DateVector(*getEndOfMonth)(Rcpp::DateVector)");
-        signatures.insert("Rcpp::DateVector(*adjust)(Rcpp::DateVector,int)");
+        signatures.insert("Rcpp::DateVector(*adjust_cpp)(Rcpp::DateVector,int)");
         signatures.insert("Rcpp::DateVector(*advanceUnits_cpp)(Rcpp::DateVector,int,int,int,bool)");
+        signatures.insert("Rcpp::NumericVector(*businessDaysBetween)(Rcpp::DateVector,Rcpp::DateVector,bool,bool)");
+        signatures.insert("Rcpp::DateVector(*getHolidays)(Rcpp::Date,Rcpp::Date,bool)");
     }
     return signatures.find(sig) != signatures.end();
 }
@@ -311,8 +378,10 @@ RcppExport SEXP RcppQuantuccia_RcppExport_registerCCallable() {
     R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_isWeekend", (DL_FUNC)RcppQuantuccia_isWeekend_try);
     R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_isEndOfMonth", (DL_FUNC)RcppQuantuccia_isEndOfMonth_try);
     R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_getEndOfMonth", (DL_FUNC)RcppQuantuccia_getEndOfMonth_try);
-    R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_adjust", (DL_FUNC)RcppQuantuccia_adjust_try);
+    R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_adjust_cpp", (DL_FUNC)RcppQuantuccia_adjust_cpp_try);
     R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_advanceUnits_cpp", (DL_FUNC)RcppQuantuccia_advanceUnits_cpp_try);
+    R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_businessDaysBetween", (DL_FUNC)RcppQuantuccia_businessDaysBetween_try);
+    R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_getHolidays", (DL_FUNC)RcppQuantuccia_getHolidays_try);
     R_RegisterCCallable("RcppQuantuccia", "RcppQuantuccia_RcppExport_validate", (DL_FUNC)RcppQuantuccia_RcppExport_validate);
     return R_NilValue;
 }

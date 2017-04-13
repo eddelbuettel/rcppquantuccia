@@ -1,3 +1,24 @@
+2017-04-13  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/dates.cpp (businessDaysBetween): New function
+	(businessDaysBetween): Idem
+	* R/dates.R (adjust): New R front-end calling C++ function in
+	order to better match input arguments
+	(advanceUnits): Idem
+
+	* man/businessDaysBetween.Rd: New documentation
+	* man/getHolidays.Rd: Idem
+	* man/adjust.Rd: Updated documentation
+	* man/advanceUnits.Rd: Idem
+
+	* inst/include/RcppQuantuccia_types.h (RcppQuantuccia): Update
+	calendar support for specific US calendars Settlment, NYSE,
+	GovernmentBond and NERC
+
+	* README.md: Added
+
+	* tests/calendars.R: First set of tests added
+
 2017-04-11  Dirk Eddelbuettel  <edd@debian.org>
 
 	* R/dates.R (advanceUnits): R frontend with higher-level argument

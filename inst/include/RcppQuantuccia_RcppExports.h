@@ -157,17 +157,17 @@ namespace RcppQuantuccia {
         return Rcpp::as<Rcpp::DateVector >(rcpp_result_gen);
     }
 
-    inline Rcpp::DateVector adjust(Rcpp::DateVector dates, int bdc = 0) {
-        typedef SEXP(*Ptr_adjust)(SEXP,SEXP);
-        static Ptr_adjust p_adjust = NULL;
-        if (p_adjust == NULL) {
-            validateSignature("Rcpp::DateVector(*adjust)(Rcpp::DateVector,int)");
-            p_adjust = (Ptr_adjust)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_adjust");
+    inline Rcpp::DateVector adjust_cpp(Rcpp::DateVector dates, int bdc = 0) {
+        typedef SEXP(*Ptr_adjust_cpp)(SEXP,SEXP);
+        static Ptr_adjust_cpp p_adjust_cpp = NULL;
+        if (p_adjust_cpp == NULL) {
+            validateSignature("Rcpp::DateVector(*adjust_cpp)(Rcpp::DateVector,int)");
+            p_adjust_cpp = (Ptr_adjust_cpp)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_adjust_cpp");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_adjust(Rcpp::wrap(dates), Rcpp::wrap(bdc));
+            rcpp_result_gen = p_adjust_cpp(Rcpp::wrap(dates), Rcpp::wrap(bdc));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
@@ -187,6 +187,44 @@ namespace RcppQuantuccia {
         {
             RNGScope RCPP_rngScope_gen;
             rcpp_result_gen = p_advanceUnits_cpp(Rcpp::wrap(dates), Rcpp::wrap(n), Rcpp::wrap(unit), Rcpp::wrap(bdc), Rcpp::wrap(emr));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<Rcpp::DateVector >(rcpp_result_gen);
+    }
+
+    inline Rcpp::NumericVector businessDaysBetween(Rcpp::DateVector from, Rcpp::DateVector to, bool includeFirst = true, bool includeLast = false) {
+        typedef SEXP(*Ptr_businessDaysBetween)(SEXP,SEXP,SEXP,SEXP);
+        static Ptr_businessDaysBetween p_businessDaysBetween = NULL;
+        if (p_businessDaysBetween == NULL) {
+            validateSignature("Rcpp::NumericVector(*businessDaysBetween)(Rcpp::DateVector,Rcpp::DateVector,bool,bool)");
+            p_businessDaysBetween = (Ptr_businessDaysBetween)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_businessDaysBetween");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_businessDaysBetween(Rcpp::wrap(from), Rcpp::wrap(to), Rcpp::wrap(includeFirst), Rcpp::wrap(includeLast));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<Rcpp::NumericVector >(rcpp_result_gen);
+    }
+
+    inline Rcpp::DateVector getHolidays(Rcpp::Date from, Rcpp::Date to, bool includeWeekends = false) {
+        typedef SEXP(*Ptr_getHolidays)(SEXP,SEXP,SEXP);
+        static Ptr_getHolidays p_getHolidays = NULL;
+        if (p_getHolidays == NULL) {
+            validateSignature("Rcpp::DateVector(*getHolidays)(Rcpp::Date,Rcpp::Date,bool)");
+            p_getHolidays = (Ptr_getHolidays)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_getHolidays");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_getHolidays(Rcpp::wrap(from), Rcpp::wrap(to), Rcpp::wrap(includeWeekends));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();

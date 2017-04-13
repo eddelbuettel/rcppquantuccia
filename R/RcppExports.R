@@ -109,29 +109,52 @@ getEndOfMonth <- function(dates) {
     .Call('RcppQuantuccia_getEndOfMonth', PACKAGE = 'RcppQuantuccia', dates)
 }
 
-#' Adjust a vector of dates following a business-day convention
-#'
-#' This function takes a vector of dates and returns another vector of dates
-#' of the same length returning at each position the adjusted date according
-#' to the selected business-day convention matching the existing QuantLib
-#' enumeration type. Currently supported values are (starting from zero):
-#' \sQuote{Following}, \sQuote{ModifiedFollowing}, \sQuote{Preceding},
-#' \sQuote{ModifiedPreceding}, \sQuote{Unadjusted}, \sQuote{HalfModifiedFollowing}
-#' \sQuote{Nearest} and a fallback of \sQuote{Unadjusted} for all other value.
-#'
-#' @title Compute adjusted dates
-#' @param dates A Date vector with dates
-#' @param bdc An integer corresponding to the business-day convetion
-#' @return A Date vector with dates adjust according to business-day convention
-#' @examples
-#' getEndOfMonth(Sys.Date()+0:6)
-adjust <- function(dates, bdc = 0L) {
-    .Call('RcppQuantuccia_adjust', PACKAGE = 'RcppQuantuccia', dates, bdc)
+#' @rdname adjust
+adjust_cpp <- function(dates, bdc = 0L) {
+    .Call('RcppQuantuccia_adjust_cpp', PACKAGE = 'RcppQuantuccia', dates, bdc)
 }
 
 #' @rdname advanceUnits
 advanceUnits_cpp <- function(dates, n, unit, bdc, emr) {
     .Call('RcppQuantuccia_advanceUnits_cpp', PACKAGE = 'RcppQuantuccia', dates, n, unit, bdc, emr)
+}
+
+#' Compute the number of business days between dates
+#'
+#' This function takes two vectors of start and end dates and returns another
+#' vector of the number of business days between each corresponding date pair
+#' according to the active calendar.
+#'
+#' @title Compute number of business dates between calendar dates
+#' @param from A Date vector with interval start dates
+#' @param to A Date vector with interval end dates
+#' @param includeFirst A boolean indicating if the start date is included, default
+#' is \sQuote{TRUE}
+#' @param includeLast A boolean indicating if the end date is included, default
+#' is \sQuote{FALSE}
+#' @return A numeric vector with the number of business dates between the
+#' corresponding date pair
+#' @examples
+#' businessDaysBetween(Sys.Date() + 0:6, Sys.Date() + 3 + 0:6)
+businessDaysBetween <- function(from, to, includeFirst = TRUE, includeLast = FALSE) {
+    .Call('RcppQuantuccia_businessDaysBetween', PACKAGE = 'RcppQuantuccia', from, to, includeFirst, includeLast)
+}
+
+#' Compute the number of holidays between two dates
+#'
+#' This function takes a start and end date and returns a vector of holidays
+#' between them according to the active calendar.
+#'
+#' @title Compute holidays
+#' @param from A Date object with the start date
+#' @param to A Date object with the end date
+#' @param includeWeekends A boolean indicating if weekends should be included, default
+#' is \sQuote{FALSE}
+#' @return A Date vector with holidays between the given dates
+#' @examples
+#' getHolidays(Sys.Date(), Sys.Date() + 30)
+getHolidays <- function(from, to, includeWeekends = FALSE) {
+    .Call('RcppQuantuccia_getHolidays', PACKAGE = 'RcppQuantuccia', from, to, includeWeekends)
 }
 
 # Register entry points for exported C++ functions

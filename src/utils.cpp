@@ -121,9 +121,12 @@ ql::TimeUnit getTimeUnit(const int n) {
         return ql::Seconds;
         break;
     case 6:
-        return ql::Milliseconds;
+        return ql::Minutes;
         break;
     case 7:
+        return ql::Milliseconds;
+        break;
+    case 8:
         return ql::Microseconds;
         break;
     default:
