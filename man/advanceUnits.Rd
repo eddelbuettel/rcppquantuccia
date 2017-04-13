@@ -10,7 +10,7 @@ advanceUnits_cpp(dates, n, unit, bdc, emr)
 advanceUnits(dates, n, unit = c("Days", "Weeks", "Months", "Years", "Hours",
   "Minutes", "Seconds", "Milliseconds", "Microseconds"), bdc = c("Following",
   "ModifiedFollowing", "Preceding", "ModifiedPreceding", "Unadjusted",
-  "HalfMonthModifiedFollowing", "Nearest", "Unadjusted"), emr = FALSE)
+  "HalfMonthModifiedFollowing", "Nearest"), emr = FALSE)
 }
 \arguments{
 \item{dates}{A Date vector with dates}
@@ -38,11 +38,12 @@ number of steps in the selected time unit, also respecting a business day
 convention and and of month boolean switch. Currently supported values for
 the time unit are \sQuote{Days}, \sQuote{Weeks}, \sQuote{Months} \sQuote{Years},
 \sQuote{Hours}, \sQuote{Seconds}, \sQuote{Milliseconds} and \sQuote{Microseconds};
-all are specified as integers. Currently supported values for
+all are specified as integers. Note that intra-daily units are not currently
+supported for advancing \sQuote{Date} objects. Currently supported values for
 the business day convention are (starting from zero):
 \sQuote{Following}, \sQuote{ModifiedFollowing}, \sQuote{Preceding},
 \sQuote{ModifiedPreceding}, \sQuote{Unadjusted}, \sQuote{HalfModifiedFollowing}
-\sQuote{Nearest} and a fallback of \sQuote{Unadjusted} for all other value.
+and \sQuote{Nearest}.
 }
 \examples{
 advanceUnits(Sys.Date()+0:6, 5, "Days", "Following")

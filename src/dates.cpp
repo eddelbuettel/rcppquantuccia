@@ -195,25 +195,9 @@ Rcpp::DateVector getEndOfMonth(Rcpp::DateVector dates) {
     return ndates;
 }
 
-
-//' Adjust a vector of dates following a business-day convention
-//'
-//' This function takes a vector of dates and returns another vector of dates
-//' of the same length returning at each position the adjusted date according
-//' to the selected business-day convention matching the existing QuantLib
-//' enumeration type. Currently supported values are (starting from zero):
-//' \sQuote{Following}, \sQuote{ModifiedFollowing}, \sQuote{Preceding},
-//' \sQuote{ModifiedPreceding}, \sQuote{Unadjusted}, \sQuote{HalfModifiedFollowing}
-//' \sQuote{Nearest} and a fallback of \sQuote{Unadjusted} for all other value.
-//'
-//' @title Compute adjusted dates
-//' @param dates A Date vector with dates
-//' @param bdc An integer corresponding to the business-day convetion
-//' @return A Date vector with dates adjust according to business-day convention
-//' @examples
-//' getEndOfMonth(Sys.Date()+0:6)
+//' @rdname adjust
 // [[Rcpp::export]]
-Rcpp::DateVector adjust(Rcpp::DateVector dates, int bdc=0) {
+Rcpp::DateVector adjust_cpp(Rcpp::DateVector dates, int bdc=0) {
     ql::Calendar cal = gblcal.getCalendar();
     ql::BusinessDayConvention bdcval = getBusinessDayConvention(bdc);
     int n = dates.size();
@@ -249,7 +233,6 @@ Rcpp::DateVector adjust(Rcpp::DateVector dates, int bdc=0) {
 // [[Rcpp::export]]
 Rcpp::DateVector advanceUnits_cpp(Rcpp::DateVector dates, int n, int unit,
                                   int bdc, bool emr) {
-
     ql::Calendar cal = gblcal.getCalendar();
     ql::BusinessDayConvention bdc_ = getBusinessDayConvention(bdc);
     ql::TimeUnit tu = getTimeUnit(unit);
@@ -261,4 +244,64 @@ Rcpp::DateVector advanceUnits_cpp(Rcpp::DateVector dates, int n, int unit,
         adv[i] = Rcpp::qlDate2Rcpp(nd);
     }
     return adv;
+}
+
+
+//' Compute the number of business days between dates
+//'
+//' This function takes two vectors of start and end dates and returns another
+//' vector of the number of business days between each corresponding date pair
+//' according to the active calendar.
+//'
+//' @title Compute number of business dates between calendar dates
+//' @param from A Date vector with interval start dates
+//' @param to A Date vector with interval end dates
+//' @param includeFirst A boolean indicating if the start date is included, default
+//' is \sQuote{TRUE}
+//' @param includeLast A boolean indicating if the end date is included, default
+//' is \sQuote{FALSE}
+//' @return A numeric vector with the number of business dates between the
+//' corresponding date pair
+//' @examples
+//' businessDaysBetween(Sys.Date() + 0:6, Sys.Date() + 3 + 0:6)
+// [[Rcpp::export]]
+Rcpp::NumericVector businessDaysBetween(Rcpp::DateVector from, Rcpp::DateVector to,
+                                        bool includeFirst=true, bool includeLast=false) {
+    ql::Calendar cal = gblcal.getCalendar();
+    int n = from.size();
+    Rcpp::NumericVector between(n);
+    for (auto i=0; i<n; i++) {
+        ql::Date fmd = Rcpp::as<ql::Date>(from[i]);
+        ql::Date tod = Rcpp::as<ql::Date>(to[i]);
+        between[i] = cal.businessDaysBetween(fmd, tod, includeFirst, includeLast);
+    }
+    return between;
+}
+
+//' Compute the number of holidays between two dates
+//'
+//' This function takes a start and end date and returns a vector of holidays
+//' between them according to the active calendar.
+//'
+//' @title Compute holidays
+//' @param from A Date object with the start date
+//' @param to A Date object with the end date
+//' @param includeWeekends A boolean indicating if weekends should be included, default
+//' is \sQuote{FALSE}
+//' @return A Date vector with holidays between the given dates
+//' @examples
+//' getHolidays(Sys.Date(), Sys.Date() + 30)
+// [[Rcpp::export]]
+Rcpp::DateVector getHolidays(Rcpp::Date from, Rcpp::Date to,
+                             bool includeWeekends=false) {
+    ql::Calendar cal = gblcal.getCalendar();
+    std::vector<ql::Date> holidays =
+        ql::Calendar::holidayList(cal, Rcpp::as<ql::Date>(from), Rcpp::as<ql::Date>(to),
+                                  includeWeekends);
+    int n = holidays.size();
+    Rcpp::DateVector dv(n);
+    for (auto i=0; i<n; i++) {
+        dv[i] = Rcpp::qlDate2Rcpp(holidays[i]);
+    }
+    return dv;
 }
