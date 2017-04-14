@@ -1,3 +1,13 @@
-useDynLib(RcppQuantuccia)
-exportPattern("^[[:alpha:]]+")
+useDynLib(RcppQuantuccia, .registration=TRUE)
+export("adjust",
+       "advanceDate",
+       "advanceUnits",
+       "businessDaysBetween",
+       "getEndOfMonth",
+       "getHolidays",
+       "isBusinessDay",
+       "isEndOfMonth",
+       "isHoliday",
+       "isWeekend",
+       "setCalendar")
 importFrom(Rcpp, evalCpp)
