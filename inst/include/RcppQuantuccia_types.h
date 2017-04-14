@@ -63,9 +63,9 @@ namespace RcppQuantuccia {
                     p_cal.reset(new ql::UnitedStates(QuantLib::UnitedStates::NYSE));
                 } else if (txt == "UnitedStates/GovernmentBond" ||
                            txt == "UnitedStates::GovernmentBond") {
-                    pcal.reset(new ql::UnitedStates(ql::UnitedStates::GovernmentBond));
+                    p_cal.reset(new ql::UnitedStates(ql::UnitedStates::GovernmentBond));
                 } else if (txt == "UnitedStates/NERC" || txt == "UnitedStates::NERC") {
-                    pcal.reset(new ql::UnitedStates(ql::UnitedStates::NERC));
+                    p_cal.reset(new ql::UnitedStates(ql::UnitedStates::NERC));
                 } else {        // fallback
                     Rcpp::warning("Unrecognised calendar '%s' using fallback 'TARGET'", txt);
                     p_cal.reset(new ql::TARGET);
