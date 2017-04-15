@@ -2,6 +2,7 @@
 #ifndef rcpp_quantuccia_date_wrappers_h
 #define rcpp_quantuccia_date_wrappers_h
 
+#define QL_HIGH_RESOLUTION_DATE
 #include <ql/quantlib.hpp>
 
 #include <Rcpp.h>
@@ -19,6 +20,14 @@ namespace Rcpp {
     }
     template <> QuantLib::Date as(Rcpp::Date dt) {
         return QuantLib::Date(static_cast<int>(dt.getDate()) + QLtoJan1970Offset);
+    }
+    template <> QuantLib::Date as(Rcpp::Datetime dt) {
+        const boost::posix_time::ptime pt(boost::gregorian::date(dt.getYear(), dt.getMonth(), dt.getDay()), 
+                                          boost::posix_time::time_duration(dt.getHours(), 
+                                                                           dt.getMinutes(), 
+                                                                           dt.getSeconds(), 
+                                                                           dt.getMicroSeconds()*1000.0));
+        return QuantLib::Date(pt);
     }
 
     template <> SEXP wrap(const QuantLib::Date &d) {

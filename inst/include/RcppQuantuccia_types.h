@@ -2,6 +2,7 @@
 #ifndef rcpp_quantuccia_types_h
 #define rcpp_quantuccia_types_h
 
+#define QL_HIGH_RESOLUTION_DATE
 #include <ql/quantlib.hpp>
 
 //using namespace QuantLib;
@@ -12,7 +13,7 @@ namespace Rcpp {
 
     // non-intrusive extension via template specialisation
     template <> QuantLib::Date as(SEXP dtsexp);
-
+  
     // non-intrusive extension via template specialisation
     template <> SEXP wrap(const QuantLib::Date &d);
 
@@ -31,6 +32,7 @@ namespace Rcpp {
     //template <> QuantLib::Date as(SEXP dtsexp);
     template <typename T> T as(SEXP dtsexp);
     template <typename T> T as(Rcpp::Date);
+    template <typename T> T as(Rcpp::Datetime);
     template <typename T> SEXP wrap(const T& d);
 
     template <> std::vector<QuantLib::Date> as(SEXP dtvecsexp);
