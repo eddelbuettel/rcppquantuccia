@@ -1,3 +1,12 @@
+2017-04-15  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/RcppQuantuccia_as_wrap.h (QL_HIGH_RESOLUTION_DATE):
+	Ensure compilation done with intra-day option turned on
+	(as): Added conversion from Datetime
+	* inst/include/RcppQuantuccia_types.h (QL_HIGH_RESOLUTION_DATE):
+	Ensure compilation done with intra-day option turned on;
+	declare new converter
+
 2017-04-14  Dirk Eddelbuettel  <edd@debian.org>
 
 	* src/init.c (R_init_RcppQuantuccia): Call R_registerRoutines() and

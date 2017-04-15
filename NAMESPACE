@@ -10,4 +10,4 @@ export("adjust",
        "isHoliday",
        "isWeekend",
        "setCalendar")
-importFrom(Rcpp, evalCpp)
+importFrom("Rcpp", "evalCpp")

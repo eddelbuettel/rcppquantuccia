@@ -12,6 +12,7 @@ extern SEXP RcppQuantuccia_adjust_cpp(SEXP, SEXP);
 extern SEXP RcppQuantuccia_advanceDate(SEXP, SEXP);
 extern SEXP RcppQuantuccia_advanceUnits_cpp(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP RcppQuantuccia_businessDaysBetween(SEXP, SEXP, SEXP, SEXP);
+//extern SEXP RcppQuantuccia_dtConvert(SEXP);
 extern SEXP RcppQuantuccia_getEndOfMonth(SEXP);
 extern SEXP RcppQuantuccia_getHolidays(SEXP, SEXP, SEXP);
 extern SEXP RcppQuantuccia_isBusinessDay(SEXP);
@@ -26,6 +27,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"RcppQuantuccia_advanceDate",                  (DL_FUNC) &RcppQuantuccia_advanceDate,                  2},
     {"RcppQuantuccia_advanceUnits_cpp",             (DL_FUNC) &RcppQuantuccia_advanceUnits_cpp,             5},
     {"RcppQuantuccia_businessDaysBetween",          (DL_FUNC) &RcppQuantuccia_businessDaysBetween,          4},
+//    {"RcppQuantuccia_dtConvert",                    (DL_FUNC) &RcppQuantuccia_dtConvert,                    1},
     {"RcppQuantuccia_getEndOfMonth",                (DL_FUNC) &RcppQuantuccia_getEndOfMonth,                1},
     {"RcppQuantuccia_getHolidays",                  (DL_FUNC) &RcppQuantuccia_getHolidays,                  3},
     {"RcppQuantuccia_isBusinessDay",                (DL_FUNC) &RcppQuantuccia_isBusinessDay,                1},

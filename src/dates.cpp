@@ -29,6 +29,9 @@
 #include "RcppQuantuccia_declarations.h"
 #include "RcppQuantuccia_as_wrap.h"
 
+#include <boost/date_time/posix_time/conversion.hpp>
+
+
 namespace ql = QuantLib;
 
 RcppQuantuccia::CalendarContainer gblcal;
@@ -305,3 +308,19 @@ Rcpp::DateVector getHolidays(Rcpp::Date from, Rcpp::Date to,
     }
     return dv;
 }
+
+#if 0
+// [ [ Rcpp::export]]
+Rcpp::Datetime dtConvert(Rcpp::Datetime dt) {
+
+    namespace bt = boost::posix_time;
+
+    bt::ptime a = bt::from_time_t(dt.getFractionalTimestamp());
+    ql::Date b(a);
+    
+    Rcpp::Datetime ndt(dt);
+
+    Rcpp::Rcout << dt << " -- " << ndt << " -- " << b << std::endl;
+    return Rcpp::wrap(ndt);
+}
+#endif
