@@ -13,9 +13,27 @@ Being header-only makes providing [Quantuccia](https://github.com/pcaspers/Quant
 [BH](http://dirk.eddelbuettel.com/code/bh.html) packages.  Nothing else is required, and as these
 packages are available on all relevant platforms, deploying RcppQuantuccia is straightforward.
 
+### Example
+
+Here we examine holiday lists for given calendars, specified by country and possibly exchange:
+
+```
+R> library(anytime)  # so that we can use anydate()
+R> library(RcppQuantuccia)
+R> getHolidays(anydate(20170101), anydate(20170630))
+[1] "2017-04-14" "2017-04-17" "2017-05-01"
+R> setCalendar("UnitedStates::NYSE")
+R> getHolidays(anydate(20170101), anydate(20170630))
+[1] "2017-01-02" "2017-01-16" "2017-02-20" "2017-04-14" "2017-05-29"
+R> 
+```
+
+This shows the difference between the default US settlement calendar and the NYSE calendar 
+which we selected explicitly.  
+
 ### Status
 
-Still fairly new.
+Still fairly new. Functional but _e.g._ several of the other QuantLib calendars still need to be ported.
 
 ### Installation
 

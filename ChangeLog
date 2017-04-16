@@ -1,5 +1,7 @@
 2017-04-15  Dirk Eddelbuettel  <edd@debian.org>
 
+	* README.md: Added example section
+
 	* inst/include/RcppQuantuccia_as_wrap.h (QL_HIGH_RESOLUTION_DATE):
 	Ensure compilation done with intra-day option turned on
 	(as): Added conversion from Datetime
