@@ -1,12 +1,12 @@
 Package: RcppQuantuccia
 Type: Package
-Title: RQuantLib using the Header-Only Quantuccia
+Title: R Bindings to the 'Quantuccia' Header-Only Essentials of 'QuantLib'
 Version: 0.0.1
-Date: 2017-04-14
+Date: 2017-04-16
 Author: Dirk Eddelbuettel
 Maintainer: Dirk Eddelbuettel <edd@debian.org>
-Description: QuantLib bindings are provided for R using Rcpp and the
- header-only Quantuccia variant offering an essential subset of QuantLib.
+Description: 'QuantLib' bindings are provided for R using 'Rcpp' and the
+ header-only 'Quantuccia' variant offering an essential subset of 'QuantLib'.
 License: GPL (>= 2)
 Imports: Rcpp
 LinkingTo: Rcpp, BH
