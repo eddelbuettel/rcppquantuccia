@@ -17,25 +17,25 @@ packages are available on all relevant platforms, deploying RcppQuantuccia is st
 
 Here we examine holiday lists for given calendars, specified by country and possibly exchange:
 
-```
+```r
 R> library(RcppQuantuccia)
 R> fromD <- as.Date("2017-01-01")
 R> toD <- as.Date("2017-12-31")
 R> getHolidays(fromD, toD)        # default calender ie TARGET
 [1] "2017-04-14" "2017-04-17" "2017-05-01" "2017-12-25" "2017-12-26"
-R> setCalendar("UnitedStates")  
+R> setCalendar("UnitedStates")
 R> getHolidays(fromD, toD)        # US aka US::Settlement
 [1] "2017-01-02" "2017-01-16" "2017-02-20" "2017-05-29" "2017-07-04" "2017-09-04"
 [7] "2017-10-09" "2017-11-10" "2017-11-23" "2017-12-25"
-R> setCalendar("UnitedStates::NYSE")  # US aka US::Settlement
+R> setCalendar("UnitedStates::NYSE")
 R> getHolidays(fromD, toD)        # US New York Stock Exchange
 [1] "2017-01-02" "2017-01-16" "2017-02-20" "2017-04-14" "2017-05-29" "2017-07-04"
 [7] "2017-09-04" "2017-11-23" "2017-12-25"
-R> 
+R>
 ```
 
-This shows the difference between the default US settlement calendar and the NYSE calendar 
-which we selected explicitly.  
+This shows the difference between the default US settlement calendar and the NYSE calendar
+which we selected explicitly.
 
 ### Status
 
