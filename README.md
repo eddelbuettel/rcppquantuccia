@@ -46,8 +46,10 @@ Still fairly new. Functional but _e.g._ several of the other QuantLib calendars 
 The package can be installed from [CRAN](https://cran.r-project.org) via
 
 ```r
-install.packages(
-Currently from GitHub only, so do e.g.
+install.packages("RcppQuantuccia")
+```
+
+or if you prefer non-release development version these can be installed from GitHub via e.g.
 
 ```r
 remotes::install_github("eddelbuettel/rcppquantuccia")
