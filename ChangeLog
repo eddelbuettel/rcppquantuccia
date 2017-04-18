@@ -1,10 +1,17 @@
+2017-04-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Initial release 0.0.1
+
+	* inst/AUTHORS: Added
+	* inst/COPYRIGHTS: Added
+
+	* README.md: Edited to reflect CRAN upload
+
 2017-04-17  Dirk Eddelbuettel  <edd@debian.org>
 
 	* tests/calendars.R: Added a number of UnitedState::NYSE tests
 
 2017-04-16  Dirk Eddelbuettel  <edd@debian.org>
-
-	* DESCRIPTION (Version, Date): Initial release 0.0.1
 
 	* inst/NEWS.Rd: Added
 

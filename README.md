@@ -1,4 +1,4 @@
-## RcppQuantuccia  [![Build Status](https://travis-ci.org/eddelbuettel/rcppquantuccia.svg)](https://travis-ci.org/eddelbuettel/rcppquantuccia) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) 
+## RcppQuantuccia  [![Build Status](https://travis-ci.org/eddelbuettel/rcppquantuccia.svg)](https://travis-ci.org/eddelbuettel/rcppquantuccia) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/RcppQuantuccia)](http://cran.r-project.org/package=RcppQuantuccia) [![Downloads](http://cranlogs.r-pkg.org/badges/RcppQuantuccia?color=brightgreen)](http://www.r-pkg.org/pkg/RcppQuantuccia)
 
 ### About
 
@@ -18,13 +18,19 @@ packages are available on all relevant platforms, deploying RcppQuantuccia is st
 Here we examine holiday lists for given calendars, specified by country and possibly exchange:
 
 ```
-R> library(anytime)  # so that we can use anydate()
 R> library(RcppQuantuccia)
-R> getHolidays(anydate(20170101), anydate(20170630))
-[1] "2017-04-14" "2017-04-17" "2017-05-01"
-R> setCalendar("UnitedStates::NYSE")
-R> getHolidays(anydate(20170101), anydate(20170630))
-[1] "2017-01-02" "2017-01-16" "2017-02-20" "2017-04-14" "2017-05-29"
+R> fromD <- as.Date("2017-01-01")
+R> toD <- as.Date("2017-12-31")
+R> getHolidays(fromD, toD)        # default calender ie TARGET
+[1] "2017-04-14" "2017-04-17" "2017-05-01" "2017-12-25" "2017-12-26"
+R> setCalendar("UnitedStates")  
+R> getHolidays(fromD, toD)        # US aka US::Settlement
+[1] "2017-01-02" "2017-01-16" "2017-02-20" "2017-05-29" "2017-07-04" "2017-09-04"
+[7] "2017-10-09" "2017-11-10" "2017-11-23" "2017-12-25"
+R> setCalendar("UnitedStates::NYSE")  # US aka US::Settlement
+R> getHolidays(fromD, toD)        # US New York Stock Exchange
+[1] "2017-01-02" "2017-01-16" "2017-02-20" "2017-04-14" "2017-05-29" "2017-07-04"
+[7] "2017-09-04" "2017-11-23" "2017-12-25"
 R> 
 ```
 
@@ -37,6 +43,10 @@ Still fairly new. Functional but _e.g._ several of the other QuantLib calendars 
 
 ### Installation
 
+The package can be installed from [CRAN](https://cran.r-project.org) via
+
+```r
+install.packages(
 Currently from GitHub only, so do e.g.
 
 ```r
