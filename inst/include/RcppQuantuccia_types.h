@@ -13,7 +13,7 @@ namespace Rcpp {
 
     // non-intrusive extension via template specialisation
     template <> QuantLib::Date as(SEXP dtsexp);
-  
+
     // non-intrusive extension via template specialisation
     template <> SEXP wrap(const QuantLib::Date &d);
 
@@ -57,6 +57,7 @@ namespace RcppQuantuccia {
                 m_id = txt;
                 if (txt == "TARGET") {
                     p_cal.reset(new ql::TARGET);
+
                 } else if (txt == "UnitedStates" ||
                            txt == "UnitedStates/Settlement" ||
                            txt == "UnitedStates::Settlement") {
@@ -70,6 +71,54 @@ namespace RcppQuantuccia {
                 } else if (txt == "UnitedStates/NERC" ||
                            txt == "UnitedStates::NERC") {
                     p_cal.reset(new ql::UnitedStates(ql::UnitedStates::NERC));
+
+                } else if (txt == "UnitedKingdom" ||
+                           txt == "UnitedKingdom/Settlement" ||
+                           txt == "UnitedKingdom::Settlement") {
+                    p_cal.reset(new ql::UnitedKingdom(ql::UnitedKingdom::Settlement));
+                } else if (txt == "UnitedKingdom/Exchange" ||
+                           txt == "UnitedKingdom::Exchange") {
+                    p_cal.reset(new ql::UnitedKingdom(ql::UnitedKingdom::Exchange));
+                } else if (txt == "UnitedKingdom/Metals" ||
+                           txt == "UnitedKingdom::Metals") {
+                    p_cal.reset(new ql::UnitedKingdom(ql::UnitedKingdom::Metals));
+
+                } else if (txt == "Germany" ||
+                           txt == "Germany/Settlement" ||
+                           txt == "Germany::Settlement") {
+                    p_cal.reset(new ql::Germany(ql::Germany::Settlement));
+                } else if (txt == "Germany/FrankfurtStockExchange" ||
+                           txt == "Germany::FrankfurtStockExchange") {
+                    p_cal.reset(new ql::Germany(ql::Germany::FrankfurtStockExchange));
+                } else if (txt == "Germany/Xetra" ||
+                           txt == "Germany::Xetra") {
+                    p_cal.reset(new ql::Germany(ql::Germany::Xetra));
+                } else if (txt == "Germany/Eurex" ||
+                           txt == "Germany::Eurex") {
+                    p_cal.reset(new ql::Germany(ql::Germany::Eurex));
+                } else if (txt == "Germany/Euwax" ||
+                           txt == "Germany::Euwax") {
+                    p_cal.reset(new ql::Germany(ql::Germany::Euwax));
+
+                } else if (txt == "Japan") {
+                    p_cal.reset(new ql::Japan());
+
+                } else if (txt == "China" ||
+                           txt == "China/SSE" ||
+                           txt == "China::SSE") {
+                    p_cal.reset(new ql::China(ql::China::SSE));
+                } else if (txt == "China/IB" ||
+                           txt == "China::IB") {
+                    p_cal.reset(new ql::China(ql::China::IB));
+
+                } else if (txt == "Canada" ||
+                           txt == "Canada/Settlement" ||
+                           txt == "Canada::Settlement") {
+                    p_cal.reset(new ql::Canada(ql::Canada::Settlement));
+                } else if (txt == "Canada/TSX" ||
+                           txt == "Canada::TSX") {
+                    p_cal.reset(new ql::Canada(ql::Canada::TSX));
+
                 } else {        // fallback
                     Rcpp::warning("Unrecognised calendar '%s' using fallback 'TARGET'", txt);
                     p_cal.reset(new ql::TARGET);

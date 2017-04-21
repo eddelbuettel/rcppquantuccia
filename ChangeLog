@@ -1,3 +1,14 @@
+2017-04-20  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/ql/time/calendars/canada.hpp: Added
+
+2017-04-19  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/ql/time/calendars/china.hpp: Added
+	* inst/include/ql/time/calendars/japan.hpp: Idem
+	* inst/include/ql/time/calendars/germany.hpp: Added
+	* inst/include/ql/time/calendars/unitedkingdom.hpp: Idem
+
 2017-04-18  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Initial release 0.0.1
