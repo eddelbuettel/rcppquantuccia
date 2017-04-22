@@ -6,6 +6,7 @@
 \section{Changes in version 0.0.2 (2017-xx-yy)}{
   \itemize{
     \item Added calendars for Canada, China, Germany, Japan and United Kingdom
+    \item Added bespoke and joint calendars
   }
 }
 

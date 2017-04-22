@@ -1,3 +1,9 @@
+2017-04-22  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/ql/time/calendars/china.hpp: Updated from QL
+	* inst/include/ql/time/calendars/jointcalendar.hpp: Added
+	* inst/include/ql/time/calendars/bespokecalendar.hpp: Idem
+
 2017-04-20  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/ql/time/calendars/canada.hpp: Added
