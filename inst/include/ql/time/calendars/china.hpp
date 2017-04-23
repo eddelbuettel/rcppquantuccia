@@ -301,7 +301,7 @@ namespace QuantLib {
             Date(12,June,2016),
             Date(18,September,2016),
             Date(8,October,2016),
-            Date(9,October,2016)
+            Date(9,October,2016),
             // 2017
             Date(22,January,2017),
             Date(4,February,2017),
