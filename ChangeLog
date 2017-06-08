@@ -1,3 +1,7 @@
+2017-06-07  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Use alternate for img.shields.io GPL-2+ badge
+
 2017-04-22  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/ql/time/calendars/china.hpp: Updated from QL

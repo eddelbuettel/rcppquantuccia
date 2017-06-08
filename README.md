@@ -1,4 +1,4 @@
-## RcppQuantuccia  [![Build Status](https://travis-ci.org/eddelbuettel/rcppquantuccia.svg)](https://travis-ci.org/eddelbuettel/rcppquantuccia) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/RcppQuantuccia)](http://cran.r-project.org/package=RcppQuantuccia) [![Downloads](http://cranlogs.r-pkg.org/badges/RcppQuantuccia?color=brightgreen)](http://www.r-pkg.org/pkg/RcppQuantuccia)
+## RcppQuantuccia  [![Build Status](https://travis-ci.org/eddelbuettel/rcppquantuccia.svg)](https://travis-ci.org/eddelbuettel/rcppquantuccia) [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/RcppQuantuccia)](http://cran.r-project.org/package=RcppQuantuccia) [![Downloads](http://cranlogs.r-pkg.org/badges/RcppQuantuccia?color=brightgreen)](http://www.r-pkg.org/pkg/RcppQuantuccia)
 
 ### About
 
