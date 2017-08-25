@@ -1,3 +1,10 @@
+2017-08-25  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/ql/math/randomnumbers/sobolrsg.hpp: Aligned macro
+	in two places to avoid g++-6 warning message
+
+	* man/RcppQuantuccia-package.Rd: Simplified using Rd macros
+
 2017-06-07  Dirk Eddelbuettel  <edd@debian.org>
 
 	* README.md: Use alternate for img.shields.io GPL-2+ badge
