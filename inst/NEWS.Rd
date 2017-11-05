@@ -7,6 +7,7 @@
   \itemize{
     \item Added calendars for Canada, China, Germany, Japan and United Kingdom
     \item Added bespoke and joint calendars
+    \item Using new date(time) vectors
   }
 }
 
