@@ -22,7 +22,6 @@
 
 // Taken from RQuantLib and adapted
 
-
 // [[Rcpp::interfaces(r, cpp)]]
 
 #include "RcppQuantuccia_types.h"
@@ -98,9 +97,9 @@ Rcpp::LogicalVector isBusinessDay(Rcpp::DateVector dates) {
     ql::Calendar cal = gblcal.getCalendar();
     int n = dates.size();
     Rcpp::LogicalVector bizdays(n);
+    std::vector<ql::Date> dv = Rcpp::as< std::vector<ql::Date> >(dates);
     for (auto i=0; i<n; i++) {
-        ql::Date d = Rcpp::as<ql::Date>(dates[i]);
-        bizdays[i] = cal.isBusinessDay(d);
+        bizdays[i] = cal.isBusinessDay(dv[i]);
     }
     return bizdays;
 }
@@ -121,9 +120,9 @@ Rcpp::LogicalVector isHoliday(Rcpp::DateVector dates) {
     ql::Calendar cal = gblcal.getCalendar();
     int n = dates.size();
     Rcpp::LogicalVector holdays(n);
+    std::vector<ql::Date> dv = Rcpp::as< std::vector<ql::Date> >(dates);
     for (auto i=0; i<n; i++) {
-        ql::Date d = Rcpp::as<ql::Date>(dates[i]);
-        holdays[i] = cal.isBusinessDay(d);
+        holdays[i] = cal.isBusinessDay(dv[i]);
     }
     return holdays;
 }
@@ -144,9 +143,9 @@ Rcpp::LogicalVector isWeekend(Rcpp::DateVector dates) {
     ql::Calendar cal = gblcal.getCalendar();
     int n = dates.size();
     Rcpp::LogicalVector weekends(n);
+    std::vector<ql::Date> dv = Rcpp::as< std::vector<ql::Date> >(dates);
     for (auto i=0; i<n; i++) {
-        ql::Date d = Rcpp::as<ql::Date>(dates[i]);
-        weekends[i] = cal.isWeekend(d.weekday());
+        weekends[i] = cal.isWeekend(dv[i].weekday());
     }
     return weekends;
 }
@@ -167,9 +166,9 @@ Rcpp::LogicalVector isEndOfMonth(Rcpp::DateVector dates) {
     ql::Calendar cal = gblcal.getCalendar();
     int n = dates.size();
     Rcpp::LogicalVector eom(n);
+    std::vector<ql::Date> dv = Rcpp::as< std::vector<ql::Date> >(dates);
     for (auto i=0; i<n; i++) {
-        ql::Date d = Rcpp::as<ql::Date>(dates[i]);
-        eom[i] = cal.isEndOfMonth(d);
+        eom[i] = cal.isEndOfMonth(dv[i]);
     }
     return eom;
 }
@@ -191,9 +190,9 @@ Rcpp::DateVector getEndOfMonth(Rcpp::DateVector dates) {
     ql::Calendar cal = gblcal.getCalendar();
     int n = dates.size();
     Rcpp::DateVector ndates(n);
+    std::vector<ql::Date> dv = Rcpp::as< std::vector<ql::Date> >(dates);
     for (auto i=0; i<n; i++) {
-        ql::Date d = Rcpp::as<ql::Date>(dates[i]);
-        ndates[i] = Rcpp::qlDate2Rcpp(cal.endOfMonth(d));
+        ndates[i] = Rcpp::qlDate2Rcpp(cal.endOfMonth(dv[i]));
     }
     return ndates;
 }
@@ -205,9 +204,9 @@ Rcpp::DateVector adjust_cpp(Rcpp::DateVector dates, int bdc=0) {
     ql::BusinessDayConvention bdcval = getBusinessDayConvention(bdc);
     int n = dates.size();
     Rcpp::DateVector adjusted(n);
+    std::vector<ql::Date> dv = Rcpp::as< std::vector<ql::Date> >(dates);
     for (auto i=0; i<n; i++) {
-        ql::Date d = Rcpp::as<ql::Date>(dates[i]);
-        adjusted[i] = Rcpp::qlDate2Rcpp(cal.adjust(d, bdcval));
+        adjusted[i] = Rcpp::qlDate2Rcpp(cal.adjust(dv[i], bdcval));
     }
     return adjusted;
 }
@@ -241,9 +240,9 @@ Rcpp::DateVector advanceUnits_cpp(Rcpp::DateVector dates, int n, int unit,
     ql::TimeUnit tu = getTimeUnit(unit);
     int ndays = dates.size();
     Rcpp::DateVector adv(ndays);
+    std::vector<ql::Date> odv = Rcpp::as< std::vector<ql::Date> >(dates);
     for (auto i=0; i<ndays; i++) {
-        ql::Date od = Rcpp::as<ql::Date>(dates[i]);
-        ql::Date nd = cal.advance(od, n, tu, bdc_, (emr == 1) ? true : false);
+        ql::Date nd = cal.advance(odv[i], n, tu, bdc_, (emr == 1) ? true : false);
         adv[i] = Rcpp::qlDate2Rcpp(nd);
     }
     return adv;
@@ -273,10 +272,10 @@ Rcpp::NumericVector businessDaysBetween(Rcpp::DateVector from, Rcpp::DateVector 
     ql::Calendar cal = gblcal.getCalendar();
     int n = from.size();
     Rcpp::NumericVector between(n);
+    std::vector<ql::Date> fdv = Rcpp::as< std::vector<ql::Date> >(from);
+    std::vector<ql::Date> tdv = Rcpp::as< std::vector<ql::Date> >(to);
     for (auto i=0; i<n; i++) {
-        ql::Date fmd = Rcpp::as<ql::Date>(from[i]);
-        ql::Date tod = Rcpp::as<ql::Date>(to[i]);
-        between[i] = cal.businessDaysBetween(fmd, tod, includeFirst, includeLast);
+        between[i] = cal.businessDaysBetween(fdv[i], tdv[i], includeFirst, includeLast);
     }
     return between;
 }
@@ -317,7 +316,7 @@ Rcpp::Datetime dtConvert(Rcpp::Datetime dt) {
 
     bt::ptime a = bt::from_time_t(dt.getFractionalTimestamp());
     ql::Date b(a);
-    
+
     Rcpp::Datetime ndt(dt);
 
     Rcpp::Rcout << dt << " -- " << ndt << " -- " << b << std::endl;

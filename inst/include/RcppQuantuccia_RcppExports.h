@@ -17,7 +17,7 @@ namespace RcppQuantuccia {
             require("RcppQuantuccia", Rcpp::Named("quietly") = true);
             typedef int(*Ptr_validate)(const char*);
             static Ptr_validate p_validate = (Ptr_validate)
-                R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_RcppExport_validate");
+                R_GetCCallable("RcppQuantuccia", "_RcppQuantuccia_RcppExport_validate");
             if (!p_validate(sig)) {
                 throw Rcpp::function_not_exported(
                     "C++ function with signature '" + std::string(sig) + "' not found in RcppQuantuccia");
@@ -30,12 +30,12 @@ namespace RcppQuantuccia {
         static Ptr_setCalendar p_setCalendar = NULL;
         if (p_setCalendar == NULL) {
             validateSignature("void(*setCalendar)(std::string)");
-            p_setCalendar = (Ptr_setCalendar)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_setCalendar");
+            p_setCalendar = (Ptr_setCalendar)R_GetCCallable("RcppQuantuccia", "_RcppQuantuccia_setCalendar");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_setCalendar(Rcpp::wrap(calstr));
+            rcpp_result_gen = p_setCalendar(Shield<SEXP>(Rcpp::wrap(calstr)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
@@ -48,12 +48,12 @@ namespace RcppQuantuccia {
         static Ptr_advanceDate p_advanceDate = NULL;
         if (p_advanceDate == NULL) {
             validateSignature("Rcpp::Date(*advanceDate)(Rcpp::Date,int)");
-            p_advanceDate = (Ptr_advanceDate)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_advanceDate");
+            p_advanceDate = (Ptr_advanceDate)R_GetCCallable("RcppQuantuccia", "_RcppQuantuccia_advanceDate");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_advanceDate(Rcpp::wrap(rd), Rcpp::wrap(days));
+            rcpp_result_gen = p_advanceDate(Shield<SEXP>(Rcpp::wrap(rd)), Shield<SEXP>(Rcpp::wrap(days)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
@@ -67,12 +67,12 @@ namespace RcppQuantuccia {
         static Ptr_isBusinessDay p_isBusinessDay = NULL;
         if (p_isBusinessDay == NULL) {
             validateSignature("Rcpp::LogicalVector(*isBusinessDay)(Rcpp::DateVector)");
-            p_isBusinessDay = (Ptr_isBusinessDay)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_isBusinessDay");
+            p_isBusinessDay = (Ptr_isBusinessDay)R_GetCCallable("RcppQuantuccia", "_RcppQuantuccia_isBusinessDay");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_isBusinessDay(Rcpp::wrap(dates));
+            rcpp_result_gen = p_isBusinessDay(Shield<SEXP>(Rcpp::wrap(dates)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
@@ -86,12 +86,12 @@ namespace RcppQuantuccia {
         static Ptr_isHoliday p_isHoliday = NULL;
         if (p_isHoliday == NULL) {
             validateSignature("Rcpp::LogicalVector(*isHoliday)(Rcpp::DateVector)");
-            p_isHoliday = (Ptr_isHoliday)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_isHoliday");
+            p_isHoliday = (Ptr_isHoliday)R_GetCCallable("RcppQuantuccia", "_RcppQuantuccia_isHoliday");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_isHoliday(Rcpp::wrap(dates));
+            rcpp_result_gen = p_isHoliday(Shield<SEXP>(Rcpp::wrap(dates)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
@@ -105,12 +105,12 @@ namespace RcppQuantuccia {
         static Ptr_isWeekend p_isWeekend = NULL;
         if (p_isWeekend == NULL) {
             validateSignature("Rcpp::LogicalVector(*isWeekend)(Rcpp::DateVector)");
-            p_isWeekend = (Ptr_isWeekend)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_isWeekend");
+            p_isWeekend = (Ptr_isWeekend)R_GetCCallable("RcppQuantuccia", "_RcppQuantuccia_isWeekend");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_isWeekend(Rcpp::wrap(dates));
+            rcpp_result_gen = p_isWeekend(Shield<SEXP>(Rcpp::wrap(dates)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
@@ -124,12 +124,12 @@ namespace RcppQuantuccia {
         static Ptr_isEndOfMonth p_isEndOfMonth = NULL;
         if (p_isEndOfMonth == NULL) {
             validateSignature("Rcpp::LogicalVector(*isEndOfMonth)(Rcpp::DateVector)");
-            p_isEndOfMonth = (Ptr_isEndOfMonth)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_isEndOfMonth");
+            p_isEndOfMonth = (Ptr_isEndOfMonth)R_GetCCallable("RcppQuantuccia", "_RcppQuantuccia_isEndOfMonth");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_isEndOfMonth(Rcpp::wrap(dates));
+            rcpp_result_gen = p_isEndOfMonth(Shield<SEXP>(Rcpp::wrap(dates)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
@@ -143,12 +143,12 @@ namespace RcppQuantuccia {
         static Ptr_getEndOfMonth p_getEndOfMonth = NULL;
         if (p_getEndOfMonth == NULL) {
             validateSignature("Rcpp::DateVector(*getEndOfMonth)(Rcpp::DateVector)");
-            p_getEndOfMonth = (Ptr_getEndOfMonth)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_getEndOfMonth");
+            p_getEndOfMonth = (Ptr_getEndOfMonth)R_GetCCallable("RcppQuantuccia", "_RcppQuantuccia_getEndOfMonth");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_getEndOfMonth(Rcpp::wrap(dates));
+            rcpp_result_gen = p_getEndOfMonth(Shield<SEXP>(Rcpp::wrap(dates)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
@@ -162,12 +162,12 @@ namespace RcppQuantuccia {
         static Ptr_adjust_cpp p_adjust_cpp = NULL;
         if (p_adjust_cpp == NULL) {
             validateSignature("Rcpp::DateVector(*adjust_cpp)(Rcpp::DateVector,int)");
-            p_adjust_cpp = (Ptr_adjust_cpp)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_adjust_cpp");
+            p_adjust_cpp = (Ptr_adjust_cpp)R_GetCCallable("RcppQuantuccia", "_RcppQuantuccia_adjust_cpp");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_adjust_cpp(Rcpp::wrap(dates), Rcpp::wrap(bdc));
+            rcpp_result_gen = p_adjust_cpp(Shield<SEXP>(Rcpp::wrap(dates)), Shield<SEXP>(Rcpp::wrap(bdc)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
@@ -181,12 +181,12 @@ namespace RcppQuantuccia {
         static Ptr_advanceUnits_cpp p_advanceUnits_cpp = NULL;
         if (p_advanceUnits_cpp == NULL) {
             validateSignature("Rcpp::DateVector(*advanceUnits_cpp)(Rcpp::DateVector,int,int,int,bool)");
-            p_advanceUnits_cpp = (Ptr_advanceUnits_cpp)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_advanceUnits_cpp");
+            p_advanceUnits_cpp = (Ptr_advanceUnits_cpp)R_GetCCallable("RcppQuantuccia", "_RcppQuantuccia_advanceUnits_cpp");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_advanceUnits_cpp(Rcpp::wrap(dates), Rcpp::wrap(n), Rcpp::wrap(unit), Rcpp::wrap(bdc), Rcpp::wrap(emr));
+            rcpp_result_gen = p_advanceUnits_cpp(Shield<SEXP>(Rcpp::wrap(dates)), Shield<SEXP>(Rcpp::wrap(n)), Shield<SEXP>(Rcpp::wrap(unit)), Shield<SEXP>(Rcpp::wrap(bdc)), Shield<SEXP>(Rcpp::wrap(emr)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
@@ -200,12 +200,12 @@ namespace RcppQuantuccia {
         static Ptr_businessDaysBetween p_businessDaysBetween = NULL;
         if (p_businessDaysBetween == NULL) {
             validateSignature("Rcpp::NumericVector(*businessDaysBetween)(Rcpp::DateVector,Rcpp::DateVector,bool,bool)");
-            p_businessDaysBetween = (Ptr_businessDaysBetween)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_businessDaysBetween");
+            p_businessDaysBetween = (Ptr_businessDaysBetween)R_GetCCallable("RcppQuantuccia", "_RcppQuantuccia_businessDaysBetween");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_businessDaysBetween(Rcpp::wrap(from), Rcpp::wrap(to), Rcpp::wrap(includeFirst), Rcpp::wrap(includeLast));
+            rcpp_result_gen = p_businessDaysBetween(Shield<SEXP>(Rcpp::wrap(from)), Shield<SEXP>(Rcpp::wrap(to)), Shield<SEXP>(Rcpp::wrap(includeFirst)), Shield<SEXP>(Rcpp::wrap(includeLast)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
@@ -219,12 +219,12 @@ namespace RcppQuantuccia {
         static Ptr_getHolidays p_getHolidays = NULL;
         if (p_getHolidays == NULL) {
             validateSignature("Rcpp::DateVector(*getHolidays)(Rcpp::Date,Rcpp::Date,bool)");
-            p_getHolidays = (Ptr_getHolidays)R_GetCCallable("RcppQuantuccia", "RcppQuantuccia_getHolidays");
+            p_getHolidays = (Ptr_getHolidays)R_GetCCallable("RcppQuantuccia", "_RcppQuantuccia_getHolidays");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_getHolidays(Rcpp::wrap(from), Rcpp::wrap(to), Rcpp::wrap(includeWeekends));
+            rcpp_result_gen = p_getHolidays(Shield<SEXP>(Rcpp::wrap(from)), Shield<SEXP>(Rcpp::wrap(to)), Shield<SEXP>(Rcpp::wrap(includeWeekends)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
