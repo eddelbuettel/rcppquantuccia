@@ -3,11 +3,11 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppquantuccia/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppquantuccia/issues/#1}{##1}}
 
-\section{Changes in version 0.0.2 (2017-xx-yy)}{
+\section{Changes in version 0.0.2 (2017-11-06)}{
   \itemize{
-    \item Added calendars for Canada, China, Germany, Japan and United Kingdom
-    \item Added bespoke and joint calendars
-    \item Using new date(time) vectors
+    \item Added calendars for Canada, China, Germany, Japan and United Kingdom.
+    \item Added bespoke and joint calendars.
+    \item Using new date(time) vectors (\ghpr{6}).
   }
 }
 

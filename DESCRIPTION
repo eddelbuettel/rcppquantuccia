@@ -1,8 +1,8 @@
 Package: RcppQuantuccia
 Type: Package
 Title: R Bindings to the 'Quantuccia' Header-Only Essentials of 'QuantLib'
-Version: 0.0.1.2
-Date: 2017-11-05
+Version: 0.0.2
+Date: 2017-11-06
 Author: Dirk Eddelbuettel; the authors and contributors of QuantLib
 Maintainer: Dirk Eddelbuettel <edd@debian.org>
 Description: 'QuantLib' bindings are provided for R using 'Rcpp' and the
