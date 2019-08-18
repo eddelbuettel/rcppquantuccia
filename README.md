@@ -38,6 +38,13 @@ R>
 This shows the difference between the default US settlement calendar and the NYSE calendar
 which we selected explicitly.
 
+### A Smaller Subset
+
+As of version 0.0.3, we exclude the 7.6 mb header file `sobolrsg.hpp`, and well as references to it
+including the model subdirectory using the Sobol-based Brownian Market Models.  This shrinks the
+resulting shared library from around 26 mb (!!) to 0.64 mb, and the (compressed) source tarball from
+1.6 mb to 0.24 mb.
+
 ### Status
 
 Still fairly new. Functional but _e.g._ several of the other QuantLib calendars still need to be ported.

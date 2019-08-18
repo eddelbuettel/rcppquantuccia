@@ -1,5 +1,12 @@
 2019-08-18  Dirk Eddelbuettel  <edd@debian.org>
 
+	* .Rbuildignore: Do not include sobolrsg.h and models/ directory
+	* inst/include/ql/math/randomnumbers/all.hpp: Exclude sobolrsg and
+	sobolbrownianbridge
+	* inst/include/ql/quantlib.hpp: Exclude models/all.hpp
+	* inst/include/ql/math/randomnumbers/rngtraits.hpp: Comment-out use
+	of SobolRsg
+
 	* inst/include/ql/math/functional.hpp: Updated from current QL
 
 	* inst/include/ql/math/array.hpp: Add functional.hpp and replace
