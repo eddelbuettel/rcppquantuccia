@@ -30,7 +30,7 @@
 #include <ql/math/randomnumbers/mt19937uniformrng.hpp>
 #include <ql/math/randomnumbers/inversecumulativerng.hpp>
 #include <ql/math/randomnumbers/randomsequencegenerator.hpp>
-#include <ql/math/randomnumbers/sobolrsg.hpp>
+//#include <ql/math/randomnumbers/sobolrsg.hpp>
 #include <ql/math/randomnumbers/inversecumulativersg.hpp>
 #include <ql/math/distributions/normaldistribution.hpp>
 #include <ql/math/distributions/poissondistribution.hpp>
@@ -100,9 +100,9 @@ namespace QuantLib {
     boost::shared_ptr<IC> GenericLowDiscrepancy<URSG, IC>::icInstance;
 
 
-    //! default traits for low-discrepancy sequence generation
-    typedef GenericLowDiscrepancy<SobolRsg,
-                                  InverseCumulativeNormal> LowDiscrepancy;
+    // //! default traits for low-discrepancy sequence generation
+    // typedef GenericLowDiscrepancy<SobolRsg,
+    //                               InverseCumulativeNormal> LowDiscrepancy;
 
 }
 
