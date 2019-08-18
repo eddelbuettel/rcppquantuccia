@@ -1,3 +1,29 @@
+2019-08-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/ql/math/functional.hpp: Updated from current QL
+
+	* inst/include/ql/math/array.hpp: Add functional.hpp and replace
+	deprecated older constructs suchs as bind1st, bind2nd or ptr_fun
+	* inst/include/ql/math/matrix.hpp: Idem
+	* inst/include/ql/timegrid.hpp: Idem
+	* inst/include/ql/math/generallinearleastsquares.hpp: Idem
+
+	* inst/include/ql/math/matrix.hpp: Comment out pragma for warnings
+	* inst/include/ql/math/distributions/normaldistribution.hpp: Idem
+	* inst/include/ql/math/optimization/levenbergmarquardt.hpp: Idem
+	* inst/include/ql/math/statistics/incrementalstatistics.hpp: Idem
+	* inst/include/ql/time/date.hpp: Idem
+	* inst/include/ql/time/imm.hpp: Idem
+	* inst/include/ql/utilities/dataparsers.hpp: Idem
+	* inst/include/ql/utilities/null.hpp: Idem
+
+	* src/Makevars (PKG_CPPFLAGS): Add -DBOOST_NO_AUTO_PTRE
+
+2019-02-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/ql/time/calendars/unitedstates.hpp: Updated (as in QL
+	upstream) to include the President George HW Bush funeral
+
 2018-09-02  Dirk Eddelbuettel  <edd@debian.org>
 
 	* .travis.yml: Switch Travis CI to R 3.5 repo

@@ -44,15 +44,15 @@
 
 #include <ql/utilities/dataformatters.hpp>
 #include <ql/errors.hpp>
-#if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#endif
+// #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
+// #pragma GCC diagnostic push
+// #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+// #endif
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time_types.hpp>
-#if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
-#pragma GCC diagnostic pop
-#endif
+// #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
+// #pragma GCC diagnostic pop
+// #endif
 #include <iomanip>
 #include <ctime>
 
@@ -457,7 +457,7 @@ namespace QuantLib {
 #endif
 
     // implementation
-    
+
     #ifndef QL_HIGH_RESOLUTION_DATE
     // constructors
     inline Date::Date()
@@ -1031,7 +1031,7 @@ namespace QuantLib {
         dateTime_ -= boost::gregorian::days(d);
         return *this;
     }
-    
+
     inline Date& Date::operator-=(const Period& p) {
         advance(dateTime_, -p.length(), p.units());
         return *this;
