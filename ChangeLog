@@ -19,6 +19,8 @@
 
 	* src/Makevars (PKG_CPPFLAGS): Add -DBOOST_NO_AUTO_PTRE
 
+	* README.md: Add dependencies badge
+
 2019-02-27  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/ql/time/calendars/unitedstates.hpp: Updated (as in QL
