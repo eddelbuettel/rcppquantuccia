@@ -3,4 +3,4 @@
 CXX_STD = CXX11
 
 ## We need the headers in inst/include
-PKG_CPPFLAGS = -I../inst/include/ -I.
+PKG_CPPFLAGS = -I../inst/include/ -I. -DBOOST_NO_AUTO_PTR

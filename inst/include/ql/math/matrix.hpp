@@ -35,15 +35,15 @@
 #pragma warning(disable:4127)
 #endif
 
-#if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#endif
+// #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
+// #pragma GCC diagnostic push
+// #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+// #endif
 
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-function"
-#endif
+// #if defined(__clang__)
+// #pragma clang diagnostic push
+// #pragma clang diagnostic ignored "-Wunused-function"
+// #endif
 
 #if !defined(QL_NO_UBLAS_SUPPORT)
 #include <boost/numeric/ublas/vector_proxy.hpp>
@@ -55,13 +55,13 @@
 #pragma warning(pop)
 #endif
 
-#if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
-#pragma GCC diagnostic pop
-#endif
+// #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
+// #pragma GCC diagnostic pop
+// #endif
 
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#endif
+// #if defined(__clang__)
+// #pragma clang diagnostic pop
+// #endif
 
 namespace QuantLib {
 
@@ -303,13 +303,13 @@ namespace QuantLib {
 
     inline const Matrix& Matrix::operator*=(Real x) {
         std::transform(begin(),end(),begin(),
-                       std::bind2nd(std::multiplies<Real>(),x));
+                       multiply_by<Real>(x));
         return *this;
     }
 
     inline const Matrix& Matrix::operator/=(Real x) {
         std::transform(begin(),end(),begin(),
-                       std::bind2nd(std::divides<Real>(),x));
+                       divide_by<Real>(x));
         return *this;
     }
 
@@ -541,21 +541,21 @@ namespace QuantLib {
     inline const Disposable<Matrix> operator*(const Matrix& m, Real x) {
         Matrix temp(m.rows(),m.columns());
         std::transform(m.begin(),m.end(),temp.begin(),
-                       std::bind2nd(std::multiplies<Real>(),x));
+                       multiply_by<Real>(x));
         return temp;
     }
 
     inline const Disposable<Matrix> operator*(Real x, const Matrix& m) {
         Matrix temp(m.rows(),m.columns());
         std::transform(m.begin(),m.end(),temp.begin(),
-                       std::bind2nd(std::multiplies<Real>(),x));
+                       multiply_by<Real>(x));
         return temp;
     }
 
     inline const Disposable<Matrix> operator/(const Matrix& m, Real x) {
         Matrix temp(m.rows(),m.columns());
         std::transform(m.begin(),m.end(),temp.begin(),
-                       std::bind2nd(std::divides<Real>(),x));
+                       divide_by<Real>(x));
         return temp;
     }
 
@@ -633,7 +633,7 @@ namespace QuantLib {
 
         for (Size i=0; v1begin!=v1end; i++, v1begin++)
             std::transform(v2begin, v2end, result.row_begin(i),
-                           std::bind1st(std::multiplies<Real>(), *v1begin));
+                           multiply_by<Real>(*v1begin));
 
         return result;
     }

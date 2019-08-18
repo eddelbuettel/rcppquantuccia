@@ -31,10 +31,10 @@
 #include <ql/utilities/null.hpp>
 #include <ql/errors.hpp>
 
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wc++11-extensions"
-#endif
+// #if defined(__clang__)
+// #pragma clang diagnostic push
+// #pragma clang diagnostic ignored "-Wc++11-extensions"
+// #endif
 #include <boost/accumulators/accumulators.hpp>
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/accumulators/statistics/count.hpp>
@@ -46,9 +46,9 @@
 #include <boost/accumulators/statistics/weighted_skewness.hpp>
 #include <boost/accumulators/statistics/weighted_kurtosis.hpp>
 #include <boost/accumulators/statistics/weighted_moment.hpp>
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#endif
+// #if defined(__clang__)
+// #pragma clang diagnostic pop
+// #endif
 
 #include <iomanip>
 
@@ -224,7 +224,7 @@ namespace QuantLib {
         Real n = static_cast<Real>(samples());
         Real r1 = n / (n - 2.0);
         Real r2 = (n - 1.0) / (n - 2.0);
-        return std::sqrt(r1 * r2) * 
+        return std::sqrt(r1 * r2) *
                boost::accumulators::extract_result<
                    boost::accumulators::tag::weighted_skewness>(acc_);
     }

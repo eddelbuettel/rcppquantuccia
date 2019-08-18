@@ -30,16 +30,16 @@
 #include <ql/errors.hpp>
 #include <ql/math/comparison.hpp>
 
-#if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#endif
+// #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
+// #pragma GCC diagnostic push
+// #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+// #endif
 
 #include <boost/math/distributions/normal.hpp>
 
-#if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
-#pragma GCC diagnostic pop
-#endif
+// #if defined(__GNUC__) && (((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)) || (__GNUC__ > 4))
+// #pragma GCC diagnostic pop
+// #endif
 
 namespace QuantLib {
 
@@ -450,7 +450,7 @@ namespace QuantLib {
         return boost::math::cdf(
             boost::math::normal_distribution<Real>(average_, sigma_), x);
     }
-    
+
 
 }
 
