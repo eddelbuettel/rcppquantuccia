@@ -6,7 +6,7 @@
 \section{Changes in version 0.0.3 (2019-08-19)}{
   \itemize{
     \item Updated Travis CI test file (\ghpr{8})).
-    \item Updated US holiday calendar data with G H Bush funeral date (ghpr{9}). 
+    \item Updated US holiday calendar data with G H Bush funeral date (\ghpr{9}). 
     \item Updated C++ use to not trigger warnings [CRAN request] (\ghpr{9}). 
     \item Comment-out pragmas to suppress warnings [CRAN Policy] (\ghpr{9}).
     \item Change build to exclude Sobol sequence reducing file size for source
