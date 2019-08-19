@@ -2,6 +2,8 @@
 
 	* DESCRIPTION (Date, Version): Release 0.0.3
 
+	* README.md: Switch some http URLs to https
+
 2019-08-18  Dirk Eddelbuettel  <edd@debian.org>
 
 	* .Rbuildignore: Do not include sobolrsg.h and models/ directory
