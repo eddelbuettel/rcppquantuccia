@@ -1,3 +1,9 @@
+2019-08-24  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor release
+
+	* inst/include/RcppQuantuccia_types.h: Allow for Null calendar
+
 2019-08-19  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Date, Version): Release 0.0.3

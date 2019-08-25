@@ -3,6 +3,12 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppquantuccia/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppquantuccia/issues/#1}{##1}}
 
+\section{Changes in version 0.0.4 (20xx-yy-zz)}{
+  \itemize{
+    \item Allow for 'Null' calendar without weekends or holidays
+  }
+}
+
 \section{Changes in version 0.0.3 (2019-08-19)}{
   \itemize{
     \item Updated Travis CI test file (\ghpr{8})).

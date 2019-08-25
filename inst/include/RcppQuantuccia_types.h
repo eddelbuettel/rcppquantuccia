@@ -122,6 +122,11 @@ namespace RcppQuantuccia {
                            txt == "Canada::TSX") {
                     p_cal.reset(new ql::Canada(ql::Canada::TSX));
 
+                } else if (txt == "Null" ||
+                           txt == "null" ||
+                           txt == "NULL") {
+                    p_cal.reset(new ql::NullCalendar());
+
                 } else {        // fallback
                     Rcpp::warning("Unrecognised calendar '%s' using fallback 'TARGET'", txt);
                     p_cal.reset(new ql::TARGET);
