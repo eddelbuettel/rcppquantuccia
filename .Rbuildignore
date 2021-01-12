@@ -1,7 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^notes.txt
-^\.travis.yml$
+^\.travis\.yml$
 ^tests/.*\.Rout.save
 ^local
 ^\.codecov\.yml$
@@ -9,3 +9,4 @@
 .*\.tar\.gz$
 inst/include/ql/models
 inst/include/ql/math/randomnumbers/sobolrsg.hpp
+^\.github
