@@ -9,7 +9,7 @@ Description: 'QuantLib' bindings are provided for R using 'Rcpp' and the
  header-only 'Quantuccia' variant (put together by Peter Caspers) offering
  an essential subset of 'QuantLib'. See the included file 'AUTHORS' for a full
  list of contributors to both 'QuantLib' and 'Quantuccia'.
-URL: https://github.com/eddelbuettel/rcppnquantuccia, https://dirk.eddelbuettel.com/code/rcpp.quantuccia.html
+URL: https://github.com/eddelbuettel/rcppquantuccia, https://dirk.eddelbuettel.com/code/rcpp.quantuccia.html
 BugReports: https://github.com/eddelbuettel/rcppquantuccia/issues
 License: GPL (>= 2)
 Imports: Rcpp
