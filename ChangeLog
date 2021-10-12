@@ -1,6 +1,9 @@
 2021-10-12  Dirk Eddelbuettel  <edd@debian.org>
 
+	* DESCRIPTION (Date, Version): Release 0.0.4
+
 	* man/RcppQuantuccia-package.Rd: Update one URL to https
+	* README.md: Remove Travis badge following support withdrawal
 	* inst/include/RcppQuantuccia_types.h: No longer need to explicit
 	select new date types
 
