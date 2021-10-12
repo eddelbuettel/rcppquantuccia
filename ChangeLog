@@ -1,3 +1,9 @@
+2021-10-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* man/RcppQuantuccia-package.Rd: Update one URL to https
+	* inst/include/RcppQuantuccia_types.h: No longer need to explicit
+	select new date types
+
 2021-10-11  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Roll minor release

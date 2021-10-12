@@ -7,9 +7,6 @@
 
 //using namespace QuantLib;
 
-// default with Rcpp 0.12.14, supported since Rcpp 0.12.8
-#define RCPP_NEW_DATE_DATETIME_VECTORS 1
-
 #include <RcppCommon.h>
 
 namespace Rcpp {

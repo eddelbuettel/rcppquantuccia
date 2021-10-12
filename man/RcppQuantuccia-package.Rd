@@ -8,5 +8,5 @@
 \section{Package Content}{\packageIndices{RcppQuantuccia}}
 \author{\packageAuthor{RcppQuantuccia}}
 \section{Maintainer}{\packageMaintainer{RcppQuantuccia}}
-\references{\url{http://www.quantlib.org}}
+\references{\url{https://www.quantlib.org/}}
 \keyword{package}

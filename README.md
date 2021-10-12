@@ -1,6 +1,5 @@
 ## RcppQuantuccia: Rcpp bindings for [Quantuccia](https://github.com/pcaspers/Quantuccia)
 
-[![Build Status](https://travis-ci.org/eddelbuettel/rcppquantuccia.svg)](https://travis-ci.org/eddelbuettel/rcppquantuccia)
 [![CI](https://github.com/eddelbuettel/rcppquantuccia/workflows/ci/badge.svg)](https://github.com/eddelbuettel/rcppquantuccia/actions?query=workflow%3Aci)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![CRAN](https://www.r-pkg.org/badges/version/RcppQuantuccia)](https://cran.r-project.org/package=RcppQuantuccia)
