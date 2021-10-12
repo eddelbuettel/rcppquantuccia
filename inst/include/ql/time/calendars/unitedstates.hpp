@@ -42,6 +42,8 @@ namespace QuantLib {
         <li>Presidents' Day (a.k.a. Washington's birthday),
             third Monday in February</li>
         <li>Memorial Day, last Monday in May</li>
+        <li>Juneteenth, June 19th (moved to Monday if Sunday or
+            Friday if Saturday)</li>
         <li>Independence Day, July 4th (moved to Monday if Sunday or
             Friday if Saturday)</li>
         <li>Labor Day, first Monday in September</li>
@@ -52,6 +54,12 @@ namespace QuantLib {
         <li>Christmas, December 25th (moved to Monday if Sunday or Friday
             if Saturday)</li>
         </ul>
+
+        Note that since 2015 Independence Day only impacts Libor if it
+        falls on a  weekday (see <https://www.theice.com/iba/libor>,
+        <https://www.theice.com/marketdata/reports/170> and
+        <https://www.theice.com/publicdocs/LIBOR_Holiday_Calendar_2015.pdf>
+        for the fixing and value date calendars).
 
         Holidays for the stock exchange (data from http://www.nyse.com):
         <ul>
@@ -127,6 +135,11 @@ namespace QuantLib {
             std::string name() const { return "US settlement"; }
             bool isBusinessDay(const Date&) const;
         };
+        class LiborImpactImpl : public SettlementImpl {
+          public:
+            std::string name() const override { return "US with Libor impact"; }
+            bool isBusinessDay(const Date&) const override;
+        };
         class NyseImpl : public Calendar::WesternImpl {
           public:
             std::string name() const { return "New York stock exchange"; }
@@ -144,12 +157,19 @@ namespace QuantLib {
             }
             bool isBusinessDay(const Date&) const;
         };
+        class FederalReserveImpl : public Calendar::WesternImpl {
+          public:
+            std::string name() const override { return "Federal Reserve Bankwire System"; }
+            bool isBusinessDay(const Date&) const override;
+        };
       public:
         //! US calendars
         enum Market { Settlement,     //!< generic settlement calendar
                       NYSE,           //!< New York stock exchange calendar
                       GovernmentBond, //!< government-bond calendar
-                      NERC            //!< off-peak days for NERC
+                      NERC,           //!< off-peak days for NERC
+                      LiborImpact,    //!< Libor impact calendar
+                      FederalReserve  //!< Federal Reserve Bankwire System
         };
         UnitedStates(Market market = Settlement);
     };
@@ -204,6 +224,22 @@ namespace QuantLib {
             }
         }
 
+        inline bool isVeteransDayNoSaturday(Day d, Month m, Year y, Weekday w) {
+            if (y <= 1970 || y >= 1978) {
+                // November 11th, adjusted, but no Saturday to Friday
+                return (d == 11 || (d == 12 && w == Monday)) && m == November;
+            } else {
+                // fourth Monday in October
+                return (d >= 22 && d <= 28) && w == Monday && m == October;
+            }
+        }
+
+        inline bool isJuneteenth(Day d, Month m, Year y, Weekday w) {
+            // declared in 2021, but only observed by exchanges since 2022
+            return (d == 19 || (d == 20 && w == Monday) || (d == 18 && w == Friday))
+                && m == June && y >= 2022;
+        }
+
     }
 
     inline UnitedStates::UnitedStates(UnitedStates::Market market) {
@@ -211,15 +247,22 @@ namespace QuantLib {
         // implementation instance
         static boost::shared_ptr<Calendar::Impl> settlementImpl(
                                         new UnitedStates::SettlementImpl);
+        static boost::shared_ptr<Calendar::Impl> liborImpactImpl(
+                                        new UnitedStates::LiborImpactImpl);
         static boost::shared_ptr<Calendar::Impl> nyseImpl(
                                         new UnitedStates::NyseImpl);
         static boost::shared_ptr<Calendar::Impl> governmentImpl(
                                         new UnitedStates::GovernmentBondImpl);
         static boost::shared_ptr<Calendar::Impl> nercImpl(
                                         new UnitedStates::NercImpl);
+        static boost::shared_ptr<Calendar::Impl> federalReserveImpl(
+                                        new UnitedStates::FederalReserveImpl);
         switch (market) {
           case Settlement:
             impl_ = settlementImpl;
+            break;
+          case LiborImpact:
+            impl_ = liborImpactImpl;
             break;
           case NYSE:
             impl_ = nyseImpl;
@@ -229,6 +272,9 @@ namespace QuantLib {
             break;
           case NERC:
             impl_ = nercImpl;
+            break;
+          case FederalReserve:
+            impl_ = federalReserveImpl;
             break;
           default:
             QL_FAIL("unknown market");
@@ -253,6 +299,8 @@ namespace QuantLib {
             || isWashingtonBirthday(d, m, y, w)
             // Memorial Day (last Monday in May)
             || isMemorialDay(d, m, y, w)
+            // Juneteenth (Monday if Sunday or Friday if Saturday)
+            || isJuneteenth(d, m, y, w)
             // Independence Day (Monday if Sunday or Friday if Saturday)
             || ((d == 4 || (d == 5 && w == Monday) ||
                  (d == 3 && w == Friday)) && m == July)
@@ -271,6 +319,18 @@ namespace QuantLib {
         return true;
     }
 
+    inline bool UnitedStates::LiborImpactImpl::isBusinessDay(const Date& date) const {
+        // Since 2015 Independence Day only impacts Libor if it falls
+        // on a weekday
+        Weekday w = date.weekday();
+        Day d = date.dayOfMonth();
+        Month m = date.month();
+        Year y = date.year();
+        if (((d == 5 && w == Monday) ||
+            (d == 3 && w == Friday)) && m == July && y >= 2015)
+            return true;
+        return SettlementImpl::isBusinessDay(date);
+    }
 
     inline bool UnitedStates::NyseImpl::isBusinessDay(const Date& date) const {
         Weekday w = date.weekday();
@@ -287,6 +347,8 @@ namespace QuantLib {
             || (dd == em-3)
             // Memorial Day (last Monday in May)
             || isMemorialDay(d, m, y, w)
+            // Juneteenth (Monday if Sunday or Friday if Saturday)
+            || isJuneteenth(d, m, y, w)
             // Independence Day (Monday if Sunday or Friday if Saturday)
             || ((d == 4 || (d == 5 && w == Monday) ||
                  (d == 3 && w == Friday)) && m == July)
@@ -376,6 +438,8 @@ namespace QuantLib {
             || (dd == em-3)
             // Memorial Day (last Monday in May)
             || isMemorialDay(d, m, y, w)
+            // Juneteenth (Monday if Sunday or Friday if Saturday)
+            || isJuneteenth(d, m, y, w)
             // Independence Day (Monday if Sunday or Friday if Saturday)
             || ((d == 4 || (d == 5 && w == Monday) ||
                  (d == 3 && w == Friday)) && m == July)
@@ -391,6 +455,16 @@ namespace QuantLib {
             || ((d == 25 || (d == 26 && w == Monday) ||
                  (d == 24 && w == Friday)) && m == December))
             return false;
+
+        // Special closings
+        if (// President Bush's Funeral
+            (y == 2018 && m == December && d == 5)
+            // Hurricane Sandy
+            || (y == 2012 && m == October && (d == 30))
+            // President Reagan's funeral
+            || (y == 2004 && m == June && d == 11)
+            ) return false;
+
         return true;
     }
 
@@ -416,6 +490,42 @@ namespace QuantLib {
             return false;
         return true;
     }
+
+
+    inline bool UnitedStates::FederalReserveImpl::isBusinessDay(const Date& date) const {
+        // see https://www.frbservices.org/holidayschedules/ for details
+        Weekday w = date.weekday();
+        Day d = date.dayOfMonth();
+        Month m = date.month();
+        Year y = date.year();
+        if (isWeekend(w)
+            // New Year's Day (possibly moved to Monday if on Sunday)
+            || ((d == 1 || (d == 2 && w == Monday)) && m == January)
+            // Martin Luther King's birthday (third Monday in January)
+            || ((d >= 15 && d <= 21) && w == Monday && m == January
+                && y >= 1983)
+            // Washington's birthday (third Monday in February)
+            || isWashingtonBirthday(d, m, y, w)
+            // Memorial Day (last Monday in May)
+            || isMemorialDay(d, m, y, w)
+            // Juneteenth (Monday if Sunday or Friday if Saturday)
+            || isJuneteenth(d, m, y, w)
+            // Independence Day (Monday if Sunday)
+            || ((d == 4 || (d == 5 && w == Monday)) && m == July)
+            // Labor Day (first Monday in September)
+            || isLaborDay(d, m, y, w)
+            // Columbus Day (second Monday in October)
+            || isColumbusDay(d, m, y, w)
+            // Veteran's Day (Monday if Sunday)
+            || isVeteransDayNoSaturday(d, m, y, w)
+            // Thanksgiving Day (fourth Thursday in November)
+            || ((d >= 22 && d <= 28) && w == Thursday && m == November)
+            // Christmas (Monday if Sunday)
+            || ((d == 25 || (d == 26 && w == Monday)) && m == December))
+            return false; // NOLINT(readability-simplify-boolean-expr)
+        return true;
+    }
+
 }
 
 #endif

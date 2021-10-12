@@ -1,3 +1,9 @@
+2021-10-11  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/ql/time/calendars/unitedstates.hpp: Update US calendar
+	to current QuantLib calendar, add LiborImpact and FederalReserve
+	* inst/include/RcppQuantuccia_types.h (setCalendar): Add subcalendars
+
 2021-05-24  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (URL, BugReports): Added fields

@@ -65,6 +65,9 @@ namespace RcppQuantuccia {
                            txt == "UnitedStates/Settlement" ||
                            txt == "UnitedStates::Settlement") {
                     p_cal.reset(new ql::UnitedStates(ql::UnitedStates::Settlement));
+                } else if (txt == "UnitedStates/LiborImpact" ||
+                           txt == "UnitedStates::LiborImpact") {
+                    p_cal.reset(new ql::UnitedStates(QuantLib::UnitedStates::LiborImpact));
                 } else if (txt == "UnitedStates/NYSE" ||
                            txt == "UnitedStates::NYSE") {
                     p_cal.reset(new ql::UnitedStates(QuantLib::UnitedStates::NYSE));
@@ -74,6 +77,9 @@ namespace RcppQuantuccia {
                 } else if (txt == "UnitedStates/NERC" ||
                            txt == "UnitedStates::NERC") {
                     p_cal.reset(new ql::UnitedStates(ql::UnitedStates::NERC));
+                } else if (txt == "UnitedStates/FederalReserve" ||
+                           txt == "UnitedStates::FederalReserve") {
+                    p_cal.reset(new ql::UnitedStates(ql::UnitedStates::FederalReserve));
 
                 } else if (txt == "UnitedKingdom" ||
                            txt == "UnitedKingdom/Settlement" ||
