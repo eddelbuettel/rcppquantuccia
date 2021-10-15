@@ -1,3 +1,16 @@
+2021-10-15  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/ql/quantlib.hpp: Focus on calendering
+
+	* inst/include/ql/compunding.hpp: Removed unused header
+	* inst/include/ql/currency.hpp: Idem
+	* inst/include/ql/handle.hpp: Idem
+	* inst/include/ql/stochasticprocess.hpp: Idem
+	* inst/include/ql/timegrid.hpp: Idem
+	* inst/include/ql/math/*: Removed unused header directory
+	* inst/include/ql/methods/*: Idem
+	* inst/include/ql/models/*: Idem
+
 2021-10-12  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Date, Version): Release 0.0.4
