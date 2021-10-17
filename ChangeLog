@@ -1,3 +1,22 @@
+2021-10-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/ql/version.hpp: Removed unused header
+	* inst/include/ql/userconfig.hpp: Idem
+	* inst/include/ql/mathconstants.hpp: Idem
+	* inst/include/ql/config.sun.hpp: Idem
+	* inst/include/ql/config.msvc.hpp: Idem
+	* inst/include/ql/config.mingw.hpp: Idem
+	* inst/include/ql/config.ansi.hpp: Idem
+	* inst/include/ql/patterns/lazyobject.hpp: Idem
+	* inst/include/ql/patterns/curiouslyrecurring.hpp: Idem
+	* inst/include/ql/utilities/vectors.hpp: Idem
+	* inst/include/ql/utilities/steppingiterator.hpp: Idem
+	* inst/include/ql/utilities/disposable.hpp: Idem
+	* inst/include/ql/qldefines.hpp: Adjusted accordingly
+	* inst/include/ql/quantlib.hpp: Idem
+	* inst/include/ql/patterns/all.hpp: Idem
+	* inst/include/ql/utilities/all.hpp: Idem
+
 2021-10-15  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Roll minor release

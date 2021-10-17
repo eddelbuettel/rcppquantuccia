@@ -87,20 +87,20 @@
     #define QL_DEBUG
 #endif
 
-#if   defined(HAVE_CONFIG_H)    // Dynamically created by configure
-   #include <ql/config.hpp>
-/* Use BOOST_MSVC instead of _MSC_VER since some other vendors (Metrowerks,
-   for example) also #define _MSC_VER
-*/
-#elif defined(BOOST_MSVC)       // Microsoft Visual C++
-   #include <ql/config.msvc.hpp>
-#elif defined(__MINGW32__)      // Minimalistic GNU for Windows
-   #include <ql/config.mingw.hpp>
-#elif defined(__SUNPRO_CC)      // Sun Studio
-   #include <ql/config.sun.hpp>
-#else                           // We hope that the compiler follows ANSI
-   #include <ql/config.ansi.hpp>
-#endif
+// #if   defined(HAVE_CONFIG_H)    // Dynamically created by configure
+//    #include <ql/config.hpp>
+// /* Use BOOST_MSVC instead of _MSC_VER since some other vendors (Metrowerks,
+//    for example) also #define _MSC_VER
+// */
+// #elif defined(BOOST_MSVC)       // Microsoft Visual C++
+//    #include <ql/config.msvc.hpp>
+// #elif defined(__MINGW32__)      // Minimalistic GNU for Windows
+//    #include <ql/config.mingw.hpp>
+// #elif defined(__SUNPRO_CC)      // Sun Studio
+//    #include <ql/config.sun.hpp>
+// #else                           // We hope that the compiler follows ANSI
+//    #include <ql/config.ansi.hpp>
+// #endif
 
 
 // extra debug checks
@@ -123,7 +123,7 @@
 #endif
 
 // ensure that needed math constants are defined
-#include <ql/mathconstants.hpp>
+//#include <ql/mathconstants.hpp>
 
 
 // import global functions into std namespace
