@@ -1,3 +1,37 @@
+2021-10-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Date, Version): Roll minor version and date
+
+	* README.md: Updated
+
+2021-10-20  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/ql/time/calendars/brazil.hpp: Added
+	* inst/include/ql/daycounters/all.hpp: Activate out business252.hpp
+
+2021-10-19  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/ql/time/calendars/unitedkingdom.hpp: QuantLib 1.24
+	* inst/include/ql/time/calendars/japan.hpp: Idem
+	* inst/include/ql/time/calendars/target.hpp: Idem
+	* inst/include/ql/time/calendars/nullcalendar.hpp: Idem
+	* inst/include/ql/time/utilities/*: Idem
+	* inst/include/ql/time/patterns/singleton.hpp: Idem
+	* inst/include/ql/time/patterns/error.hpp: Idem
+	* inst/include/ql/time/patterns/settings.hpp: Idem
+
+2021-10-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/ql/daycounters/*: Updated from QuantLib 1.24
+	* inst/include/ql/daycounters/all.hpp: Comment out business252.hpp
+	which needs the (currently missing) Brazil calendar
+	* inst/include/ql/time/calendars/unitedstates.hpp: QuantLib 1.24
+	* inst/include/ql/time/calendars/china.hpp: Idem
+	* inst/include/ql/time/calendars/bespokecalendar.hpp: Idem
+	* inst/include/ql/time/calendars/jointcalendar.hpp: Idem
+	* inst/include/ql/time/calendars/canada.hpp: Idem
+	* inst/include/ql/time/calendars/germany.hpp: Idem
+
 2021-10-17  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/ql/version.hpp: Removed unused header

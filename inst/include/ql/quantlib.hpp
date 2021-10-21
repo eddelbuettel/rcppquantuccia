@@ -1,5 +1,8 @@
 #include <ql/qldefines.hpp>
 
+// #define QL_USE_STD_SHARED_PTR
+#include <ql/shared_ptr.hpp>
+
 //#include <ql/compounding.hpp>
 //#include <ql/currency.hpp>
 #include <ql/errors.hpp>

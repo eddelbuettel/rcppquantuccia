@@ -28,8 +28,6 @@
 #define quantlib_frequency_hpp
 
 #include <ql/qldefines.hpp>
-#include <ql/types.hpp>
-#include <ql/errors.hpp>
 #include <iosfwd>
 
 namespace QuantLib {
