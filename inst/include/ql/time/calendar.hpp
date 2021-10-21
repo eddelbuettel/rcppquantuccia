@@ -3,7 +3,10 @@
 /*
  Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
  Copyright (C) 2003, 2004, 2005, 2006, 2007 StatPro Italia srl
- Copyright (C) 2006 Piter Dias
+ Copyright (C) 2004 Jeff Yu
+ Copyright (C) 2014 Paolo Mazzocchi
+ Copyright (C) 2020 Leonardo Arcari
+ Copyright (C) 2020 Kline s.r.l.
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -29,7 +32,7 @@
 #include <ql/errors.hpp>
 #include <ql/time/date.hpp>
 #include <ql/time/businessdayconvention.hpp>
-#include <boost/shared_ptr.hpp>
+#include <ql/shared_ptr.hpp>
 #include <set>
 #include <vector>
 #include <string>
@@ -61,19 +64,19 @@ namespace QuantLib {
         //! abstract base class for calendar implementations
         class Impl {
           public:
-            virtual ~Impl() {}
+            virtual ~Impl() = default;
             virtual std::string name() const = 0;
             virtual bool isBusinessDay(const Date&) const = 0;
             virtual bool isWeekend(Weekday) const = 0;
             std::set<Date> addedHolidays, removedHolidays;
         };
-        boost::shared_ptr<Impl> impl_;
+        ext::shared_ptr<Impl> impl_;
       public:
         /*! The default constructor returns a calendar with a null
             implementation, which is therefore unusable except as a
             placeholder.
         */
-        Calendar() {}
+        Calendar() = default;
         //! \name Calendar interface
         //@{
         //!  Returns whether or not the calendar is initialized
@@ -84,6 +87,13 @@ namespace QuantLib {
                 switch-on-type code.
         */
         std::string name() const;
+
+        /*! Returns the set of added holidays for the given calendar */
+        const std::set<Date>& addedHolidays() const;
+
+        /*! Returns the set of removed holidays for the given calendar */
+        const std::set<Date>& removedHolidays() const;
+
         /*! Returns <tt>true</tt> iff the date is a business day for the
             given market.
         */
@@ -96,8 +106,8 @@ namespace QuantLib {
             weekend for the given market.
         */
         bool isWeekend(Weekday w) const;
-        /*! Returns <tt>true</tt> iff the date is last business day for the
-            month in given market.
+        /*! Returns <tt>true</tt> iff in the given market, the date is on
+            or after the last business day for that month.
         */
         bool isEndOfMonth(const Date& d) const;
         //! last business day of the month to which the given date belongs
@@ -108,11 +118,13 @@ namespace QuantLib {
         /*! Removes a date from the set of holidays for the given calendar. */
         void removeHoliday(const Date&);
 
-        //! Returns the holidays between two dates
-        static std::vector<Date> holidayList(const Calendar& calendar,
-                                             const Date& from,
-                                             const Date& to,
-                                             bool includeWeekEnds = false);
+        /*! Returns the holidays between two dates. */
+        std::vector<Date> holidayList(const Date& from,
+                                      const Date& to,
+                                      bool includeWeekEnds = false) const;
+        /*! Returns the business days between two dates. */
+        std::vector<Date> businessDayList(const Date& from,
+                                          const Date& to) const;
 
         /*! Adjusts a non-business day to the appropriate near business day
             with respect to the given convention.
@@ -153,7 +165,7 @@ namespace QuantLib {
         */
         class WesternImpl : public Impl {
           public:
-            bool isWeekend(Weekday) const;
+            bool isWeekend(Weekday) const override;
             //! expressed relative to first day of year
             static Day easterMonday(Year);
         };
@@ -164,7 +176,7 @@ namespace QuantLib {
         */
         class OrthodoxImpl : public Impl {
           public:
-            bool isWeekend(Weekday) const;
+            bool isWeekend(Weekday) const override;
             //! expressed relative to first day of year
             static Day easterMonday(Year);
         };
@@ -190,17 +202,38 @@ namespace QuantLib {
     }
 
     inline std::string Calendar::name() const {
-        QL_REQUIRE(impl_, "no implementation provided");
+        QL_REQUIRE(impl_, "no calendar implementation provided");
         return impl_->name();
     }
 
+    inline const std::set<Date>& Calendar::addedHolidays() const {
+        QL_REQUIRE(impl_, "no calendar implementation provided");
+
+        return impl_->addedHolidays;
+    }
+
+    inline const std::set<Date>& Calendar::removedHolidays() const {
+        QL_REQUIRE(impl_, "no calendar implementation provided");
+
+        return impl_->removedHolidays;
+    }
+
     inline bool Calendar::isBusinessDay(const Date& d) const {
-        QL_REQUIRE(impl_, "no implementation provided");
-        if (impl_->addedHolidays.find(d) != impl_->addedHolidays.end())
+        QL_REQUIRE(impl_, "no calendar implementation provided");
+#ifdef QL_HIGH_RESOLUTION_DATE
+        const Date _d(d.dayOfMonth(), d.month(), d.year());
+#else
+        const Date& _d = d;
+#endif
+        if (!impl_->addedHolidays.empty() &&
+            impl_->addedHolidays.find(_d) != impl_->addedHolidays.end())
             return false;
-        if (impl_->removedHolidays.find(d) != impl_->removedHolidays.end())
+
+        if (!impl_->removedHolidays.empty() &&
+            impl_->removedHolidays.find(_d) != impl_->removedHolidays.end())
             return true;
-        return impl_->isBusinessDay(d);
+
+        return impl_->isBusinessDay(_d);
     }
 
     inline bool Calendar::isEndOfMonth(const Date& d) const {
@@ -216,7 +249,7 @@ namespace QuantLib {
     }
 
     inline bool Calendar::isWeekend(Weekday w) const {
-        QL_REQUIRE(impl_, "no implementation provided");
+        QL_REQUIRE(impl_, "no calendar implementation provided");
         return impl_->isWeekend(w);
     }
 
@@ -236,23 +269,37 @@ namespace QuantLib {
     // implementation
 
     inline void Calendar::addHoliday(const Date& d) {
-        QL_REQUIRE(impl_, "no implementation provided");
+        QL_REQUIRE(impl_, "no calendar implementation provided");
+
+#ifdef QL_HIGH_RESOLUTION_DATE
+        const Date _d(d.dayOfMonth(), d.month(), d.year());
+#else
+        const Date& _d = d;
+#endif
+
         // if d was a genuine holiday previously removed, revert the change
-        impl_->removedHolidays.erase(d);
+        impl_->removedHolidays.erase(_d);
         // if it's already a holiday, leave the calendar alone.
         // Otherwise, add it.
-        if (impl_->isBusinessDay(d))
-            impl_->addedHolidays.insert(d);
+        if (impl_->isBusinessDay(_d))
+            impl_->addedHolidays.insert(_d);
     }
 
     inline void Calendar::removeHoliday(const Date& d) {
-        QL_REQUIRE(impl_, "no implementation provided");
+        QL_REQUIRE(impl_, "no calendar implementation provided");
+
+#ifdef QL_HIGH_RESOLUTION_DATE
+        const Date _d(d.dayOfMonth(), d.month(), d.year());
+#else
+        const Date& _d = d;
+#endif
+
         // if d was an artificially-added holiday, revert the change
-        impl_->addedHolidays.erase(d);
+        impl_->addedHolidays.erase(_d);
         // if it's already a business day, leave the calendar alone.
         // Otherwise, add it.
-        if (!impl_->isBusinessDay(d))
-            impl_->removedHolidays.insert(d);
+        if (!impl_->isBusinessDay(_d))
+            impl_->removedHolidays.insert(_d);
     }
 
     inline Date Calendar::adjust(const Date& d,
@@ -263,11 +310,11 @@ namespace QuantLib {
             return d;
 
         Date d1 = d;
-        if (c == Following || c == ModifiedFollowing 
+        if (c == Following || c == ModifiedFollowing
             || c == HalfMonthModifiedFollowing) {
             while (isHoliday(d1))
-                d1++;
-            if (c == ModifiedFollowing 
+                ++d1;
+            if (c == ModifiedFollowing
                 || c == HalfMonthModifiedFollowing) {
                 if (d1.month() != d.month()) {
                     return adjust(d, Preceding);
@@ -280,7 +327,7 @@ namespace QuantLib {
             }
         } else if (c == Preceding || c == ModifiedPreceding) {
             while (isHoliday(d1))
-                d1--;
+                --d1;
             if (c == ModifiedPreceding && d1.month() != d.month()) {
                 return adjust(d,Following);
             }
@@ -288,8 +335,8 @@ namespace QuantLib {
             Date d2 = d;
             while (isHoliday(d1) && isHoliday(d2))
             {
-                d1++;
-                d2--;
+                ++d1;
+                --d2;
             }
             if (isHoliday(d1))
                 return d2;
@@ -312,17 +359,17 @@ namespace QuantLib {
             Date d1 = d;
             if (n > 0) {
                 while (n > 0) {
-                    d1++;
+                    ++d1;
                     while (isHoliday(d1))
-                        d1++;
-                    n--;
+                        ++d1;
+                    --n;
                 }
             } else {
                 while (n < 0) {
-                    d1--;
+                    --d1;
                     while(isHoliday(d1))
-                        d1--;
-                    n++;
+                        --d1;
+                    ++n;
                 }
             }
             return d1;
@@ -351,7 +398,7 @@ namespace QuantLib {
                                              const Date& to,
                                              bool includeFirst,
                                              bool includeLast) const {
-        BigInteger wd = 0;
+        Date::serial_type wd = 0;
         if (from != to) {
             if (from < to) {
                 // the last one is treated separately to avoid
@@ -372,12 +419,14 @@ namespace QuantLib {
             }
 
             if (isBusinessDay(from) && !includeFirst)
-                wd--;
+                --wd;
             if (isBusinessDay(to) && !includeLast)
-                wd--;
+                --wd;
 
             if (from > to)
                 wd = -wd;
+        } else if (includeFirst && includeLast && isBusinessDay(from)) {
+            wd = 1;
         }
 
         return wd;
@@ -470,16 +519,29 @@ namespace QuantLib {
     }
 
 
-    inline std::vector<Date> Calendar::holidayList(const Calendar& calendar,
-        const Date& from, const Date& to, bool includeWeekEnds) {
+    inline std::vector<Date> Calendar::holidayList(
+        const Date& from, const Date& to, bool includeWeekEnds) const {
 
         QL_REQUIRE(to>from, "'from' date ("
             << from << ") must be earlier than 'to' date ("
             << to << ")");
         std::vector<Date> result;
         for (Date d = from; d <= to; ++d) {
-            if (calendar.isHoliday(d)
-                && (includeWeekEnds || !calendar.isWeekend(d.weekday())))
+            if (isHoliday(d) && (includeWeekEnds || !isWeekend(d.weekday())))
+                result.push_back(d);
+       }
+       return result;
+    }
+
+    inline std::vector<Date> Calendar::businessDayList(
+        const Date& from, const Date& to) const {
+
+        QL_REQUIRE(to>from, "'from' date ("
+            << from << ") must be earlier than 'to' date ("
+            << to << ")");
+        std::vector<Date> result;
+        for (Date d = from; d <= to; ++d) {
+            if (isBusinessDay(d))
                 result.push_back(d);
        }
        return result;

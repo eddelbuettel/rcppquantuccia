@@ -1,4 +1,4 @@
-## RcppQuantuccia: Rcpp bindings for [Quantuccia](https://github.com/pcaspers/Quantuccia)
+## RcppQuantuccia: Rcpp bindings for QuantLib Calendering
 
 [![CI](https://github.com/eddelbuettel/rcppquantuccia/workflows/ci/badge.svg)](https://github.com/eddelbuettel/rcppquantuccia/actions?query=workflow%3Aci)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
@@ -7,12 +7,34 @@
 [![Downloads](https://cranlogs.r-pkg.org/badges/RcppQuantuccia?color=brightgreen)](https://www.r-pkg.org/pkg/RcppQuantuccia)
 [![Last Commit](https://img.shields.io/github/last-commit/eddelbuettel/rcppquantuccia)](https://github.com/eddelbuettel/rcppquantuccia)
 
+### Status
+
+Access to current calendaring functions from QuantLib in an easy-to-build smaller package.
+All code is current to the current QuantLib release 1.24, but not all calendars are implemented yet
+(but that is now easy to change); similarly a few more business-day conventions can be added.
+
+### Brief History
+
+This package started as a brief (somewhat experimental port) of
+[Quantuccia](https://github.com/pcaspers/Quantuccia) (see next section) to R by means of Rcpp.
+
+But as [Quantuccia](https://github.com/pcaspers/Quantuccia) stalled work beyond its initial proof of
+concept, so did this repo. As of release 0.0.5, we have now refocused it on an _even smaller subset_
+of [QuantLib](https://github.com/lballabio/quantlib): just the calendaring.  So code for pricers,
+math, ... that was in [Quantuccia](https://github.com/pcaspers/Quantuccia) has been removed.
+
+But the calendaring, along with all its support code, is now current with the current
+[QuantLib](https://github.com/lballabio/quantlib) release which, as of this writing, is 1.24.
+(It is not complete as there are more calendars to integrate but that is straightforward.)
+
 ### So what is Quantuccia?
 
 [Quantuccia](https://github.com/pcaspers/Quantuccia) is the _"little sister"_ of
 [QuantLib](https://github.com/lballabio/quantlib): A header-only subset of which aims to provide the
 essential parts of [QuantLib](https://github.com/lballabio/quantlib) while being easier to deploy
-requiring only [Boost](https://www.boost.org) headers besides itself.
+requiring only [Boost](https://www.boost.org) headers besides itself.  (Note that
+[Quantuccia](https://github.com/pcaspers/Quantuccia) appears to no longer being developed in its
+upstream repo.  However, the idea of only relying on Boost headers is brillian and carried on here.)
 
 Being header-only makes providing [Quantuccia](https://github.com/pcaspers/Quantuccia) for
 [R](https://www.r-project.org) a breeze as we can rely on the
@@ -51,10 +73,6 @@ including the model subdirectory using the Sobol-based Brownian Market Models.  
 resulting shared library from around 26 mb (!!) to 0.64 mb, and the (compressed) source tarball from
 1.6 mb to 0.24 mb.
 
-### Status
-
-Still fairly new. Functional but _e.g._ several of the other QuantLib calendars still need to be ported.
-
 ### Installation
 
 The package can be installed from [CRAN](https://cran.r-project.org) via
@@ -70,6 +88,8 @@ remotes::install_github("eddelbuettel/rcppquantuccia")
 ```
 
 or maybe just checkout the repository locally.
+
+It only required `Rcpp` and `BH` both of which are available whereever `R` itself runs.
 
 ### Authors
 

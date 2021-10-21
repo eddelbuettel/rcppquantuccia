@@ -43,16 +43,16 @@ namespace QuantLib {
       private:
         class Impl : public Calendar::Impl {
           public:
-            Impl(const std::string& name = "");
-            std::string name() const;
-            bool isWeekend(Weekday) const;
-            bool isBusinessDay(const Date&) const;
+            explicit Impl(std::string name = "");
+            std::string name() const override;
+            bool isWeekend(Weekday) const override;
+            bool isBusinessDay(const Date&) const override;
             void addWeekend(Weekday);
           private:
             std::set<Weekday> weekend_;
             std::string name_;
         };
-        boost::shared_ptr<BespokeCalendar::Impl> bespokeImpl_;
+        ext::shared_ptr<BespokeCalendar::Impl> bespokeImpl_;
       public:
         /*! \warning different bespoke calendars created with the same
                      name (or different bespoke calendars created with
@@ -65,32 +65,39 @@ namespace QuantLib {
 
     // implementation
 
-    inline BespokeCalendar::Impl::Impl(const std::string& name)
-    : name_(name) {}
+    inline
+    BespokeCalendar::Impl::Impl(std::string name) : name_(std::move(name)) {}
 
-    inline std::string BespokeCalendar::Impl::name() const {
+    inline
+    std::string BespokeCalendar::Impl::name() const {
         return name_;
     }
 
-    inline bool BespokeCalendar::Impl::isWeekend(Weekday w) const {
+    inline
+    bool BespokeCalendar::Impl::isWeekend(Weekday w) const {
         return (weekend_.find(w) != weekend_.end());
     }
 
-    inline bool BespokeCalendar::Impl::isBusinessDay(const Date& date) const {
+    inline
+    bool BespokeCalendar::Impl::isBusinessDay(const Date& date) const {
         return !isWeekend(date.weekday());
     }
 
-    inline void BespokeCalendar::Impl::addWeekend(Weekday w) {
+    inline
+    void BespokeCalendar::Impl::addWeekend(Weekday w) {
         weekend_.insert(w);
     }
 
-    inline BespokeCalendar::BespokeCalendar(const std::string& name) {
-        bespokeImpl_ = boost::shared_ptr<BespokeCalendar::Impl>(
-                                             new BespokeCalendar::Impl(name));
+
+    inline
+    BespokeCalendar::BespokeCalendar(const std::string& name) {
+        bespokeImpl_ = ext::make_shared<BespokeCalendar::Impl>(
+                                             name);
         impl_ = bespokeImpl_;
     }
 
-    inline void BespokeCalendar::addWeekend(Weekday w) {
+    inline
+    void BespokeCalendar::addWeekend(Weekday w) {
         bespokeImpl_->addWeekend(w);
     }
 

@@ -2,6 +2,8 @@
 
 /*
  Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
+ Copyright (C) 2003 Kawanishi Tomoya
+ Copyright (C) 2016, 2019, 2020 Eisuke Tani
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -38,6 +40,7 @@ namespace QuantLib {
         <li>Bank Holiday, January 3rd</li>
         <li>Coming of Age Day, 2nd Monday in January</li>
         <li>National Foundation Day, February 11th</li>
+        <li>Emperor's Birthday, February 23rd since 2020 and December 23rd before</li>
         <li>Vernal Equinox</li>
         <li>Greenery Day, April 29th</li>
         <li>Constitution Memorial Day, May 3rd</li>
@@ -50,7 +53,6 @@ namespace QuantLib {
         <li>Health and Sports Day, 2nd Monday in October</li>
         <li>National Culture Day, November 3rd</li>
         <li>Labor Thanksgiving Day, November 23rd</li>
-        <li>Emperor's Birthday, December 23rd</li>
         <li>Bank Holiday, December 31st</li>
         <li>a few one-shot holidays</li>
         </ul>
@@ -63,17 +65,19 @@ namespace QuantLib {
       private:
         class Impl : public Calendar::Impl {
           public:
-            std::string name() const { return "Japan"; }
-            bool isWeekend(Weekday) const;
-            bool isBusinessDay(const Date&) const;
+            std::string name() const override { return "Japan"; }
+            bool isWeekend(Weekday) const override;
+            bool isBusinessDay(const Date&) const override;
         };
       public:
         Japan();
     };
 
+    // implementation
+
     inline Japan::Japan() {
         // all calendar instances share the same implementation instance
-        static boost::shared_ptr<Calendar::Impl> impl(new Japan::Impl);
+        static ext::shared_ptr<Calendar::Impl> impl(new Japan::Impl);
         impl_ = impl;
     }
 
@@ -114,6 +118,12 @@ namespace QuantLib {
                 && y < 2000)
             // National Foundation Day
             || ((d == 11 || (d == 12 && w == Monday)) && m == February)
+            // Emperor's Birthday (Emperor Naruhito)
+            || ((d == 23 || (d == 24 && w == Monday)) && m == February
+                && y >= 2020)
+            // Emperor's Birthday (Emperor Akihito)
+            || ((d == 23 || (d == 24 && w == Monday)) && m == December
+                && (y >= 1989 && y < 2019))
             // Vernal Equinox
             || ((d == ve || (d == ve+1 && w == Monday)) && m == March)
             // Greenery Day
@@ -128,14 +138,22 @@ namespace QuantLib {
             || (d == 6 && m == May
                 && (w == Monday || w == Tuesday || w == Wednesday))
             // Marine Day (3rd Monday in July),
-            // was July 20th until 2003, not a holiday before 1996
+            // was July 20th until 2003, not a holiday before 1996,
+            // July 23rd in 2020 due to Olympics games
+            // July 22nd in 2021 due to Olympics games
             || (w == Monday && (d >= 15 && d <= 21) && m == July
-                && y >= 2003)
+                && ((y >= 2003 && y < 2020) || y >= 2022))
             || ((d == 20 || (d == 21 && w == Monday)) && m == July
                 && y >= 1996 && y < 2003)
-            // Mountain Day (from 2016)
+            || (d == 23 && m == July && y == 2020)
+            || (d == 22 && m == July && y == 2021)
+            // Mountain Day
+            // (moved in 2020 due to Olympics games)
+            // (moved in 2021 due to Olympics games)
             || ((d == 11 || (d == 12 && w == Monday)) && m == August
-                && y >= 2016)
+                && ((y >= 2016 && y < 2020) || y >= 2022))
+            || (d == 10 && m == August && y == 2020)
+            || (d == 9 && m == August && y == 2021)
             // Respect for the Aged Day (3rd Monday in September),
             // was September 15th until 2003
             || (w == Monday && (d >= 15 && d <= 21) && m == September
@@ -149,18 +167,19 @@ namespace QuantLib {
             // Autumnal Equinox
             || ((d == ae || (d == ae+1 && w == Monday)) && m == September)
             // Health and Sports Day (2nd Monday in October),
-            // was October 10th until 2000
+            // was October 10th until 2000,
+            // July 24th in 2020 due to Olympics games
+            // July 23rd in 2021 due to Olympics games
             || (w == Monday && (d >= 8 && d <= 14) && m == October
-                && y >= 2000)
+                && ((y >= 2000 && y < 2020) || y >= 2022))
             || ((d == 10 || (d == 11 && w == Monday)) && m == October
                 && y < 2000)
+            || (d == 24 && m == July && y == 2020)
+            || (d == 23 && m == July && y == 2021)
             // National Culture Day
             || ((d == 3  || (d == 4 && w == Monday)) && m == November)
             // Labor Thanksgiving Day
             || ((d == 23 || (d == 24 && w == Monday)) && m == November)
-            // Emperor's Birthday
-            || ((d == 23 || (d == 24 && w == Monday)) && m == December
-                && y >= 1989)
             // Bank Holiday
             || (d == 31 && m == December)
             // one-shot holidays
@@ -168,12 +187,20 @@ namespace QuantLib {
             || (d == 10 && m == April && y == 1959)
             // Rites of Imperial Funeral
             || (d == 24 && m == February && y == 1989)
-            // Enthronement Ceremony
+            // Enthronement Ceremony (Emperor Akihito)
             || (d == 12 && m == November && y == 1990)
             // Marriage of Prince Naruhito
-            || (d == 9 && m == June && y == 1993))
-            return false;
-        return true;
+            || (d == 9 && m == June && y == 1993)
+            // Special holiday based on Japanese public holidays law
+            || (d == 30 && m == April && y == 2019)
+            // Enthronement Day (Emperor Naruhito)
+            || (d == 1 && m == May && y == 2019)
+            // Special holiday based on Japanese public holidays law
+            || (d == 2 && m == May && y == 2019)
+            // Enthronement Ceremony (Emperor Naruhito)
+            || (d == 22 && m == October && y == 2019))
+            return false; // NOLINT(readability-simplify-boolean-expr)
+         return true;
     }
 
 }

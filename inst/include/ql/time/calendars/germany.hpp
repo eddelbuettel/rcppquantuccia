@@ -44,7 +44,6 @@ namespace QuantLib {
         <li>Christmas Eve, December 24th</li>
         <li>Christmas, December 25th</li>
         <li>Boxing Day, December 26th</li>
-        <li>New Year's Eve, December 31st</li>
         </ul>
 
         Holidays for the Frankfurt Stock exchange
@@ -59,7 +58,6 @@ namespace QuantLib {
         <li>Christmas' Eve, December 24th</li>
         <li>Christmas, December 25th</li>
         <li>Christmas Holiday, December 26th</li>
-        <li>New Year's Eve, December 31st</li>
         </ul>
 
         Holidays for the Xetra exchange
@@ -74,7 +72,6 @@ namespace QuantLib {
         <li>Christmas' Eve, December 24th</li>
         <li>Christmas, December 25th</li>
         <li>Christmas Holiday, December 26th</li>
-        <li>New Year's Eve, December 31st</li>
         </ul>
 
         Holidays for the Eurex exchange
@@ -105,7 +102,6 @@ namespace QuantLib {
         <li>Christmas' Eve, December 24th</li>
         <li>Christmas, December 25th</li>
         <li>Christmas Holiday, December 26th</li>
-        <li>New Year's Eve, December 31st</li>
         </ul>
 
         \ingroup calendars
@@ -117,28 +113,28 @@ namespace QuantLib {
       private:
         class SettlementImpl : public Calendar::WesternImpl {
           public:
-            std::string name() const { return "German settlement"; }
-            bool isBusinessDay(const Date&) const;
+            std::string name() const override { return "German settlement"; }
+            bool isBusinessDay(const Date&) const override;
         };
         class FrankfurtStockExchangeImpl : public Calendar::WesternImpl {
           public:
-            std::string name() const { return "Frankfurt stock exchange"; }
-            bool isBusinessDay(const Date&) const;
+            std::string name() const override { return "Frankfurt stock exchange"; }
+            bool isBusinessDay(const Date&) const override;
         };
         class XetraImpl : public Calendar::WesternImpl {
           public:
-            std::string name() const { return "Xetra"; }
-            bool isBusinessDay(const Date&) const;
+            std::string name() const override { return "Xetra"; }
+            bool isBusinessDay(const Date&) const override;
         };
         class EurexImpl : public Calendar::WesternImpl {
           public:
-            std::string name() const { return "Eurex"; }
-            bool isBusinessDay(const Date&) const;
+            std::string name() const override { return "Eurex"; }
+            bool isBusinessDay(const Date&) const override;
         };
         class EuwaxImpl : public Calendar::WesternImpl {
         public:
-            std::string name() const { return "Euwax"; }
-            bool isBusinessDay(const Date&) const;
+            std::string name() const override { return "Euwax"; }
+            bool isBusinessDay(const Date&) const override;
         };
 
       public:
@@ -152,18 +148,20 @@ namespace QuantLib {
         Germany(Market market = FrankfurtStockExchange);
     };
 
+    // implementation
+
     inline Germany::Germany(Germany::Market market) {
         // all calendar instances on the same market share the same
         // implementation instance
-        static boost::shared_ptr<Calendar::Impl> settlementImpl(
+        static ext::shared_ptr<Calendar::Impl> settlementImpl(
             new Germany::SettlementImpl);
-        static boost::shared_ptr<Calendar::Impl> frankfurtStockExchangeImpl(
+        static ext::shared_ptr<Calendar::Impl> frankfurtStockExchangeImpl(
             new Germany::FrankfurtStockExchangeImpl);
-        static boost::shared_ptr<Calendar::Impl> xetraImpl(
+        static ext::shared_ptr<Calendar::Impl> xetraImpl(
             new Germany::XetraImpl);
-        static boost::shared_ptr<Calendar::Impl> eurexImpl(
+        static ext::shared_ptr<Calendar::Impl> eurexImpl(
             new Germany::EurexImpl);
-        static boost::shared_ptr<Calendar::Impl> euwaxImpl(
+        static ext::shared_ptr<Calendar::Impl> euwaxImpl(
             new Germany::EuwaxImpl);
 
         switch (market) {
@@ -216,9 +214,7 @@ namespace QuantLib {
             // Christmas
             || (d == 25 && m == December)
             // Boxing Day
-            || (d == 26 && m == December)
-            // New Year's Eve
-            || (d == 31 && m == December))
+            || (d == 26 && m == December))
             return false;
         return true;
     }
@@ -244,9 +240,7 @@ namespace QuantLib {
             // Christmas
             || (d == 25 && m == December)
             // Christmas Day
-            || (d == 26 && m == December)
-            // New Year's Eve
-            || (d == 31 && m == December))
+            || (d == 26 && m == December))
             return false;
         return true;
     }
@@ -271,9 +265,7 @@ namespace QuantLib {
             // Christmas
             || (d == 25 && m == December)
             // Christmas Day
-            || (d == 26 && m == December)
-            // New Year's Eve
-            || (d == 31 && m == December))
+            || (d == 26 && m == December))
             return false;
         return true;
     }
@@ -327,9 +319,7 @@ namespace QuantLib {
             // Christmas
             || (d == 25 && m == December)
             // Christmas Day
-            || (d == 26 && m == December)
-            // New Year's Eve
-            || (d == 31 && m == December))
+            || (d == 26 && m == December))
             return false;
         return true;
     }

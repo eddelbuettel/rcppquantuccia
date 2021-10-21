@@ -28,8 +28,6 @@
 #define quantlib_business_day_convention_hpp
 
 #include <ql/qldefines.hpp>
-#include <ql/types.hpp>
-#include <ql/errors.hpp>
 #include <iosfwd>
 
 namespace QuantLib {
@@ -64,7 +62,7 @@ namespace QuantLib {
                                           end of month, in which case choose
                                           the first business day before the
                                           holiday. */
-        Nearest                      /*!< Choose the nearest business day 
+        Nearest                      /*!< Choose the nearest business day
                                           to the given holiday. If both the
                                           preceding and following business
                                           days are equally far away, default

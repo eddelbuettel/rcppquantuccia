@@ -294,12 +294,10 @@ Rcpp::NumericVector businessDaysBetween(Rcpp::DateVector from, Rcpp::DateVector 
 //' @examples
 //' getHolidays(Sys.Date(), Sys.Date() + 30)
 // [[Rcpp::export]]
-Rcpp::DateVector getHolidays(Rcpp::Date from, Rcpp::Date to,
-                             bool includeWeekends=false) {
+Rcpp::DateVector getHolidays(Rcpp::Date from, Rcpp::Date to, bool includeWeekends=false) {
     ql::Calendar cal = gblcal.getCalendar();
-    std::vector<ql::Date> holidays =
-        ql::Calendar::holidayList(cal, Rcpp::as<ql::Date>(from), Rcpp::as<ql::Date>(to),
-                                  includeWeekends);
+    std::vector<ql::Date> holidays = cal.holidayList(Rcpp::as<ql::Date>(from),
+                                                     Rcpp::as<ql::Date>(to), includeWeekends);
     int n = holidays.size();
     Rcpp::DateVector dv(n);
     for (auto i=0; i<n; i++) {

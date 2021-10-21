@@ -53,12 +53,6 @@
 
 namespace QuantLib {
 
-    namespace io {
-
-        Integer to_integer(const std::string&);
-
-    }
-
     class PeriodParser {
       public:
         static Period parse(const std::string& str);
@@ -81,12 +75,12 @@ namespace QuantLib {
 
     namespace io {
 
-        inline Integer to_integer(const std::string& str) {
-        #ifndef x64
-            return  boost::lexical_cast<Integer>(str.c_str());
-        #else
-            return std::atoi(str.c_str());
-        #endif
+        /*! \deprecated Use std::stoi instead.
+                        Deprecated in version 1.22.
+        */
+        QL_DEPRECATED
+        inline Integer to_integer(const std::string& s) {
+            return std::stoi(s);
         }
 
     }
@@ -132,8 +126,7 @@ namespace QuantLib {
         QL_REQUIRE(nPos<iPos, "no numbers of " << units << " provided");
         Integer n;
         try {
-            n = io::to_integer(str.substr(nPos,iPos));
-                //boost::lexical_cast<Integer>(str.substr(nPos,iPos));
+            n = std::stoi(str.substr(nPos,iPos));
         } catch (std::exception& e) {
             QL_FAIL("unable to parse the number of units of " << units <<
                     " in '" << str << "'. Error:" << e.what());
@@ -144,29 +137,28 @@ namespace QuantLib {
 
     inline Date DateParser::parseFormatted(const std::string& str,
                                     const std::string& fmt) {
+        #ifndef QL_PATCH_SOLARIS
         using namespace boost::gregorian;
 
         date boostDate;
         std::istringstream is(str);
-        is.imbue(std::locale(std::locale(),
-                             new date_input_facet(fmt.c_str())));
+        is.imbue(std::locale(std::locale(), new date_input_facet(fmt)));
         is >> boostDate;
         date_duration noDays = boostDate - date(1901, 1, 1);
         return Date(1, January, 1901) + noDays.days();
+        #else
+        QL_FAIL("DateParser::parseFormatted not supported under Solaris");
+        #endif
     }
 
     inline Date DateParser::parseISO(const std::string& str) {
         QL_REQUIRE(str.size() == 10 && str[4] == '-' && str[7] == '-',
                    "invalid format");
-        Integer year = //boost::lexical_cast<Integer>(str.substr(0, 4));
-            io::to_integer(str.substr(0, 4));
-        Month month =
-            //  static_cast<Month>(boost::lexical_cast<Integer>(str.substr(5, 2)));
-            static_cast<Month>(io::to_integer(str.substr(5, 2)));
-        Integer day = //boost::lexical_cast<Integer>(str.substr(8, 2));
-            static_cast<Month>(io::to_integer(str.substr(8, 2)));
+        Integer year = std::stoi(str.substr(0, 4));
+        Month month = static_cast<Month>(std::stoi(str.substr(5, 2)));
+        Integer day = std::stoi(str.substr(8, 2));
 
-        return Date(day, month, year);
+        return {day, month, year};
     }
 
 

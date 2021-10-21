@@ -42,6 +42,7 @@ namespace QuantLib {
         <li>Canada Day, July 1st (possibly moved to Monday)</li>
         <li>Provincial Holiday, first Monday of August</li>
         <li>Labour Day, first Monday of September</li>
+        <li>National Day for Truth and Reconciliation, September 30th (possibly moved to Monday)</li>
         <li>Thanksgiving Day, second Monday of October</li>
         <li>Remembrance Day, November 11th (possibly moved to Monday)</li>
         <li>Christmas, December 25th (possibly moved to Monday or Tuesday)</li>
@@ -73,13 +74,13 @@ namespace QuantLib {
       private:
         class SettlementImpl : public Calendar::WesternImpl {
           public:
-            std::string name() const { return "Canada"; }
-            bool isBusinessDay(const Date&) const;
+            std::string name() const override { return "Canada"; }
+            bool isBusinessDay(const Date&) const override;
         };
         class TsxImpl : public Calendar::WesternImpl {
           public:
-            std::string name() const { return "TSX"; }
-            bool isBusinessDay(const Date&) const;
+            std::string name() const override { return "TSX"; }
+            bool isBusinessDay(const Date&) const override;
         };
       public:
         enum Market { Settlement,       //!< generic settlement calendar
@@ -88,11 +89,13 @@ namespace QuantLib {
         Canada(Market market = Settlement);
     };
 
+    // implementation
+
     inline Canada::Canada(Canada::Market market) {
         // all calendar instances share the same implementation instance
-        static boost::shared_ptr<Calendar::Impl> settlementImpl(
+        static ext::shared_ptr<Calendar::Impl> settlementImpl(
                                                   new Canada::SettlementImpl);
-        static boost::shared_ptr<Calendar::Impl> tsxImpl(new Canada::TsxImpl);
+        static ext::shared_ptr<Calendar::Impl> tsxImpl(new Canada::TsxImpl);
         switch (market) {
           case Settlement:
             impl_ = settlementImpl;
@@ -113,7 +116,7 @@ namespace QuantLib {
         Day em = easterMonday(y);
         if (isWeekend(w)
             // New Year's Day (possibly moved to Monday)
-            || ((d == 1 || (d == 2 && w == Monday)) && m == January)
+            || ((d == 1 || ((d == 2 || d == 3) && w == Monday)) && m == January)
             // Family Day (third Monday in February, since 2008)
             || ((d >= 15 && d <= 21) && w == Monday && m == February
                 && y >= 2008)
@@ -127,6 +130,9 @@ namespace QuantLib {
             || (d <= 7 && w == Monday && m == August)
             // first Monday of September (Labor Day)
             || (d <= 7 && w == Monday && m == September)
+            // September 30th, possibly moved to Monday
+            // (National Day for Truth and Reconciliation, since 2021)
+            || (((d == 30 && m == September) || (d <= 2 && m == October && w == Monday)) && y >= 2021)
             // second Monday of October (Thanksgiving Day)
             || (d > 7 && d <= 14 && w == Monday && m == October)
             // November 11th (possibly moved to Monday)
@@ -151,7 +157,7 @@ namespace QuantLib {
         Day em = easterMonday(y);
         if (isWeekend(w)
             // New Year's Day (possibly moved to Monday)
-            || ((d == 1 || (d == 2 && w == Monday)) && m == January)
+            || ((d == 1 || ((d == 2 || d == 3) && w == Monday)) && m == January)
             // Family Day (third Monday in February, since 2008)
             || ((d >= 15 && d <= 21) && w == Monday && m == February
                 && y >= 2008)

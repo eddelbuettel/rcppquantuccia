@@ -1,10 +1,11 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2004, 2005, 2006, 2007, 2008 Ferdinando Ametrano
+ Copyright (C) 2004, 2005, 2006, 2007, 2008, 2014 Ferdinando Ametrano
  Copyright (C) 2006 Katiuscia Manzoni
  Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
- Copyright (C) 2003, 2004, 2005, 2006, 2007 StatPro Italia srl
+ Copyright (C) 2003, 2004, 2005, 2006, 2008 StatPro Italia srl
+ Copyright (C) 2014 Paolo Mazzocchi
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -29,7 +30,6 @@
 
 #include <ql/time/frequency.hpp>
 #include <ql/time/timeunit.hpp>
-#include <ql/errors.hpp>
 #include <ql/types.hpp>
 
 
@@ -44,8 +44,7 @@ namespace QuantLib {
     */
     class Period {
       public:
-        Period()
-        : length_(0), units_(Days) {}
+        Period() = default;
         Period(Integer n, TimeUnit units)
         : length_(n), units_(units) {}
         explicit Period(Frequency f);
@@ -57,8 +56,8 @@ namespace QuantLib {
         Period& operator/=(Integer);
         void normalize();
       private:
-        Integer length_;
-        TimeUnit units_;
+        Integer length_ = 0;
+        TimeUnit units_ = Days;
     };
 
     /*! \relates Period */
@@ -110,13 +109,13 @@ namespace QuantLib {
     namespace detail {
 
         struct long_period_holder {
-            long_period_holder(const Period& p) : p(p) {}
+            explicit long_period_holder(const Period& p) : p(p) {}
             Period p;
         };
         std::ostream& operator<<(std::ostream&, const long_period_holder&);
 
         struct short_period_holder {
-            short_period_holder(Period p) : p(p) {}
+            explicit short_period_holder(Period p) : p(p) {}
             Period p;
         };
         std::ostream& operator<<(std::ostream&, const short_period_holder&);
@@ -139,25 +138,19 @@ namespace QuantLib {
 
     template <typename T>
     inline Period operator*(T n, TimeUnit units) {
-        return Period(Integer(n),units);
+        return {Integer(n),units};
     }
 
     template <typename T>
     inline Period operator*(TimeUnit units, T n) {
-        return Period(Integer(n),units);
+        return {Integer(n),units};
     }
 
-    inline Period operator-(const Period& p) {
-        return Period(-p.length(),p.units());
-    }
+    inline Period operator-(const Period& p) { return {-p.length(), p.units()}; }
 
-    inline Period operator*(Integer n, const Period& p) {
-        return Period(n*p.length(),p.units());
-    }
+    inline Period operator*(Integer n, const Period& p) { return {n * p.length(), p.units()}; }
 
-    inline Period operator*(const Period& p, Integer n) {
-        return Period(n*p.length(),p.units());
-    }
+    inline Period operator*(const Period& p, Integer n) { return {n * p.length(), p.units()}; }
 
     inline bool operator==(const Period& p1, const Period& p2) {
         return !(p1 < p2 || p2 < p1);
@@ -264,7 +257,7 @@ namespace QuantLib {
         if (length_!=0)
             switch (units_) {
               case Months:
-                if (!(length_%12)) {
+                if ((length_ % 12) == 0) {
                     length_/=12;
                     units_ = Years;
                 }

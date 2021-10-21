@@ -109,9 +109,9 @@ namespace QuantLib {
         bool enforcesTodaysHistoricFixings() const;
       private:
         DateProxy evaluationDate_;
-        bool includeReferenceDateEvents_;
+        bool includeReferenceDateEvents_ = false;
         boost::optional<bool> includeTodaysCashFlows_;
-        bool enforcesTodaysHistoricFixings_;
+        bool enforcesTodaysHistoricFixings_ = false;
     };
 
 
@@ -138,7 +138,8 @@ namespace QuantLib {
     }
 
     inline Settings::DateProxy& Settings::DateProxy::operator=(const Date& d) {
-        ObservableValue<Date>::operator=(d);
+        if (value() != d) // avoid notifications if the date doesn't actually change
+            ObservableValue<Date>::operator=(d);
         return *this;
     }
 
@@ -176,38 +177,42 @@ namespace QuantLib {
 
     // implementation
 
-    inline Settings::DateProxy::DateProxy()
+    inline
+    Settings::DateProxy::DateProxy()
     : ObservableValue<Date>(Date()) {}
 
-    inline std::ostream& operator<<(std::ostream& out,
+    inline
+    std::ostream& operator<<(std::ostream& out,
                              const Settings::DateProxy& p) {
         return out << Date(p);
     }
 
-    inline Settings::Settings()
-    : includeReferenceDateEvents_(false),
-      enforcesTodaysHistoricFixings_(false) {}
+    inline
+    Settings::Settings()
+        = default;
 
-    inline void Settings::anchorEvaluationDate() {
+    inline
+    void Settings::anchorEvaluationDate() {
         // set to today's date if not already set.
         if (evaluationDate_.value() == Date())
             evaluationDate_ = Date::todaysDate();
         // If set, no-op since the date is already anchored.
     }
 
-    inline void Settings::resetEvaluationDate() {
+    inline
+    void Settings::resetEvaluationDate() {
         evaluationDate_ = Date();
     }
 
-    inline SavedSettings::SavedSettings()
+    inline
+    SavedSettings::SavedSettings()
     : evaluationDate_(Settings::instance().evaluationDate()),
-      includeReferenceDateEvents_(
-                        Settings::instance().includeReferenceDateEvents()),
+      includeReferenceDateEvents_(Settings::instance().includeReferenceDateEvents()),
       includeTodaysCashFlows_(Settings::instance().includeTodaysCashFlows()),
-      enforcesTodaysHistoricFixings_(
-                        Settings::instance().enforcesTodaysHistoricFixings()) {}
+      enforcesTodaysHistoricFixings_(Settings::instance().enforcesTodaysHistoricFixings()) {}
 
-    inline SavedSettings::~SavedSettings() {
+    inline
+    SavedSettings::~SavedSettings() {
         try {
             if (Settings::instance().evaluationDate() != evaluationDate_)
                 Settings::instance().evaluationDate() = evaluationDate_;

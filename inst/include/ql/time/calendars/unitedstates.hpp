@@ -1,9 +1,11 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2004, 2005 Ferdinando Ametrano
  Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
  Copyright (C) 2003, 2004, 2005, 2006 StatPro Italia srl
- Copyright (C) 2004 Ferdinando Ametrano
+ Copyright (C) 2017 Peter Caspers
+ Copyright (C) 2017 Oleg Kulkov
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -31,7 +33,7 @@
 namespace QuantLib {
 
     //! United States calendars
-    /*! Public holidays (see: http://www.opm.gov/fedhol/):
+    /*! Public holidays (see https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays):
         <ul>
         <li>Saturdays</li>
         <li>Sundays</li>
@@ -132,8 +134,8 @@ namespace QuantLib {
       private:
         class SettlementImpl : public Calendar::WesternImpl {
           public:
-            std::string name() const { return "US settlement"; }
-            bool isBusinessDay(const Date&) const;
+            std::string name() const override { return "US settlement"; }
+            bool isBusinessDay(const Date&) const override;
         };
         class LiborImpactImpl : public SettlementImpl {
           public:
@@ -142,20 +144,20 @@ namespace QuantLib {
         };
         class NyseImpl : public Calendar::WesternImpl {
           public:
-            std::string name() const { return "New York stock exchange"; }
-            bool isBusinessDay(const Date&) const;
+            std::string name() const override { return "New York stock exchange"; }
+            bool isBusinessDay(const Date&) const override;
         };
         class GovernmentBondImpl : public Calendar::WesternImpl {
           public:
-            std::string name() const { return "US government bond market"; }
-            bool isBusinessDay(const Date&) const;
+            std::string name() const override { return "US government bond market"; }
+            bool isBusinessDay(const Date&) const override;
         };
         class NercImpl : public Calendar::WesternImpl {
           public:
-            std::string name() const {
+            std::string name() const override {
                 return "North American Energy Reliability Council";
             }
-            bool isBusinessDay(const Date&) const;
+            bool isBusinessDay(const Date&) const override;
         };
         class FederalReserveImpl : public Calendar::WesternImpl {
           public:
@@ -245,17 +247,17 @@ namespace QuantLib {
     inline UnitedStates::UnitedStates(UnitedStates::Market market) {
         // all calendar instances on the same market share the same
         // implementation instance
-        static boost::shared_ptr<Calendar::Impl> settlementImpl(
+        static ext::shared_ptr<Calendar::Impl> settlementImpl(
                                         new UnitedStates::SettlementImpl);
-        static boost::shared_ptr<Calendar::Impl> liborImpactImpl(
+        static ext::shared_ptr<Calendar::Impl> liborImpactImpl(
                                         new UnitedStates::LiborImpactImpl);
-        static boost::shared_ptr<Calendar::Impl> nyseImpl(
+        static ext::shared_ptr<Calendar::Impl> nyseImpl(
                                         new UnitedStates::NyseImpl);
-        static boost::shared_ptr<Calendar::Impl> governmentImpl(
+        static ext::shared_ptr<Calendar::Impl> governmentImpl(
                                         new UnitedStates::GovernmentBondImpl);
-        static boost::shared_ptr<Calendar::Impl> nercImpl(
+        static ext::shared_ptr<Calendar::Impl> nercImpl(
                                         new UnitedStates::NercImpl);
-        static boost::shared_ptr<Calendar::Impl> federalReserveImpl(
+        static ext::shared_ptr<Calendar::Impl> federalReserveImpl(
                                         new UnitedStates::FederalReserveImpl);
         switch (market) {
           case Settlement:
@@ -434,8 +436,8 @@ namespace QuantLib {
                 && y >= 1983)
             // Washington's birthday (third Monday in February)
             || isWashingtonBirthday(d, m, y, w)
-            // Good Friday
-            || (dd == em-3)
+            // Good Friday (2015 was half day due to NFP report)
+            || (dd == em-3 && y != 2015)
             // Memorial Day (last Monday in May)
             || isMemorialDay(d, m, y, w)
             // Juneteenth (Monday if Sunday or Friday if Saturday)
@@ -447,7 +449,7 @@ namespace QuantLib {
             || isLaborDay(d, m, y, w)
             // Columbus Day (second Monday in October)
             || isColumbusDay(d, m, y, w)
-            // Veteran's Day (Monday if Sunday or Friday if Saturday)
+            // Veteran's Day (Monday if Sunday)
             || isVeteransDay(d, m, y, w)
             // Thanksgiving Day (fourth Thursday in November)
             || ((d >= 22 && d <= 28) && w == Thursday && m == November)

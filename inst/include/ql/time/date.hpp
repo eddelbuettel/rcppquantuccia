@@ -2,11 +2,13 @@
 
 /*
  Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
- Copyright (C) 2003, 2004, 2005, 2006 StatPro Italia srl
+ Copyright (C) 2003, 2004, 2005, 2006, 2007 StatPro Italia srl
  Copyright (C) 2004, 2005, 2006 Ferdinando Ametrano
  Copyright (C) 2006 Katiuscia Manzoni
  Copyright (C) 2006 Toyin Akin
  Copyright (C) 2015 Klaus Spanderen
+ Copyright (C) 2020 Leonardo Arcari
+ Copyright (C) 2020 Kline s.r.l.
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -37,10 +39,12 @@
 #ifdef QL_HIGH_RESOLUTION_DATE
 #include <boost/date_time/posix_time/ptime.hpp>
 #include <boost/date_time/posix_time/posix_time_duration.hpp>
+#include <boost/functional/hash.hpp>
 #endif
 
 #include <utility>
 #include <functional>
+#include <string>
 
 #include <ql/utilities/dataformatters.hpp>
 #include <ql/errors.hpp>
@@ -257,7 +261,7 @@ namespace QuantLib {
         static Date universalDateTime();
 
         //! underlying resolution of the  posix date time object
-        static Size ticksPerSecond();
+        static boost::posix_time::time_duration::tick_type ticksPerSecond();
 #endif
 
         //@}
@@ -300,32 +304,54 @@ namespace QuantLib {
     /*! \relates Date */
     bool operator>=(const Date&, const Date&);
 
+    /*!
+      Compute a hash value of @p d.
+
+      This method makes Date hashable via <tt>boost::hash</tt>.
+
+      Example:
+
+      \code{.cpp}
+      #include <boost/unordered_set.hpp>
+
+      boost::unordered_set<Date> set;
+      Date d = Date(1, Jan, 2020);
+
+      set.insert(d);
+      assert(set.count(d)); // 'd' was added to 'set'
+      \endcode
+
+      \param [in] d Date to hash
+      \return A hash value of @p d
+      \relates Date
+    */
+    std::size_t hash_value(const Date& d);
+
     /*! \relates Date */
     std::ostream& operator<<(std::ostream&, const Date&);
 
     namespace detail {
 
         struct short_date_holder {
-            short_date_holder(const Date d) : d(d) {}
+            explicit short_date_holder(const Date d) : d(d) {}
             Date d;
         };
         std::ostream& operator<<(std::ostream&, const short_date_holder&);
 
         struct long_date_holder {
-            long_date_holder(const Date& d) : d(d) {}
+            explicit long_date_holder(const Date& d) : d(d) {}
             Date d;
         };
         std::ostream& operator<<(std::ostream&, const long_date_holder&);
 
         struct iso_date_holder {
-            iso_date_holder(const Date& d) : d(d) {}
+            explicit iso_date_holder(const Date& d) : d(d) {}
             Date d;
         };
         std::ostream& operator<<(std::ostream&, const iso_date_holder&);
 
         struct formatted_date_holder {
-            formatted_date_holder(const Date& d, const std::string& f)
-            : d(d), f(f) {}
+            formatted_date_holder(const Date& d, std::string f) : d(d), f(std::move(f)) {}
             Date d;
             std::string f;
         };
@@ -334,7 +360,7 @@ namespace QuantLib {
 
 #ifdef QL_HIGH_RESOLUTION_DATE
         struct iso_datetime_holder {
-            iso_datetime_holder(const Date& d) : d(d) {}
+            explicit iso_datetime_holder(const Date& d) : d(d) {}
             Date d;
         };
         std::ostream& operator<<(std::ostream&, const iso_datetime_holder&);
@@ -372,8 +398,8 @@ namespace QuantLib {
     template <>
     class Null<Date> {
       public:
-        Null() {}
-        operator Date() const { return Date(); }
+        Null() = default;
+        operator Date() const { return {}; }
     };
 
 
@@ -416,7 +442,7 @@ namespace QuantLib {
     inline Date Date::endOfMonth(const Date& d) {
         Month m = d.month();
         Year y = d.year();
-        return Date(monthLength(m, isLeap(y)), m, y);
+        return {monthLength(m, isLeap(y)), m, y};
     }
 
     inline bool Date::isEndOfMonth(const Date& d) {
@@ -568,7 +594,7 @@ namespace QuantLib {
             if (d > length)
                 d = length;
 
-            return Date(d, Month(m), y);
+            return {d, m, y};
           }
           case Years: {
               Day d = date.dayOfMonth();
@@ -582,7 +608,7 @@ namespace QuantLib {
               if (d == 29 && m == February && !isLeap(y))
                   d = 28;
 
-              return Date(d,m,y);
+              return {d, Month(m), y};
           }
           default:
             QL_FAIL("undefined time units");
@@ -1003,7 +1029,7 @@ namespace QuantLib {
             /(ticksPerSecond()/1000000);
     }
 
-    inline Size Date::ticksPerSecond() {
+    inline time_duration::tick_type Date::ticksPerSecond() {
         return time_duration::ticks_per_second();
     }
 
@@ -1182,9 +1208,7 @@ namespace QuantLib {
         if (std::time(&t) == std::time_t(-1)) // -1 means time() didn't work
             return Date();
         std::tm *lt = std::localtime(&t);
-        return Date(Day(lt->tm_mday),
-                        Month(lt->tm_mon+1),
-                        Year(lt->tm_year+1900));
+        return {Day(lt->tm_mday), Month(lt->tm_mon + 1), Year(lt->tm_year + 1900)};
     }
 
     inline Date Date::nextWeekday(const Date& d, Weekday dayOfWeek) {
@@ -1200,7 +1224,7 @@ namespace QuantLib {
                    "no more than 5 weekday in a given (month, year)");
         Weekday first = Date(1, m, y).weekday();
         Size skip = nth - (dayOfWeek>=first ? 1 : 0);
-        return Date((1 + dayOfWeek + skip*7) - first, m, y);
+        return {Day((1 + dayOfWeek + skip * 7) - first), m, y};
     }
 
     // month formatting
@@ -1236,6 +1260,17 @@ namespace QuantLib {
         }
     }
 
+    inline std::size_t hash_value(const Date& d) {
+#ifdef QL_HIGH_RESOLUTION_DATE
+        std::size_t seed = 0;
+        boost::hash_combine(seed, d.serialNumber());
+        boost::hash_combine(seed, d.dateTime().time_of_day().total_nanoseconds());
+        return seed;
+#else
+
+        return boost::hash<Date::serial_type>()(d.serialNumber());
+#endif
+    }
 
     // date formatting
 
@@ -1250,7 +1285,7 @@ namespace QuantLib {
             // if the object out passed in the constructor is destroyed
             // before this instance
             struct nopunct : std::numpunct<char> {
-                std::string do_grouping() const {return "";}
+                std::string do_grouping() const override { return ""; }
             };
             FormatResetter(std::ostream &out)
                 : out_(&out), flags_(out.flags()), filler_(out.fill()),
@@ -1345,8 +1380,11 @@ namespace QuantLib {
 
             out << io::iso_date(d) << "T";
             FormatResetter resetter(out);
-            Integer hh = d.hours(), mm = d.minutes(), s = d.seconds(),
-                    millis = d.milliseconds(), micros = d.microseconds();
+            const Hour hh = d.hours();
+            const Minute mm = d.minutes();
+            const Second s = d.seconds();
+            const Millisecond millis = d.milliseconds();
+            const Microsecond micros = d.microseconds();
 
             out << std::setw(2) << std::setfill('0') << hh << ":"
                 << std::setw(2) << std::setfill('0') << mm << ":"

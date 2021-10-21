@@ -51,8 +51,8 @@ namespace QuantLib {
       private:
         class Impl : public Calendar::WesternImpl {
           public:
-            std::string name() const { return "TARGET"; }
-            bool isBusinessDay(const Date&) const;
+            std::string name() const override { return "TARGET"; }
+            bool isBusinessDay(const Date&) const override;
         };
       public:
         TARGET();
@@ -62,7 +62,7 @@ namespace QuantLib {
 
     inline TARGET::TARGET() {
         // all calendar instances share the same implementation instance
-        static boost::shared_ptr<Calendar::Impl> impl(new TARGET::Impl);
+        static ext::shared_ptr<Calendar::Impl> impl(new TARGET::Impl);
         impl_ = impl;
     }
 

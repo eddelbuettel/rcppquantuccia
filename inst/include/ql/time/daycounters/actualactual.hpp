@@ -39,7 +39,7 @@ namespace QuantLib {
         - the AFB convention, also known as "Actual/Actual (Euro)".
 
         For more details, refer to
-        http://www.isda.org/publications/pdf/Day-Count-Fracation1999.pdf
+        https://www.isda.org/a/pIJEE/The-Actual-Actual-Day-Count-Fraction-1999.pdf
 
         \ingroup daycounters
 
@@ -54,66 +54,214 @@ namespace QuantLib {
       private:
         class ISMA_Impl : public DayCounter::Impl {
           public:
-            std::string name() const {
-                return std::string("Actual/Actual (ISMA)");
-            }
+            explicit ISMA_Impl(Schedule schedule) : schedule_(std::move(schedule)) {}
+
+            std::string name() const override { return std::string("Actual/Actual (ISMA)"); }
             Time yearFraction(const Date& d1,
                               const Date& d2,
                               const Date& refPeriodStart,
-                              const Date& refPeriodEnd) const;
+                              const Date& refPeriodEnd) const override;
+
+          private:
+            Schedule schedule_;
+        };
+        class Old_ISMA_Impl : public DayCounter::Impl {
+          public:
+            std::string name() const override { return std::string("Actual/Actual (ISMA)"); }
+            Time yearFraction(const Date& d1,
+                              const Date& d2,
+                              const Date& refPeriodStart,
+                              const Date& refPeriodEnd) const override;
         };
         class ISDA_Impl : public DayCounter::Impl {
           public:
-            std::string name() const {
-                return std::string("Actual/Actual (ISDA)");
-            }
-            Time yearFraction(const Date& d1,
-                              const Date& d2,
-                              const Date&,
-                              const Date&) const;
+            std::string name() const override { return std::string("Actual/Actual (ISDA)"); }
+            Time
+            yearFraction(const Date& d1, const Date& d2, const Date&, const Date&) const override;
         };
         class AFB_Impl : public DayCounter::Impl {
           public:
-            std::string name() const {
-                return std::string("Actual/Actual (AFB)");
-            }
-            Time yearFraction(const Date& d1,
-                              const Date& d2,
-                              const Date&,
-                              const Date&) const;
+            std::string name() const override { return std::string("Actual/Actual (AFB)"); }
+            Time
+            yearFraction(const Date& d1, const Date& d2, const Date&, const Date&) const override;
         };
-        static boost::shared_ptr<DayCounter::Impl> implementation(
-                                                               Convention c);
+        static ext::shared_ptr<DayCounter::Impl> implementation(
+                                                               Convention c,
+                                                               const Schedule& schedule);
       public:
-        ActualActual(Convention c = ActualActual::ISDA)
-        : DayCounter(implementation(c)) {}
+        /*! \deprecated Use the other constructor.
+                        Deprecated in version 1.23.
+        */
+        QL_DEPRECATED
+        ActualActual()
+        : DayCounter(implementation(ActualActual::ISDA, Schedule())) {}
+
+        explicit ActualActual(Convention c,
+                              const Schedule& schedule = Schedule())
+        : DayCounter(implementation(c, schedule)) {}
     };
 
     // implementation
 
-    inline boost::shared_ptr<DayCounter::Impl>
-    ActualActual::implementation(ActualActual::Convention c) {
+    // the template argument works around passing a protected type
+
+    template <class T>
+    Integer findCouponsPerYear(const T& impl,
+                               Date refStart, Date refEnd) {
+        // This will only work for day counts longer than 15 days.
+        auto months = (Integer)std::lround(12 * Real(impl.dayCount(refStart, refEnd)) / 365.0);
+        return (Integer)std::lround(12.0 / Real(months));
+    }
+
+    /* An ISMA day counter either needs a schedule or to have
+       been explicitly passed a reference period. This usage
+       leads to inaccurate year fractions.
+    */
+    template <class T>
+    Time yearFractionGuess(const T& impl,
+                           const Date& start, const Date& end) {
+        // asymptotically correct.
+        return Real(impl.dayCount(start, end)) / 365.0;
+    }
+
+    inline std::vector<Date> getListOfPeriodDatesIncludingQuasiPayments(const Schedule& schedule) {
+        // Process the schedule into an array of dates.
+        Date issueDate = schedule.date(0);
+        std::vector<Date> newDates = schedule.dates();
+
+        if (!schedule.hasIsRegular() || !schedule.isRegular(1))
+            {
+                Date firstCoupon = schedule.date(1);
+
+                Date notionalFirstCoupon =
+                    schedule.calendar().advance(firstCoupon,
+                        -schedule.tenor(),
+                        schedule.businessDayConvention(),
+                        schedule.endOfMonth());
+
+                newDates[0] = notionalFirstCoupon;
+
+                //long first coupon
+                if (notionalFirstCoupon > issueDate) {
+                    Date priorNotionalCoupon =
+                        schedule.calendar().advance(notionalFirstCoupon,
+                                                    -schedule.tenor(),
+                                                    schedule.businessDayConvention(),
+                                                    schedule.endOfMonth());
+                    newDates.insert(newDates.begin(),
+                                    priorNotionalCoupon); //insert as the first element?
+                }
+            }
+
+        if (!schedule.hasIsRegular() || !schedule.isRegular(schedule.size() - 1))
+            {
+                Date notionalLastCoupon =
+                    schedule.calendar().advance(schedule.date(schedule.size() - 2),
+                                                schedule.tenor(),
+                                                schedule.businessDayConvention(),
+                                                schedule.endOfMonth());
+
+                newDates[schedule.size() - 1] = notionalLastCoupon;
+
+                if (notionalLastCoupon < schedule.endDate())
+                    {
+                        Date nextNotionalCoupon =
+                            schedule.calendar().advance(notionalLastCoupon,
+                                                        schedule.tenor(),
+                                                        schedule.businessDayConvention(),
+                                                        schedule.endOfMonth());
+                        newDates.push_back(nextNotionalCoupon);
+                    }
+            }
+
+        return newDates;
+    }
+
+    template <class T>
+    Time yearFractionWithReferenceDates(const T& impl,
+                                        const Date& d1, const Date& d2,
+                                        const Date& d3, const Date& d4) {
+        QL_REQUIRE(d1 <= d2,
+                   "This function is only correct if d1 <= d2\n"
+                   "d1: " << d1 << " d2: " << d2);
+
+        Real referenceDayCount = Real(impl.dayCount(d3, d4));
+        //guess how many coupon periods per year:
+        Integer couponsPerYear;
+        if (referenceDayCount < 16) {
+            couponsPerYear = 1;
+            referenceDayCount = impl.dayCount(d1, d1 + 1 * Years);
+            }
+        else {
+            couponsPerYear = findCouponsPerYear(impl, d3, d4);
+        }
+        return Real(impl.dayCount(d1, d2)) / (referenceDayCount*couponsPerYear);
+    }
+
+    inline ext::shared_ptr<DayCounter::Impl>
+    ActualActual::implementation(ActualActual::Convention c,
+                                 const Schedule& schedule) {
         switch (c) {
           case ISMA:
           case Bond:
-            return boost::shared_ptr<DayCounter::Impl>(new ISMA_Impl);
+            if (!schedule.empty())
+                return ext::shared_ptr<DayCounter::Impl>(new ISMA_Impl(schedule));
+            else
+                return ext::shared_ptr<DayCounter::Impl>(new Old_ISMA_Impl);
           case ISDA:
           case Historical:
           case Actual365:
-            return boost::shared_ptr<DayCounter::Impl>(new ISDA_Impl);
+            return ext::shared_ptr<DayCounter::Impl>(new ISDA_Impl);
           case AFB:
           case Euro:
-            return boost::shared_ptr<DayCounter::Impl>(new AFB_Impl);
+            return ext::shared_ptr<DayCounter::Impl>(new AFB_Impl);
           default:
             QL_FAIL("unknown act/act convention");
         }
     }
 
-
-    inline Time ActualActual::ISMA_Impl::yearFraction(const Date& d1,
+    inline
+    Time ActualActual::ISMA_Impl::yearFraction(const Date& d1,
                                                const Date& d2,
                                                const Date& d3,
                                                const Date& d4) const {
+        if (d1 == d2) {
+            return 0.0;
+        } else if (d2 < d1) {
+            return -yearFraction(d2, d1, d3, d4);
+        }
+
+        std::vector<Date> couponDates =
+            getListOfPeriodDatesIncludingQuasiPayments(schedule_);
+
+        Date firstDate = *std::min_element(couponDates.begin(), couponDates.end());
+        Date lastDate = *std::max_element(couponDates.begin(), couponDates.end());
+
+        QL_REQUIRE(d1 >= firstDate && d2 <= lastDate, "Dates out of range of schedule: "
+                       << "date 1: " << d1 << ", date 2: " << d2 << ", first date: "
+                       << firstDate << ", last date: " << lastDate);
+
+        Real yearFractionSum = 0.0;
+        for (Size i = 0; i < couponDates.size() - 1; i++) {
+            Date startReferencePeriod = couponDates[i];
+            Date endReferencePeriod = couponDates[i + 1];
+            if (d1 < endReferencePeriod && d2 > startReferencePeriod) {
+                yearFractionSum +=
+                    yearFractionWithReferenceDates(*this,
+                                                   std::max(d1, startReferencePeriod),
+                                                   std::min(d2, endReferencePeriod),
+                                                   startReferencePeriod,
+                                                   endReferencePeriod);
+            }
+        }
+        return yearFractionSum;
+    }
+
+    inline
+    Time ActualActual::Old_ISMA_Impl::yearFraction(const Date& d1,
+                                                   const Date& d2,
+                                                   const Date& d3,
+                                                   const Date& d4) const {
         if (d1 == d2)
             return 0.0;
 
@@ -133,8 +281,7 @@ namespace QuantLib {
                    << ", reference period end: " << refPeriodEnd);
 
         // estimate roughly the length in months of a period
-        Integer months =
-            Integer(0.5+12*Real(refPeriodEnd-refPeriodStart)/365);
+        auto months = (Integer)std::lround(12 * Real(refPeriodEnd - refPeriodStart) / 365);
 
         // for short periods...
         if (months == 0) {
@@ -156,7 +303,7 @@ namespace QuantLib {
                 // refPeriodStart < d1 <= d2 < refPeriodEnd
                 // could give wrong results] ???
                 return period*Real(daysBetween(d1,d2)) /
-                	daysBetween(refPeriodStart,refPeriodEnd);
+                    daysBetween(refPeriodStart,refPeriodEnd);
             } else {
                 // here refPeriodStart is the next (maybe notional)
                 // payment date and refPeriodEnd is the second next
@@ -167,6 +314,7 @@ namespace QuantLib {
 
                 // the last notional payment date
                 Date previousRef = refPeriodStart - months*Months;
+
                 if (d2 > refPeriodStart)
                     return yearFraction(d1, refPeriodStart, previousRef,
                                         refPeriodStart) +
@@ -207,7 +355,8 @@ namespace QuantLib {
         }
     }
 
-    inline Time ActualActual::ISDA_Impl::yearFraction(const Date& d1,
+    inline
+    Time ActualActual::ISDA_Impl::yearFraction(const Date& d1,
                                                const Date& d2,
                                                const Date&,
                                                const Date&) const {
@@ -228,7 +377,8 @@ namespace QuantLib {
         return sum;
     }
 
-    inline Time ActualActual::AFB_Impl::yearFraction(const Date& d1,
+    inline
+    Time ActualActual::AFB_Impl::yearFraction(const Date& d1,
                                               const Date& d2,
                                               const Date&,
                                               const Date&) const {
