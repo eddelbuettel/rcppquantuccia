@@ -1,8 +1,16 @@
+2021-10-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Date, Version): Roll minor version and date
+
+	* README.md: Updated
+
+	* inst/include/ql/time/ecb.hpp: Added
+	* inst/include/ql/daycounter.hpp: Removed unused header
+	* inst/include/ql/daycounters/*: Idem
+
 2021-10-20  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/ql/time/calendars/brazil.hpp: Added
-	* inst/include/ql/daycounter.hpp: Removed unused header
-	* inst/include/ql/daycounters/*: Idem
 
 2021-10-19  Dirk Eddelbuettel  <edd@debian.org>
 
