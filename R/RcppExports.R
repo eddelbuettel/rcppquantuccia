@@ -140,21 +140,26 @@ businessDaysBetween <- function(from, to, includeFirst = TRUE, includeLast = FAL
     .Call(`_RcppQuantuccia_businessDaysBetween`, from, to, includeFirst, includeLast)
 }
 
-#' Compute the number of holidays between two dates
+#' Compute the number of holidays (or business days) between two dates
 #'
 #' This function takes a start and end date and returns a vector of holidays
-#' between them according to the active calendar.
+#' (or business days) between them according to the active calendar.
 #'
-#' @title Compute holidays
+#' @title Compute holidays or business days
 #' @param from A Date object with the start date
 #' @param to A Date object with the end date
 #' @param includeWeekends A boolean indicating if weekends should be included, default
 #' is \sQuote{FALSE}
-#' @return A Date vector with holidays between the given dates
+#' @return A Date vector with holidays or business days between the given dates
 #' @examples
 #' getHolidays(Sys.Date(), Sys.Date() + 30)
 getHolidays <- function(from, to, includeWeekends = FALSE) {
     .Call(`_RcppQuantuccia_getHolidays`, from, to, includeWeekends)
+}
+
+#' @rdname getHolidays
+getBusinessDays <- function(from, to) {
+    .Call(`_RcppQuantuccia_getBusinessDays`, from, to)
 }
 
 # Register entry points for exported C++ functions

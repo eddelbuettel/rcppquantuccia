@@ -2,9 +2,12 @@
 % Please edit documentation in R/RcppExports.R
 \name{getHolidays}
 \alias{getHolidays}
-\title{Compute holidays}
+\alias{getBusinessDays}
+\title{Compute holidays or business days}
 \usage{
 getHolidays(from, to, includeWeekends = FALSE)
+
+getBusinessDays(from, to)
 }
 \arguments{
 \item{from}{A Date object with the start date}
@@ -15,14 +18,14 @@ getHolidays(from, to, includeWeekends = FALSE)
 is \sQuote{FALSE}}
 }
 \value{
-A Date vector with holidays between the given dates
+A Date vector with holidays or business days between the given dates
 }
 \description{
-Compute the number of holidays between two dates
+Compute the number of holidays (or business days) between two dates
 }
 \details{
 This function takes a start and end date and returns a vector of holidays
-between them according to the active calendar.
+(or business days) between them according to the active calendar.
 }
 \examples{
 getHolidays(Sys.Date(), Sys.Date() + 30)

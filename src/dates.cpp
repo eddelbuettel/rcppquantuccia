@@ -2,7 +2,7 @@
 //
 //  RcppQuantuccia -- R interface to QuantLib via Quantuccia
 //
-//  Copyright (C) 2002 - 2017  Dirk Eddelbuettel <edd@debian.org>
+//  Copyright (C) 2002 - 2021  Dirk Eddelbuettel <edd@debian.org>
 //
 //  This file is part of RcppQuantuccia
 //
@@ -34,14 +34,6 @@
 namespace ql = QuantLib;
 
 RcppQuantuccia::CalendarContainer gblcal;
-
-// / /  [ [Rcpp::export]]
-// void advanceDemo(Rcpp::Date rd) {
-//     ql::TARGET cal1;
-//     ql::UnitedStates cal2;
-//     ql::Date d(static_cast<int>(rd.getDate() + Rcpp::getQLtoJan1970offset()));
-//     Rcpp::Rcout << d << " " << cal1.adjust(d) << " " << cal2.adjust(d) << std::endl;
-// }
 
 //' Set a calendar
 //'
@@ -211,26 +203,6 @@ Rcpp::DateVector adjust_cpp(Rcpp::DateVector dates, int bdc=0) {
     return adjusted;
 }
 
-// / / [ [ Rcpp::export]]
-// std::vector<QuantLib::Date> advance1(std::string calendar,
-//                                      double amount,
-//                                      ddouble unit,
-//                                      int bdcVal,
-//                                      double emr,
-//                                      std::vector<QuantLib::Date> dates) {
-
-//     boost::shared_ptr<QuantLib::Calendar> pcal(getCalendar(calendar));
-//     QuantLib::BusinessDayConvention bdc = getBusinessDayConvention(bdcVal);
-//     int n = dates.size();
-//     std::vector<QuantLib::Date> advance(n);
-
-//     for (int i=0; i<n; i++) {
-//         advance[i] = pcal->advance(dates[i], amount, getTimeUnit(unit),
-//                                    bdc, (emr == 1) ? true : false);
-//     }
-//     return advance;
-// }
-
 //' @rdname advanceUnits
 // [[Rcpp::export]]
 Rcpp::DateVector advanceUnits_cpp(Rcpp::DateVector dates, int n, int unit,
@@ -280,17 +252,17 @@ Rcpp::NumericVector businessDaysBetween(Rcpp::DateVector from, Rcpp::DateVector 
     return between;
 }
 
-//' Compute the number of holidays between two dates
+//' Compute the number of holidays (or business days) between two dates
 //'
 //' This function takes a start and end date and returns a vector of holidays
-//' between them according to the active calendar.
+//' (or business days) between them according to the active calendar.
 //'
-//' @title Compute holidays
+//' @title Compute holidays or business days
 //' @param from A Date object with the start date
 //' @param to A Date object with the end date
 //' @param includeWeekends A boolean indicating if weekends should be included, default
 //' is \sQuote{FALSE}
-//' @return A Date vector with holidays between the given dates
+//' @return A Date vector with holidays or business days between the given dates
 //' @examples
 //' getHolidays(Sys.Date(), Sys.Date() + 30)
 // [[Rcpp::export]]
@@ -306,18 +278,16 @@ Rcpp::DateVector getHolidays(Rcpp::Date from, Rcpp::Date to, bool includeWeekend
     return dv;
 }
 
-#if 0
-// [ [ Rcpp::export]]
-Rcpp::Datetime dtConvert(Rcpp::Datetime dt) {
-
-    namespace bt = boost::posix_time;
-
-    bt::ptime a = bt::from_time_t(dt.getFractionalTimestamp());
-    ql::Date b(a);
-
-    Rcpp::Datetime ndt(dt);
-
-    Rcpp::Rcout << dt << " -- " << ndt << " -- " << b << std::endl;
-    return Rcpp::wrap(ndt);
+//' @rdname getHolidays
+// [[Rcpp::export]]
+Rcpp::DateVector getBusinessDays(Rcpp::Date from, Rcpp::Date to) {
+    ql::Calendar cal = gblcal.getCalendar();
+    std::vector<ql::Date> holidays = cal.businessDayList(Rcpp::as<ql::Date>(from),
+                                                         Rcpp::as<ql::Date>(to));
+    int n = holidays.size();
+    Rcpp::DateVector dv(n);
+    for (auto i=0; i<n; i++) {
+        dv[i] = Rcpp::qlDate2Rcpp(holidays[i]);
+    }
+    return dv;
 }
-#endif
