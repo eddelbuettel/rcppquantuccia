@@ -10,22 +10,24 @@
 ### Status
 
 Access to current calendaring functions from QuantLib in an easy-to-build smaller package.
-All code is current to the current QuantLib release 1.24, but not all calendars are implemented yet
-(but that is now easy to change); similarly a few more business-day conventions can be added.
+
+All code is current to the current QuantLib release 1.24, but not all
+calendars are implemented yet (but that is now easy to change).
 
 ### Brief History
 
-This package started as a brief (somewhat experimental port) of
+This package started as an integration of the (somewhat experimental)
 [Quantuccia](https://github.com/pcaspers/Quantuccia) (see next section) to R by means of Rcpp.
 
-But as [Quantuccia](https://github.com/pcaspers/Quantuccia) stalled work beyond its initial proof of
-concept, so did this repo. As of release 0.0.5, we have now refocused it on an _even smaller subset_
-of [QuantLib](https://github.com/lballabio/quantlib): just the calendaring.  So code for pricers,
-math, ... that was in [Quantuccia](https://github.com/pcaspers/Quantuccia) has been removed.
+But [Quantuccia](https://github.com/pcaspers/Quantuccia) did not continue beyond its initial proof
+of concept. As of release 0.0.5, we have now refocused it on an _even smaller subset_ of
+[QuantLib](https://github.com/lballabio/quantlib): just the calendaring.  So code for pricers, math,
+models, schedules, ... that was in [Quantuccia](https://github.com/pcaspers/Quantuccia) has been
+removed.
 
 But the calendaring, along with all its support code, is now current with the current
 [QuantLib](https://github.com/lballabio/quantlib) release which, as of this writing, is 1.24.
-(It is not complete as there are more calendars to integrate but that is straightforward.)
+(It is not complete as there are more calendars to integrate but that is now straightforward.)
 
 ### So what is Quantuccia?
 
@@ -72,6 +74,8 @@ As of version 0.0.3, we exclude the 7.6 mb header file `sobolrsg.hpp`, and well 
 including the model subdirectory using the Sobol-based Brownian Market Models.  This shrinks the
 resulting shared library from around 26 mb (!!) to 0.64 mb, and the (compressed) source tarball from
 1.6 mb to 0.24 mb.
+
+As of version 0.0.5, the focus is _strictly_ on calendaring.
 
 ### Installation
 

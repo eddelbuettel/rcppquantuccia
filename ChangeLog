@@ -1,3 +1,10 @@
+2021-10-22  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/dates.cpp: Added getBusinessDays() accessor
+	* man/getHolidays.Rd: Documentation
+
+	* README.md: Updated
+
 2021-10-21  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Date, Version): Roll minor version and date
