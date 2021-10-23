@@ -1,15 +1,15 @@
 Package: RcppQuantuccia
 Type: Package
 Title: R Bindings to the Calendaring Functionality of 'QuantLib'
-Version: 0.0.4.2
-Date: 2021-10-21
+Version: 0.0.5
+Date: 2021-10-23
 Author: Dirk Eddelbuettel; the authors and contributors of QuantLib
 Maintainer: Dirk Eddelbuettel <edd@debian.org>
 Description: 'QuantLib' bindings are provided for R using 'Rcpp' via an updated
  variant of the header-only 'Quantuccia' project (put together initially by Peter
- Caspers) offering  an essential subset of 'QuantLib' (and now maintained in this
- repo for the calendaring subset). See the included file 'AUTHORS' for a full
- list of contributors to both 'QuantLib' and 'Quantuccia'.
+ Caspers) offering an essential subset of 'QuantLib' (and now maintained separately
+ for the calendaring subset). See the included file 'AUTHORS' for a full list of
+ contributors to both 'QuantLib' and 'Quantuccia'.
 URL: https://github.com/eddelbuettel/rcppquantuccia, https://dirk.eddelbuettel.com/code/rcpp.quantuccia.html
 BugReports: https://github.com/eddelbuettel/rcppquantuccia/issues
 License: GPL (>= 2)

@@ -3,6 +3,16 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppquantuccia/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppquantuccia/issues/#1}{##1}}
 
+\section{Changes in version 0.0.5 (2021-10-23)}{
+  \itemize{
+    \item Refocused on calendaring functionality only, removed
+    daycounters/, math/, methods/, models/, plus other unused headers
+    \item Fully updated to (current) QuantLib release 0.2.4
+    \item Added getBusinessDays() to retrieve range of dates
+    \item Added Brazil calendar
+  }
+}
+
 \section{Changes in version 0.0.4 (2021-10-12)}{
   \itemize{
     \item Allow for 'Null' calendar without weekends or holidays
