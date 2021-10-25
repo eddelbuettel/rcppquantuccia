@@ -67,6 +67,57 @@ R>
 This shows the difference between the default US settlement calendar and the NYSE calendar
 which we selected explicitly.
 
+As all calendars are now supported (and are listed in a convenience vector `calendars`) we can now
+for example quickly count number of holiday per calendar (by computing the length of the returned
+vector of holidays):
+
+```r
+> library(RcppQuantuccia)
+> calendars
+ [1] "TARGET"                         "UnitedStates"                   "UnitedStates/LiborImpact"
+ [4] "UnitedStates/NYSE"              "UnitedStates/GovernmentBond"    "UnitedStates/NERC"
+ [7] "UnitedStates/FederalReserve"    "Argentina"                      "Australia"
+[10] "Austria"                        "Austria/Exchange"               "Bespoke"
+[13] "Botswana"                       "Brazil"                         "Brazil/Exchange"
+[16] "Canada"                         "Canada/TSX"                     "Chile"
+[19] "China"                          "China/IB"                       "CzechRepublic"
+[22] "Denmark"                        "Finland"                        "France"
+[25] "France/Exchange"                "Germany"                        "Germany/FrankfurtStockExchange"
+[28] "Germany/Xetra"                  "Germany/Eurex"                  "Germany/Euwax"
+[31] "HongKong"                       "Hungary"                        "Iceland"
+[34] "India"                          "Indonesia"                      "Israel"
+[37] "Italy"                          "Italy/Exchange"                 "Japan"
+[40] "Mexico"                         "NewZealand"                     "Norway"
+[43] "Null"                           "Poland"                         "Romania"
+[46] "Russia"                         "SaudiArabia"                    "Singapore"
+[49] "Slovakia"                       "SouthAfrica"                    "SouthKorea"
+[52] "SouthKorea/KRX"                 "Sweden"                         "Switzerland"
+[55] "Taiwan"                         "Thailand"                       "Turkey"
+[58] "Ukraine"                        "UnitedKingdom"                  "UnitedKingdom/Exchange"
+[61] "UnitedKingdom/Metals"           "WeekendsOnly"
+> nHol <- function(cal) { setCalendar(cal); length(getHolidays(as.Date("2022-01-01"), as.Date("2022-12-31"))) }
+> nh <- data.frame(nh=sapply(calendars, nHol))	# sweep nHol function over calendars
+> head(nh)
+                            nh
+TARGET                       3
+UnitedStates                10
+UnitedStates/LiborImpact    10
+UnitedStates/NYSE            9
+UnitedStates/GovernmentBond 11
+UnitedStates/NERC            5
+> tail(nh)
+                       nh
+Turkey                  8
+Ukraine                10
+UnitedKingdom           9
+UnitedKingdom/Exchange  9
+UnitedKingdom/Metals    9
+WeekendsOnly            0
+>
+```
+
+Here we set the year to 2022 as it includes the added US holiday of Juneteenth.
+
 ### A Smaller Subset
 
 As of version 0.0.3, we exclude the 7.6 mb header file `sobolrsg.hpp`, and well as references to it
