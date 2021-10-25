@@ -2,7 +2,9 @@
 #ifndef rcpp_quantuccia_date_wrappers_h
 #define rcpp_quantuccia_date_wrappers_h
 
-#define QL_HIGH_RESOLUTION_DATE
+#ifndef QL_HIGH_RESOLUTION_DATE
+  #define QL_HIGH_RESOLUTION_DATE
+#endif
 #include <ql/quantlib.hpp>
 
 #include <Rcpp.h>
@@ -22,10 +24,10 @@ namespace Rcpp {
         return QuantLib::Date(static_cast<int>(dt.getDate()) + QLtoJan1970Offset);
     }
     template <> QuantLib::Date as(Rcpp::Datetime dt) {
-        const boost::posix_time::ptime pt(boost::gregorian::date(dt.getYear(), dt.getMonth(), dt.getDay()), 
-                                          boost::posix_time::time_duration(dt.getHours(), 
-                                                                           dt.getMinutes(), 
-                                                                           dt.getSeconds(), 
+        const boost::posix_time::ptime pt(boost::gregorian::date(dt.getYear(), dt.getMonth(), dt.getDay()),
+                                          boost::posix_time::time_duration(dt.getHours(),
+                                                                           dt.getMinutes(),
+                                                                           dt.getSeconds(),
                                                                            dt.getMicroSeconds()*1000.0));
         return QuantLib::Date(pt);
     }
@@ -42,12 +44,7 @@ namespace Rcpp {
         int n = dtvec.size();
         std::vector<QuantLib::Date> dates(n);
         for (int i = 0; i<n; i++){
-#if RCPP_VERSION >= Rcpp_Version(0,12,8)
-            //dates[i] = QuantLib::Date(static_cast<int>(dtvec[i]) + QLtoJan1970Offset);
             dates[i] = QuantLib::Date(static_cast<int>(Rcpp::Date(dtvec[i]).getDate()) + QLtoJan1970Offset);
-#else
-            dates[i] = QuantLib::Date(static_cast<int>(dtvec[i].getDate()) + QLtoJan1970Offset);
-#endif
         }
         return dates;
     }

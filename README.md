@@ -11,13 +11,13 @@
 
 Access to current calendaring functions from QuantLib in an easy-to-build smaller package.
 
-All code is current to the current QuantLib release 1.24, but not all
-calendars are implemented yet (but that is now easy to change).
+All code is current to the current QuantLib release 1.24 (modulo small patches). All of
+the calendars are implemented.
 
 ### Brief History
 
 This package started as an integration of the (somewhat experimental)
-[Quantuccia](https://github.com/pcaspers/Quantuccia) (see next section) to R by means of Rcpp.
+[Quantuccia](https://github.com/pcaspers/Quantuccia) package (see next section) to R by means of Rcpp.
 
 But [Quantuccia](https://github.com/pcaspers/Quantuccia) did not continue beyond its initial proof
 of concept. As of release 0.0.5, we have now refocused it on an _even smaller subset_ of
@@ -27,7 +27,6 @@ removed.
 
 But the calendaring, along with all its support code, is now current with the current
 [QuantLib](https://github.com/lballabio/quantlib) release which, as of this writing, is 1.24.
-(It is not complete as there are more calendars to integrate but that is now straightforward.)
 
 ### So what is Quantuccia?
 
@@ -93,7 +92,7 @@ remotes::install_github("eddelbuettel/rcppquantuccia")
 
 or maybe just checkout the repository locally.
 
-It only required `Rcpp` and `BH` both of which are available whereever `R` itself runs.
+It only requires `Rcpp` and `BH` both of which are available whereever `R` itself runs.
 
 ### Authors
 

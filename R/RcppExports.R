@@ -17,6 +17,25 @@ setCalendar <- function(calstr) {
     invisible(.Call(`_RcppQuantuccia_setCalendar`, calstr))
 }
 
+#' Get calendar name or id
+#'
+#' This function returns the corresponding (full) name (as in the underlying
+#' implementationclass) or identification string (used to select it) of the
+#' current calendar.
+#'
+#' @title Get calendar name, or id
+#' @return A string with the calendar name
+#' @examples
+#' getName()
+getName <- function() {
+    .Call(`_RcppQuantuccia_getName`)
+}
+
+#' @rdname getName
+getId <- function() {
+    .Call(`_RcppQuantuccia_getId`)
+}
+
 #' Advance a date to the next business day plus an optional shift
 #'
 #' This function takes a given date and advances it to the next business day

@@ -1,8 +1,7 @@
-// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
-//
+
 //  RcppQuantuccia -- R interface to QuantLib via Quantuccia
 //
-//  Copyright (C) 2002 - 2017  Dirk Eddelbuettel <edd@debian.org>
+//  Copyright (C) 2002 - 2021  Dirk Eddelbuettel <edd@debian.org>
 //
 //  This file is part of RcppQuantuccia
 //

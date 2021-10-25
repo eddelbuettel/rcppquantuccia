@@ -47,6 +47,72 @@ RcppExport SEXP _RcppQuantuccia_setCalendar(SEXP calstrSEXP) {
     UNPROTECT(1);
     return rcpp_result_gen;
 }
+// getName
+std::string getName();
+static SEXP _RcppQuantuccia_getName_try() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    rcpp_result_gen = Rcpp::wrap(getName());
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _RcppQuantuccia_getName() {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_RcppQuantuccia_getName_try());
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// getId
+std::string getId();
+static SEXP _RcppQuantuccia_getId_try() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    rcpp_result_gen = Rcpp::wrap(getId());
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _RcppQuantuccia_getId() {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_RcppQuantuccia_getId_try());
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
 // advanceDate
 Rcpp::Date advanceDate(Rcpp::Date rd, int days);
 static SEXP _RcppQuantuccia_advanceDate_try(SEXP rdSEXP, SEXP daysSEXP) {
@@ -439,6 +505,8 @@ static int _RcppQuantuccia_RcppExport_validate(const char* sig) {
     static std::set<std::string> signatures;
     if (signatures.empty()) {
         signatures.insert("void(*setCalendar)(std::string)");
+        signatures.insert("std::string(*getName)()");
+        signatures.insert("std::string(*getId)()");
         signatures.insert("Rcpp::Date(*advanceDate)(Rcpp::Date,int)");
         signatures.insert("Rcpp::LogicalVector(*isBusinessDay)(Rcpp::DateVector)");
         signatures.insert("Rcpp::LogicalVector(*isHoliday)(Rcpp::DateVector)");
@@ -457,6 +525,8 @@ static int _RcppQuantuccia_RcppExport_validate(const char* sig) {
 // registerCCallable (register entry points for exported C++ functions)
 RcppExport SEXP _RcppQuantuccia_RcppExport_registerCCallable() { 
     R_RegisterCCallable("RcppQuantuccia", "_RcppQuantuccia_setCalendar", (DL_FUNC)_RcppQuantuccia_setCalendar_try);
+    R_RegisterCCallable("RcppQuantuccia", "_RcppQuantuccia_getName", (DL_FUNC)_RcppQuantuccia_getName_try);
+    R_RegisterCCallable("RcppQuantuccia", "_RcppQuantuccia_getId", (DL_FUNC)_RcppQuantuccia_getId_try);
     R_RegisterCCallable("RcppQuantuccia", "_RcppQuantuccia_advanceDate", (DL_FUNC)_RcppQuantuccia_advanceDate_try);
     R_RegisterCCallable("RcppQuantuccia", "_RcppQuantuccia_isBusinessDay", (DL_FUNC)_RcppQuantuccia_isBusinessDay_try);
     R_RegisterCCallable("RcppQuantuccia", "_RcppQuantuccia_isHoliday", (DL_FUNC)_RcppQuantuccia_isHoliday_try);
@@ -474,6 +544,8 @@ RcppExport SEXP _RcppQuantuccia_RcppExport_registerCCallable() {
 
 static const R_CallMethodDef CallEntries[] = {
     {"_RcppQuantuccia_setCalendar", (DL_FUNC) &_RcppQuantuccia_setCalendar, 1},
+    {"_RcppQuantuccia_getName", (DL_FUNC) &_RcppQuantuccia_getName, 0},
+    {"_RcppQuantuccia_getId", (DL_FUNC) &_RcppQuantuccia_getId, 0},
     {"_RcppQuantuccia_advanceDate", (DL_FUNC) &_RcppQuantuccia_advanceDate, 2},
     {"_RcppQuantuccia_isBusinessDay", (DL_FUNC) &_RcppQuantuccia_isBusinessDay, 1},
     {"_RcppQuantuccia_isHoliday", (DL_FUNC) &_RcppQuantuccia_isHoliday, 1},
