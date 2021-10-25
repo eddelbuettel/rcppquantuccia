@@ -45,6 +45,48 @@ namespace RcppQuantuccia {
             throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
     }
 
+    inline std::string getName() {
+        typedef SEXP(*Ptr_getName)();
+        static Ptr_getName p_getName = NULL;
+        if (p_getName == NULL) {
+            validateSignature("std::string(*getName)()");
+            p_getName = (Ptr_getName)R_GetCCallable("RcppQuantuccia", "_RcppQuantuccia_getName");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_getName();
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<std::string >(rcpp_result_gen);
+    }
+
+    inline std::string getId() {
+        typedef SEXP(*Ptr_getId)();
+        static Ptr_getId p_getId = NULL;
+        if (p_getId == NULL) {
+            validateSignature("std::string(*getId)()");
+            p_getId = (Ptr_getId)R_GetCCallable("RcppQuantuccia", "_RcppQuantuccia_getId");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_getId();
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<std::string >(rcpp_result_gen);
+    }
+
     inline Rcpp::Date advanceDate(Rcpp::Date rd, int days = 0) {
         typedef SEXP(*Ptr_advanceDate)(SEXP,SEXP);
         static Ptr_advanceDate p_advanceDate = NULL;
