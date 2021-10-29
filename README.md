@@ -72,38 +72,38 @@ As all calendars are now supported (and are listed in a convenience vector `cale
 ```r
 > library(RcppQuantuccia)
 > calendars
- [1] "TARGET"                         "UnitedStates"                  
- [3] "UnitedStates/LiborImpact"       "UnitedStates/NYSE"             
- [5] "UnitedStates/GovernmentBond"    "UnitedStates/NERC"             
- [7] "UnitedStates/FederalReserve"    "Argentina"                     
- [9] "Australia"                      "Austria"                       
-[11] "Austria/Exchange"               "Bespoke"                       
-[13] "Botswana"                       "Brazil"                        
-[15] "Brazil/Exchange"                "Canada"                        
-[17] "Canada/TSX"                     "Chile"                         
-[19] "China"                          "China/IB"                      
-[21] "CzechRepublic"                  "Denmark"                       
-[23] "Finland"                        "France"                        
-[25] "France/Exchange"                "Germany"                       
-[27] "Germany/FrankfurtStockExchange" "Germany/Xetra"                 
-[29] "Germany/Eurex"                  "Germany/Euwax"                 
-[31] "HongKong"                       "Hungary"                       
-[33] "Iceland"                        "India"                         
-[35] "Indonesia"                      "Israel"                        
-[37] "Italy"                          "Italy/Exchange"                
-[39] "Japan"                          "Mexico"                        
-[41] "NewZealand"                     "Norway"                        
-[43] "Null"                           "Poland"                        
-[45] "Romania"                        "Russia"                        
-[47] "SaudiArabia"                    "Singapore"                     
-[49] "Slovakia"                       "SouthAfrica"                   
-[51] "SouthKorea"                     "SouthKorea/KRX"                
-[53] "Sweden"                         "Switzerland"                   
-[55] "Taiwan"                         "Thailand"                      
-[57] "Turkey"                         "Ukraine"                       
-[59] "UnitedKingdom"                  "UnitedKingdom/Exchange"        
-[61] "UnitedKingdom/Metals"           "WeekendsOnly"                  
-> 
+ [1] "TARGET"                         "UnitedStates"
+ [3] "UnitedStates/LiborImpact"       "UnitedStates/NYSE"
+ [5] "UnitedStates/GovernmentBond"    "UnitedStates/NERC"
+ [7] "UnitedStates/FederalReserve"    "Argentina"
+ [9] "Australia"                      "Austria"
+[11] "Austria/Exchange"               "Bespoke"
+[13] "Botswana"                       "Brazil"
+[15] "Brazil/Exchange"                "Canada"
+[17] "Canada/TSX"                     "Chile"
+[19] "China"                          "China/IB"
+[21] "CzechRepublic"                  "Denmark"
+[23] "Finland"                        "France"
+[25] "France/Exchange"                "Germany"
+[27] "Germany/FrankfurtStockExchange" "Germany/Xetra"
+[29] "Germany/Eurex"                  "Germany/Euwax"
+[31] "HongKong"                       "Hungary"
+[33] "Iceland"                        "India"
+[35] "Indonesia"                      "Israel"
+[37] "Italy"                          "Italy/Exchange"
+[39] "Japan"                          "Mexico"
+[41] "NewZealand"                     "Norway"
+[43] "Null"                           "Poland"
+[45] "Romania"                        "Russia"
+[47] "SaudiArabia"                    "Singapore"
+[49] "Slovakia"                       "SouthAfrica"
+[51] "SouthKorea"                     "SouthKorea/KRX"
+[53] "Sweden"                         "Switzerland"
+[55] "Taiwan"                         "Thailand"
+[57] "Turkey"                         "Ukraine"
+[59] "UnitedKingdom"                  "UnitedKingdom/Exchange"
+[61] "UnitedKingdom/Metals"           "WeekendsOnly"
+>
 
  We can then for example quickly count number of holiday per calendar (by computing the length of the returned
 vector of holidays) and show a shortened print, all in a handful of lines continuing from above
@@ -125,13 +125,13 @@ vector of holidays) and show a shortened print, all in a handful of lines contin
  3:    UnitedStates/LiborImpact 10        17 Jan,21 Feb,30 May,20 Jun,04 Jul,05 Sep,10 Oct,11 Nov,24 Nov,26 Dec
  4:           UnitedStates/NYSE  9               17 Jan,21 Feb,15 Apr,30 May,20 Jun,04 Jul,05 Sep,24 Nov,26 Dec
  5: UnitedStates/GovernmentBond 11 17 Jan,21 Feb,15 Apr,30 May,20 Jun,04 Jul,05 Sep,10 Oct,11 Nov,24 Nov,26 Dec
----                                                                                                            
+---
 58:                     Ukraine 10        03 Jan,07 Jan,08 Mar,25 Apr,02 May,09 May,13 Jun,28 Jun,24 Aug,14 Oct
 59:               UnitedKingdom  9               03 Jan,15 Apr,18 Apr,02 May,02 Jun,03 Jun,29 Aug,26 Dec,27 Dec
 60:      UnitedKingdom/Exchange  9               03 Jan,15 Apr,18 Apr,02 May,02 Jun,03 Jun,29 Aug,26 Dec,27 Dec
 61:        UnitedKingdom/Metals  9               03 Jan,15 Apr,18 Apr,02 May,02 Jun,03 Jun,29 Aug,26 Dec,27 Dec
-62:                WeekendsOnly  0                                                                             
-> 
+62:                WeekendsOnly  0
+>
 ```
 
 Here we set the year to 2022 as it includes the added US holiday of Juneteenth.
@@ -146,13 +146,13 @@ We can also access the calendar 'name' from the underlying (QuantLib Calendar) o
  3:    UnitedStates/LiborImpact      US with Libor impact
  4:           UnitedStates/NYSE   New York stock exchange
  5: UnitedStates/GovernmentBond US government bond market
----                                                      
+---
 58:                     Ukraine  Ukrainian stock exchange
 59:               UnitedKingdom             UK settlement
 60:      UnitedKingdom/Exchange     London stock exchange
 61:        UnitedKingdom/Metals    London metals exchange
 62:                WeekendsOnly             weekends only
-> 
+>
 ```
 
 
@@ -190,7 +190,9 @@ It only requires `Rcpp` and `BH` both of which are available whereever `R` itsel
 
 ### Authors
 
-Dirk Eddelbuettel
+Dirk Eddelbuettel for the package and integration
+
+The authors and contributors of QuantLib for the underlying calendaring code
 
 ### License
 
