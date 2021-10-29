@@ -136,6 +136,26 @@ vector of holidays) and show a shortened print, all in a handful of lines contin
 
 Here we set the year to 2022 as it includes the added US holiday of Juneteenth.
 
+We can also access the calendar 'name' from the underlying (QuantLib Calendar) object:
+
+```r
+> D[, name := { setCalendar(calendar); getName() }, by=calendar][, .(calendar,name)]
+                       calendar                      name
+ 1:                      TARGET                    TARGET
+ 2:                UnitedStates             US settlement
+ 3:    UnitedStates/LiborImpact      US with Libor impact
+ 4:           UnitedStates/NYSE   New York stock exchange
+ 5: UnitedStates/GovernmentBond US government bond market
+---                                                      
+58:                     Ukraine  Ukrainian stock exchange
+59:               UnitedKingdom             UK settlement
+60:      UnitedKingdom/Exchange     London stock exchange
+61:        UnitedKingdom/Metals    London metals exchange
+62:                WeekendsOnly             weekends only
+> 
+```
+
+
 ### A Smaller Subset
 
 As of version 0.0.3, we exclude the 7.6 mb header file `sobolrsg.hpp`, and well as references to it

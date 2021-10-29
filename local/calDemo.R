@@ -14,3 +14,5 @@ D[ , `:=`(n = length(getHols(calendar)),
   by = calendar ]
 D
 print(D[order(-holidays)], nrow=length(calendars))
+
+D[, name := { setCalendar(calendar); getName() }, by=calendar][, .(calendar,name)]
