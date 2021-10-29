@@ -1,3 +1,10 @@
+2021-10-29  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Edits
+
+	* local/changes_from_quantlib_1.24.diff: Diff file relative to
+	QuantLib 1.24
+
 2021-10-25  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Date, Version): Roll minor version and date
@@ -17,7 +24,9 @@
 
 2021-10-23  Dirk Eddelbuettel  <edd@debian.org>
 
-	* src/ql/*: Refactored to use upstream cpp and hpp files
+	* DESCRIPTION (Date, Version): Release 0.0.5
+
+ 	* src/ql/*: Refactored to use upstream cpp and hpp files
 	* inst/include/ql/: Removed
 
 2021-10-22  Dirk Eddelbuettel  <edd@debian.org>
