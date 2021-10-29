@@ -11,8 +11,8 @@
 
 Access to current calendaring functions from QuantLib in an easy-to-build smaller package.
 
-All code is current to the current QuantLib release 1.24 (modulo small patches). All of
-the calendars are implemented.
+As of release 0.1.0, all code is current to the current QuantLib release 1.24 (modulo a [small patch set](local/changes_from_quantlib_1.24.diff)). All of
+the upstream, _i.e._ QuantLib, calendars are implemented as are the key access functions.
 
 ### Brief History
 
@@ -35,7 +35,7 @@ But the calendaring, along with all its support code, is now current with the cu
 essential parts of [QuantLib](https://github.com/lballabio/quantlib) while being easier to deploy
 requiring only [Boost](https://www.boost.org) headers besides itself.  (Note that
 [Quantuccia](https://github.com/pcaspers/Quantuccia) appears to no longer being developed in its
-upstream repo.  However, the idea of only relying on Boost headers is brillian and carried on here.)
+upstream repo.  However, the idea of only relying on Boost headers is brilliant and carried on here.)
 
 Being header-only makes providing [Quantuccia](https://github.com/pcaspers/Quantuccia) for
 [R](https://www.r-project.org) a breeze as we can rely on the
@@ -67,53 +67,71 @@ R>
 This shows the difference between the default US settlement calendar and the NYSE calendar
 which we selected explicitly.
 
-As all calendars are now supported (and are listed in a convenience vector `calendars`) we can now
-for example quickly count number of holiday per calendar (by computing the length of the returned
-vector of holidays):
+As all calendars are now supported (and are listed in a convenience vector `calendars`):
 
 ```r
 > library(RcppQuantuccia)
 > calendars
- [1] "TARGET"                         "UnitedStates"                   "UnitedStates/LiborImpact"
- [4] "UnitedStates/NYSE"              "UnitedStates/GovernmentBond"    "UnitedStates/NERC"
- [7] "UnitedStates/FederalReserve"    "Argentina"                      "Australia"
-[10] "Austria"                        "Austria/Exchange"               "Bespoke"
-[13] "Botswana"                       "Brazil"                         "Brazil/Exchange"
-[16] "Canada"                         "Canada/TSX"                     "Chile"
-[19] "China"                          "China/IB"                       "CzechRepublic"
-[22] "Denmark"                        "Finland"                        "France"
-[25] "France/Exchange"                "Germany"                        "Germany/FrankfurtStockExchange"
-[28] "Germany/Xetra"                  "Germany/Eurex"                  "Germany/Euwax"
-[31] "HongKong"                       "Hungary"                        "Iceland"
-[34] "India"                          "Indonesia"                      "Israel"
-[37] "Italy"                          "Italy/Exchange"                 "Japan"
-[40] "Mexico"                         "NewZealand"                     "Norway"
-[43] "Null"                           "Poland"                         "Romania"
-[46] "Russia"                         "SaudiArabia"                    "Singapore"
-[49] "Slovakia"                       "SouthAfrica"                    "SouthKorea"
-[52] "SouthKorea/KRX"                 "Sweden"                         "Switzerland"
-[55] "Taiwan"                         "Thailand"                       "Turkey"
-[58] "Ukraine"                        "UnitedKingdom"                  "UnitedKingdom/Exchange"
-[61] "UnitedKingdom/Metals"           "WeekendsOnly"
-> nHol <- function(cal) { setCalendar(cal); length(getHolidays(as.Date("2022-01-01"), as.Date("2022-12-31"))) }
-> nh <- data.frame(nh=sapply(calendars, nHol))	# sweep nHol function over calendars
-> head(nh)
-                            nh
-TARGET                       3
-UnitedStates                10
-UnitedStates/LiborImpact    10
-UnitedStates/NYSE            9
-UnitedStates/GovernmentBond 11
-UnitedStates/NERC            5
-> tail(nh)
-                       nh
-Turkey                  8
-Ukraine                10
-UnitedKingdom           9
-UnitedKingdom/Exchange  9
-UnitedKingdom/Metals    9
-WeekendsOnly            0
->
+ [1] "TARGET"                         "UnitedStates"                  
+ [3] "UnitedStates/LiborImpact"       "UnitedStates/NYSE"             
+ [5] "UnitedStates/GovernmentBond"    "UnitedStates/NERC"             
+ [7] "UnitedStates/FederalReserve"    "Argentina"                     
+ [9] "Australia"                      "Austria"                       
+[11] "Austria/Exchange"               "Bespoke"                       
+[13] "Botswana"                       "Brazil"                        
+[15] "Brazil/Exchange"                "Canada"                        
+[17] "Canada/TSX"                     "Chile"                         
+[19] "China"                          "China/IB"                      
+[21] "CzechRepublic"                  "Denmark"                       
+[23] "Finland"                        "France"                        
+[25] "France/Exchange"                "Germany"                       
+[27] "Germany/FrankfurtStockExchange" "Germany/Xetra"                 
+[29] "Germany/Eurex"                  "Germany/Euwax"                 
+[31] "HongKong"                       "Hungary"                       
+[33] "Iceland"                        "India"                         
+[35] "Indonesia"                      "Israel"                        
+[37] "Italy"                          "Italy/Exchange"                
+[39] "Japan"                          "Mexico"                        
+[41] "NewZealand"                     "Norway"                        
+[43] "Null"                           "Poland"                        
+[45] "Romania"                        "Russia"                        
+[47] "SaudiArabia"                    "Singapore"                     
+[49] "Slovakia"                       "SouthAfrica"                   
+[51] "SouthKorea"                     "SouthKorea/KRX"                
+[53] "Sweden"                         "Switzerland"                   
+[55] "Taiwan"                         "Thailand"                      
+[57] "Turkey"                         "Ukraine"                       
+[59] "UnitedKingdom"                  "UnitedKingdom/Exchange"        
+[61] "UnitedKingdom/Metals"           "WeekendsOnly"                  
+> 
+
+ We can then for example quickly count number of holiday per calendar (by computing the length of the returned
+vector of holidays) and show a shortened print, all in a handful of lines continuing from above
+
+```r
+> getHols <- function(cal) {    # simple helper function
++    setCalendar(cal)
++    getHolidays(as.Date("2022-01-01"), as.Date("2022-12-31"))
++ }
+> D <- data.table(calendar=calendars)
+> D[ , `:=`(n = length(getHols(calendar)),
++           holidays = paste(format(getHols(calendar),"%d %b"), collapse=",")),
++    by = calendar ]
+> D
+> D
+                       calendar  n                                                                     holidays
+ 1:                      TARGET  3                                                         15 Apr,18 Apr,26 Dec
+ 2:                UnitedStates 10        17 Jan,21 Feb,30 May,20 Jun,04 Jul,05 Sep,10 Oct,11 Nov,24 Nov,26 Dec
+ 3:    UnitedStates/LiborImpact 10        17 Jan,21 Feb,30 May,20 Jun,04 Jul,05 Sep,10 Oct,11 Nov,24 Nov,26 Dec
+ 4:           UnitedStates/NYSE  9               17 Jan,21 Feb,15 Apr,30 May,20 Jun,04 Jul,05 Sep,24 Nov,26 Dec
+ 5: UnitedStates/GovernmentBond 11 17 Jan,21 Feb,15 Apr,30 May,20 Jun,04 Jul,05 Sep,10 Oct,11 Nov,24 Nov,26 Dec
+---                                                                                                            
+58:                     Ukraine 10        03 Jan,07 Jan,08 Mar,25 Apr,02 May,09 May,13 Jun,28 Jun,24 Aug,14 Oct
+59:               UnitedKingdom  9               03 Jan,15 Apr,18 Apr,02 May,02 Jun,03 Jun,29 Aug,26 Dec,27 Dec
+60:      UnitedKingdom/Exchange  9               03 Jan,15 Apr,18 Apr,02 May,02 Jun,03 Jun,29 Aug,26 Dec,27 Dec
+61:        UnitedKingdom/Metals  9               03 Jan,15 Apr,18 Apr,02 May,02 Jun,03 Jun,29 Aug,26 Dec,27 Dec
+62:                WeekendsOnly  0                                                                             
+> 
 ```
 
 Here we set the year to 2022 as it includes the added US holiday of Juneteenth.
@@ -126,6 +144,11 @@ resulting shared library from around 26 mb (!!) to 0.64 mb, and the (compressed)
 1.6 mb to 0.24 mb.
 
 As of version 0.0.5, the focus is _strictly_ on calendaring.
+
+As of version 0.1.0, QuantLib files are included 'as is' (no longer converted to header-only as Quantuccia did)
+with a small ([documented in a diff](local/changes_from_quantlib_1.24.diff)) set of changes essentially commenting
+out headers we no longer need and removed from some of the utilities directories, and turning off pragma instructions
+we are not allowed to use at CRAN.
 
 ### Installation
 
