@@ -11,7 +11,7 @@
 
 Access to current calendaring functions from QuantLib in an easy-to-build smaller package.
 
-As of release 0.1.0, all code is current to the current QuantLib release 1.24 (modulo a [small patch set](local/changes_from_quantlib_1.24.diff)). All of
+As of release 0.1.0, all code is current to the current QuantLib release 1.24 (modulo a [small patch set](https://github.com/eddelbuettel/rcppquantuccia/blob/master/local/changes_from_quantlib_1.24.diff)). All of
 the upstream, _i.e._ QuantLib, calendars are implemented as are the key access functions.
 
 ### Brief History
@@ -166,7 +166,7 @@ resulting shared library from around 26 mb (!!) to 0.64 mb, and the (compressed)
 As of version 0.0.5, the focus is _strictly_ on calendaring.
 
 As of version 0.1.0, QuantLib files are included 'as is' (no longer converted to header-only as Quantuccia did)
-with a small ([documented in a diff](local/changes_from_quantlib_1.24.diff)) set of changes essentially commenting
+with a small ([documented in a diff](https://github.com/eddelbuettel/rcppquantuccia/blob/master/local/changes_from_quantlib_1.24.diff)) set of changes essentially commenting
 out headers we no longer need and removed from some of the utilities directories, and turning off pragma instructions
 we are not allowed to use at CRAN.
 

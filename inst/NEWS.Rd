@@ -3,6 +3,14 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppquantuccia/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppquantuccia/issues/#1}{##1}}
 
+\section{Changes in version 0.1.0 (2021-10-30)}{
+  \itemize{
+    \item Code reorganized to have minimal (documented) changes relative
+    to upstream, essentially just removing unused headers, and pragma
+    \item Added example for full calendaring to README.md
+  }
+}
+
 \section{Changes in version 0.0.5 (2021-10-23)}{
   \itemize{
     \item Refocused on calendaring functionality only, removed
