@@ -1,6 +1,6 @@
 
-## This is a C++11 package
-CXX_STD = CXX11
+## This is a C++14 package
+CXX_STD = CXX14
 
 ## We need the headers in inst/include
 ## This one helps with Boost noise but is not allowed by CRAN as 'not portable': -Wno-parentheses
@@ -68,10 +68,10 @@ SOURCES = \
         ql/utilities/dataparsers.cpp \
 	ql/errors.cpp \
 	ql/settings.cpp \
+        calendars.cpp \
         dates.cpp \
         utils.cpp \
         RcppExports.cpp
-
 
 OBJECTS = $(SOURCES:.cpp=.o)
 
