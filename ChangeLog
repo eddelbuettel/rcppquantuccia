@@ -1,5 +1,7 @@
 2021-11-21  Dirk Eddelbuettel  <edd@debian.org>
 
+	* DESCRIPTION (Date, Version): Roll minor version and date
+
 	* src/calendars.cpp: Factored out from header file
 	* inst/include/RcppQuantuccia_types.h: Idem
 	* src/Makevars: Idem
