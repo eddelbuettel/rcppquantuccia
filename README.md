@@ -14,6 +14,8 @@ Access to current calendaring functions from QuantLib in an easy-to-build smalle
 As of release 0.1.0, all code is current to the current QuantLib release 1.24 (modulo a [small patch set](https://github.com/eddelbuettel/rcppquantuccia/blob/master/local/changes_from_quantlib_1.24.diff)). All of
 the upstream, _i.e._ QuantLib, calendars are implemented as are the key access functions.
 
+However, as [Quantuccia](https://github.com/pcaspers/Quantuccia) upstream is stale, we now *continue all future work in the [qlcal](https://github.com/qlcal) organization on GitHub and its [qlcal-r](https://github.com/qlcal/qlcal-r) repo* with the [qlcal R package](https://cran.r-project.org/package=qlcal) now also on CRAN.  So this repository here will likely **not** see any future work.
+
 ### Brief History
 
 This package started as an integration of the (somewhat experimental)
