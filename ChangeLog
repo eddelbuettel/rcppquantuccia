@@ -1,7 +1,6 @@
 2022-10-18  Dirk Eddelbuettel  <edd@debian.org>
 
-	* src/ql/time/calendars/argentina.hpp: Take out two utf-8 characters
-	upsetting clang++-15
+	* src/ql/time/calendars/argentina.hpp: Set to utf-8 for clang++-15
 	* src/ql/time/calendars/argentina.cpp: Idem
 
 2021-11-21  Dirk Eddelbuettel  <edd@debian.org>
