@@ -3,6 +3,15 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppquantuccia/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppquantuccia/issues/#1}{##1}}
 
+\section{Changes in version 0.1.1 (2022-10-19)}{
+  \itemize{
+    \item Minor code reorganization splitting off \code{calendars.cpp}
+    \item Convert the Argentinian calendar sources files as utf-8 to
+    appease \code{clang++-15}
+    \item Advertise the \pkg{qlcal} package as an alternative
+  }
+}
+
 \section{Changes in version 0.1.0 (2021-10-30)}{
   \itemize{
     \item Code reorganized to have minimal (documented) changes relative
