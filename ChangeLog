@@ -1,3 +1,7 @@
+2022-10-19  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/init.R (.onAttach): Advertise 'qlcal' as alternative
+
 2022-10-18  Dirk Eddelbuettel  <edd@debian.org>
 
 	* src/ql/time/calendars/argentina.hpp: Set to utf-8 for clang++-15
