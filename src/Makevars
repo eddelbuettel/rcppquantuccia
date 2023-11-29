@@ -1,6 +1,7 @@
 
-## This is a C++14 package
-CXX_STD = CXX14
+## This is a C++14 package -- but R 4.2.0 defaults to C++14 so only uncomment this if needed
+## on an R version older that 4.2.0 in which case the explicit setting will help
+#CXX_STD = CXX14
 
 ## We need the headers in inst/include
 ## This one helps with Boost noise but is not allowed by CRAN as 'not portable': -Wno-parentheses

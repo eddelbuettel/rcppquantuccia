@@ -1,8 +1,10 @@
-2023-11-28  Dirk Eddelbuettel  <edd@debian.org>
+2023-11-29  Dirk Eddelbuettel  <edd@debian.org>
 
 	* src/RcppExports.cpp: Regenerated under updated Rcpp to address
 	format string issue reported by R-devel
 	* R/RcppExports.R: Idem
+
+	* src/Makevars: No longer set CXX_STD to C++14
 
 	* .github/workflows/ci.yaml (jobs): Update to actions/checkout@v4
 
