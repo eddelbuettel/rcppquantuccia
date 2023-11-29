@@ -1,3 +1,11 @@
+2023-11-28  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/RcppExports.cpp: Regenerated under updated Rcpp to address
+	format string issue reported by R-devel
+	* R/RcppExports.R: Idem
+
+	* .github/workflows/ci.yaml (jobs): Update to actions/checkout@v4
+
 2022-11-18  Dirk Eddelbuettel  <edd@debian.org>
 
 	* .github/workflows/ci.yaml (jobs): Update to actions/checkout@v3

@@ -183,5 +183,5 @@ getBusinessDays <- function(from, to) {
 
 # Register entry points for exported C++ functions
 methods::setLoadAction(function(ns) {
-    .Call('_RcppQuantuccia_RcppExport_registerCCallable', PACKAGE = 'RcppQuantuccia')
+    .Call(`_RcppQuantuccia_RcppExport_registerCCallable`)
 })
