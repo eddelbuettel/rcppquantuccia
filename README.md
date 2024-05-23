@@ -3,7 +3,7 @@
 [![CI](https://github.com/eddelbuettel/rcppquantuccia/workflows/ci/badge.svg)](https://github.com/eddelbuettel/rcppquantuccia/actions?query=workflow%3Aci)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![CRAN](https://www.r-pkg.org/badges/version/RcppQuantuccia)](https://cran.r-project.org/package=RcppQuantuccia)
-[![Dependencies](https://tinyverse.netlify.com/badge/RcppQuantuccia)](https://cran.r-project.org/package=RcppQuantuccia)
+[![Dependencies](https://tinyverse.netlify.app/badge/RcppQuantuccia)](https://cran.r-project.org/package=RcppQuantuccia)
 [![Downloads](https://cranlogs.r-pkg.org/badges/RcppQuantuccia?color=brightgreen)](https://www.r-pkg.org/pkg/RcppQuantuccia)
 [![Last Commit](https://img.shields.io/github/last-commit/eddelbuettel/rcppquantuccia)](https://github.com/eddelbuettel/rcppquantuccia)
 
