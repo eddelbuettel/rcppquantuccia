@@ -3,6 +3,15 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppquantuccia/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppquantuccia/issues/#1}{##1}}
 
+\section{Changes in version 0.1.3 (2025-11-24)}{
+  \itemize{
+    \item A badge URL and link have been updated in README.md
+    \item The continuous integration sript switched first to r-ci-setup and
+    then to the r-ci action with embedded setup
+    \item The DESCRIPTION file now uses Authors@R
+  }
+}
+
 \section{Changes in version 0.1.2 (2023-11-29)}{
   \itemize{
     \item \code{RcppExports.cpp} has been regenerated under an updated
