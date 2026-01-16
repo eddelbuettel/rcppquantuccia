@@ -72,18 +72,18 @@ namespace boost {
     // must be defined by the user
     void assertion_failed(char const * expr, char const * function,
                           char const * file, long line) {
-        throw std::runtime_error(format(file, line, function,
-                                        "Boost assertion failed: " +
-                                        std::string(expr)));
+        throw std::runtime_error(::format(file, line, function,
+                                          "Boost assertion failed: " +
+                                          std::string(expr)));
     }
 
     void assertion_failed_msg(char const * expr, char const * msg,
                               char const * function, char const * file,
                               long line) {
-        throw std::runtime_error(format(file, line, function,
-                                        "Boost assertion failed: " +
-                                        std::string(expr) + ": " +
-                                        std::string(msg)));
+        throw std::runtime_error(::format(file, line, function,
+                                          "Boost assertion failed: " +
+                                          std::string(expr) + ": " +
+                                          std::string(msg)));
     }
 
 }
@@ -93,10 +93,9 @@ namespace QuantLib {
     Error::Error(const std::string& file, long line,
                  const std::string& function,
                  const std::string& message) {
-        message_ = ext::make_shared<std::string>(
-                                      format(file, line, function, message));
+        message_ = ext::make_shared<std::string>(::format(file, line,
+                                                          function, message));
     }
 
     const char* Error::what() const QL_NOEXCEPT { return message_->c_str(); }
 }
-
