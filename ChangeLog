@@ -3,6 +3,9 @@
 	* src/ql/errors.cpp (assertion_failed): Call local format() function
 	as ::format() to not clash with C++20 and its std::format()
 
+	* src/Makevars: Simplify by removing one no longer needed Boost
+	define, and removing commented-out C++ compilation standard setting
+
 2025-11-24  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Release 0.1.3
