@@ -24,11 +24,12 @@ namespace Rcpp {
         return QuantLib::Date(static_cast<int>(dt.getDate()) + QLtoJan1970Offset);
     }
     template <> QuantLib::Date as(Rcpp::Datetime dt) {
+        auto v = static_cast<boost::posix_time::hours::fractional_seconds_type>(std::round(dt.getMicroSeconds()*1000.0));
         const boost::posix_time::ptime pt(boost::gregorian::date(dt.getYear(), dt.getMonth(), dt.getDay()),
                                           boost::posix_time::time_duration(dt.getHours(),
                                                                            dt.getMinutes(),
                                                                            dt.getSeconds(),
-                                                                           dt.getMicroSeconds()*1000.0));
+                                                                           v));
         return QuantLib::Date(pt);
     }
 

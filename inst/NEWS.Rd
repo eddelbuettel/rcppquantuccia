@@ -3,6 +3,15 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppquantuccia/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppquantuccia/issues/#1}{##1}}
 
+\section{Changes in version 0.1.4 (2026-01-17)}{
+  \itemize{
+    \item Accommodate C++20 compilation by calling interal function as
+    \code{::format} avoiding clash with \code{std::format}
+    \item Remove one no longer needed \code{#define} to avoid Boost auto
+    pointer; add one explicit cast to avoid a nag
+  }
+}
+
 \section{Changes in version 0.1.3 (2025-11-24)}{
   \itemize{
     \item A badge URL and link have been updated in README.md
