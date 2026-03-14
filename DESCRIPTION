@@ -1,8 +1,8 @@
 Package: RcppQuantuccia
 Type: Package
 Title: R Bindings to the Calendaring Functionality of 'QuantLib'
-Version: 0.1.4
-Date: 2026-01-17
+Version: 0.1.4.1
+Date: 2026-03-14
 Authors@R: c(person("Dirk", "Eddelbuettel", role = c("aut", "cre"), email = "edd@debian.org",
                     comment = c(ORCID = "0000-0001-6419-907X")),
              person("QuantLib Authors", role = "aut"))
